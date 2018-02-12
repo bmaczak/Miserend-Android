@@ -35,7 +35,6 @@ public class NearChurchesFragment extends Fragment {
         ChurchListComponent.Injector.inject(this);
         View v = inflater.inflate(R.layout.fragment_near_churches, container, false);
         ButterKnife.bind(this, v);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         NearChurchesAdapter adapter = new NearChurchesAdapter();
         viewModel.getChurches().observe(this, adapter::setList);
         recyclerView.setAdapter(adapter);
