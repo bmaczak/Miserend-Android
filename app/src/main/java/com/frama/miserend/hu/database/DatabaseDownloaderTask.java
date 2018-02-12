@@ -49,7 +49,7 @@ public class DatabaseDownloaderTask extends AsyncTask<String, Integer, Boolean> 
         try {
             URL url = new URL(DownloadUrl); // you can write here any link
             File file = DatabaseManager.getDatabaseFile(context);
-
+            file.getParentFile().mkdirs();
 
             URLConnection conection = url.openConnection();
             conection.connect();
