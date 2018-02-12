@@ -4,6 +4,7 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import com.frama.miserend.hu.database.MiserendDatabase;
+import com.frama.miserend.hu.database.manager.DatabaseManager;
 import com.frama.miserend.hu.di.qualifiers.ApplicationContext;
 
 import javax.inject.Named;
@@ -18,6 +19,12 @@ import dagger.Provides;
 @Module
 public class DatabaseModule {
 
+
+    @Provides
+    @Singleton
+    DatabaseManager provideDatabaseManager(@ApplicationContext Context context) {
+        return new DatabaseManager(context);
+    }
 
     @Provides
     @Singleton

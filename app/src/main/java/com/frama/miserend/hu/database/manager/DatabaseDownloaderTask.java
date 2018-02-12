@@ -1,8 +1,10 @@
-package com.frama.miserend.hu.database;
+package com.frama.miserend.hu.database.manager;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.frama.miserend.hu.database.manager.DatabaseManager;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -48,7 +50,7 @@ public class DatabaseDownloaderTask extends AsyncTask<String, Integer, Boolean> 
         int count;
         try {
             URL url = new URL(DownloadUrl); // you can write here any link
-            File file = DatabaseManager.getDatabaseFile(context);
+            File file = context.getDatabasePath(DatabaseManager.DATABASE_FILE_NAME);
             file.getParentFile().mkdirs();
 
             URLConnection conection = url.openConnection();

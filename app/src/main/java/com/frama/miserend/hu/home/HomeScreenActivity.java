@@ -6,8 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.churchlist.NearChurchesFragment;
-import com.frama.miserend.hu.database.DatabaseDownloaderTask;
-import com.frama.miserend.hu.database.DatabaseManager;
+import com.frama.miserend.hu.database.manager.DatabaseDownloaderTask;
+import com.frama.miserend.hu.database.manager.DatabaseManager;
+import com.frama.miserend.hu.di.components.HomeScreenComponent;
+
+import javax.inject.Inject;
 
 /**
  * Created by Balazs on 2018. 02. 10..
@@ -15,15 +18,24 @@ import com.frama.miserend.hu.database.DatabaseManager;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
+    @Inject
+    HomeViewModel viewModel;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        HomeScreenComponent.Injector.inject(this);
         setContentView(R.layout.activity_home);
-        if (DatabaseManager.isDbExist(this)) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NearChurchesFragment()).commit();
-        } else {
-            downloadDatabase();
-        }
+        viewModel.getDatabaseState().observe(this, databaseState -> {
+            switch (databaseState) {
+                case UP_TO_DATE:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NearChurchesFragment()).commit();
+                    break;
+                case NOT_FOUND:
+                    downloadDatabase();
+                    break;
+            }
+        });
     }
 
     private void downloadDatabase() {

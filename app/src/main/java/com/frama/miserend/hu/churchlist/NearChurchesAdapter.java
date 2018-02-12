@@ -1,8 +1,7 @@
 package com.frama.miserend.hu.churchlist;
 
 import android.arch.paging.PagedListAdapter;
-import android.support.annotation.NonNull;
-import android.support.v7.recyclerview.extensions.DiffCallback;
+import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -18,9 +17,10 @@ import java.util.Calendar;
 public class NearChurchesAdapter extends PagedListAdapter<ChurchWithMasses, ChurchViewHolder> {
 
     private int dayOfWeekToday;
+    private Location currentLocation;
 
     public NearChurchesAdapter() {
-        super(DIFF_CALLBACK);
+        super(new ChurchDiffCallback());
         dayOfWeekToday = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
     }
 
@@ -31,28 +31,15 @@ public class NearChurchesAdapter extends PagedListAdapter<ChurchWithMasses, Chur
 
     @Override
     public void onBindViewHolder(ChurchViewHolder holder, int position) {
-        ChurchWithMasses user = getItem(position);
-        if (user != null) {
-            holder.bindTo(user);
+        ChurchWithMasses churchWithMasses = getItem(position);
+        if (churchWithMasses != null) {
+            holder.bindTo(churchWithMasses, currentLocation);
         } else {
             holder.clear();
         }
     }
 
-    public static final DiffCallback<ChurchWithMasses> DIFF_CALLBACK = new DiffCallback<ChurchWithMasses>() {
-        @Override
-        public boolean areItemsTheSame(@NonNull ChurchWithMasses oldUser, @NonNull ChurchWithMasses newUser) {
-            // User properties may have changed if reloaded from the DB, but ID is fixed
-            return oldUser.getChurch().getTid() == newUser.getChurch().getTid();
-        }
-
-        @Override
-        public boolean areContentsTheSame(@NonNull ChurchWithMasses oldUser, @NonNull ChurchWithMasses newUser) {
-            // NOTE: if you use equals, your object must properly override Object#equals()
-            // Incorrectly returning false here will result in too many animations.
-            return oldUser.equals(newUser);
-        }
-    };
-
-
+    public void setCurrentLocation(Location currentLocation) {
+        this.currentLocation = currentLocation;
+    }
 }

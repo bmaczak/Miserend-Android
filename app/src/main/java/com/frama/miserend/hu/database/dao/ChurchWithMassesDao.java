@@ -13,7 +13,7 @@ import com.frama.miserend.hu.database.relations.ChurchWithMasses;
 @Dao
 public interface ChurchWithMassesDao {
 
-    @Query("SELECT * FROM templomok")
-    DataSource.Factory<Integer, ChurchWithMasses> getNearChurches();
+    @Query("SELECT *,((lng-(:longitude))*(lng-(:longitude)) + (lat-(:latitude))*(lat-(:latitude))) AS len FROM templomok WHERE lng != 0 AND lat != 0 ORDER BY len ASC")
+    DataSource.Factory<Integer, ChurchWithMasses> getNearChurches(double latitude, double longitude);
 
 }

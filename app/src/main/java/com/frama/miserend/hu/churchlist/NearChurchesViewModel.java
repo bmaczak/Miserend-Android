@@ -17,16 +17,19 @@ import com.frama.miserend.hu.database.relations.ChurchWithMasses;
  */
 
 public class NearChurchesViewModel extends AndroidViewModel {
+
     private LiveData<PagedList<ChurchWithMasses>> churches;
+    private MiserendDatabase database;
 
     public NearChurchesViewModel(@NonNull Application application, MiserendDatabase database) {
         super(application);
-        churches = new LivePagedListBuilder<>(
-                database.churchWithMassesDao().getNearChurches(), /* page size */ 20).build();
+        this.database = database;
     }
 
 
-    public LiveData<PagedList<ChurchWithMasses>> getChurches() {
+    public LiveData<PagedList<ChurchWithMasses>> getNearestChurches(double latitude, double longitude) {
+        churches = new LivePagedListBuilder<>(
+                database.churchWithMassesDao().getNearChurches(latitude, longitude), 20).build();
         return churches;
     }
 
@@ -42,8 +45,9 @@ public class NearChurchesViewModel extends AndroidViewModel {
             this.database = database;
         }
 
+        @NonNull
         @Override
-        public <T extends ViewModel> T create(Class<T> modelClass) {
+        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             return (T) new NearChurchesViewModel(mApplication, database);
         }
     }

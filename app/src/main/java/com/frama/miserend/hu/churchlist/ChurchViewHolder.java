@@ -2,12 +2,14 @@ package com.frama.miserend.hu.churchlist;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.location.Location;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.frama.miserend.hu.R;
+import com.frama.miserend.hu.database.entities.Church;
 import com.frama.miserend.hu.database.entities.Mass;
 import com.frama.miserend.hu.database.relations.ChurchWithMasses;
 import com.frama.miserend.hu.utils.DateUtils;
@@ -27,6 +29,8 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
     TextView churchCommonName;
     @BindView(R.id.masses_text)
     TextView massesText;
+    @BindView(R.id.church_distance)
+    TextView distanceText;
     @BindView(R.id.church_thumb)
     SimpleDraweeView churchThumbnail;
 
@@ -39,10 +43,20 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindTo(ChurchWithMasses churchWithMasses) {
+        bindTo(churchWithMasses, null);
+    }
+
+    public void bindTo(ChurchWithMasses churchWithMasses, Location currentLocation) {
         churchName.setText(churchWithMasses.getChurch().getName());
         churchCommonName.setText(churchWithMasses.getChurch().getCommonName());
         churchThumbnail.setImageURI(churchWithMasses.getChurch().getImageUrl());
         massesText.setText(getMassesText(churchWithMasses));
+        if (currentLocation != null) {
+            distanceText.setVisibility(View.VISIBLE);
+            distanceText.setText(getDistanceText(getDistance(currentLocation, churchWithMasses.getChurch())));
+        } else {
+            distanceText.setVisibility(View.GONE);
+        }
     }
 
     public void clear() {
@@ -63,5 +77,21 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
             masses = "-";
         }
         return String.format(res.getString(R.string.masses_text), DateUtils.getNameOfDay(context, dayOfWeekToday), masses);
+    }
+
+    private float getDistance(Location location, Church church) {
+        Location locationA = new Location("point A");
+        locationA.setLatitude(church.getLat());
+        locationA.setLongitude(church.getLon());
+        return location.distanceTo(locationA);
+    }
+
+
+    public String getDistanceText(float distance) {
+        if (distance < 1000) {
+            return ((int) distance) + " m";
+        } else {
+            return String.format("%.2f km", (distance / 1000));
+        }
     }
 }

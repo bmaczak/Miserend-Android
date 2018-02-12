@@ -1,4 +1,4 @@
-package com.frama.miserend.hu.database;
+package com.frama.miserend.hu.database.manager;
 
 import android.content.Context;
 
@@ -9,23 +9,29 @@ import java.io.File;
  */
 public class DatabaseManager {
 
+    private Context context;
+
+    public DatabaseManager(Context context) {
+        this.context = context;
+    }
+
     private static String TAG = "DatabaseManager";
 
     private static int DATABASE_VERSION = 4;
 
-    private static String DATABASE_FILE_NAME = "miserend.sqlite3";
+    public static String DATABASE_FILE_NAME = "miserend.sqlite3";
 
     public static final String DATABASE_URL = "http://miserend.hu/fajlok/sqlite/miserend_v" + DATABASE_VERSION + ".sqlite3";
 
-    public static boolean isDbExist(Context context) {
-        return getDatabaseFile(context).exists();
+    public boolean isDbExist() {
+        return getDatabaseFile().exists();
     }
 
-    public static File getDatabaseFile(Context context) {
+    public File getDatabaseFile() {
         return context.getDatabasePath(DATABASE_FILE_NAME);
     }
 
-    public static int getRequiredDataBaseVersion() {
+    public int getRequiredDataBaseVersion() {
         return DATABASE_VERSION;
     }
 }

@@ -3,6 +3,7 @@ package com.frama.miserend.hu.di.modules;
 import android.app.Application;
 import android.arch.lifecycle.ViewModelProviders;
 
+import com.frama.miserend.hu.churchlist.NearChurchesAdapter;
 import com.frama.miserend.hu.churchlist.NearChurchesFragment;
 import com.frama.miserend.hu.churchlist.NearChurchesViewModel;
 import com.frama.miserend.hu.database.MiserendDatabase;
@@ -21,6 +22,12 @@ public class NearChurchesModule {
 
     public NearChurchesModule(NearChurchesFragment fragment) {
         this.fragment = fragment;
+    }
+
+    @PerFragment
+    @Provides
+    NearChurchesAdapter provideNearChurchesAdapter() {
+        return new NearChurchesAdapter();
     }
 
     @PerFragment
