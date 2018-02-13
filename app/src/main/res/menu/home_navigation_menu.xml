@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_churches"
+        android:enabled="true"
+        android:icon="@drawable/ic_church"
+        android:title="@string/churches"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_masses"
+        android:enabled="true"
+        android:icon="@drawable/ic_mass"
+        android:title="@string/masses"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_map"
+        android:enabled="true"
+        android:icon="@drawable/ic_map"
+        android:title="@string/map"
+        app:showAsAction="ifRoom" />
+</menu>

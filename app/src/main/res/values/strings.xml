@@ -5,4 +5,9 @@
 
     <string name="today">Ma</string>
     <string name="tomorrow">Holnap</string>
+
+    <string name="churches">Templomok</string>
+    <string name="map">Térkép</string>
+    <string name="masses">Misék</string>
+
 </resources>
