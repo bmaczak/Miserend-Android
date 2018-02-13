@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.frama.miserend.hu.R;
-import com.frama.miserend.hu.churchlist.NearChurchesFragment;
+import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
 import com.frama.miserend.hu.database.manager.DatabaseDownloaderTask;
 import com.frama.miserend.hu.database.manager.DatabaseManager;
 import com.frama.miserend.hu.di.components.HomeScreenComponent;

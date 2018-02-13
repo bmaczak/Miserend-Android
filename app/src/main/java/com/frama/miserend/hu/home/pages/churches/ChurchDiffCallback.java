@@ -1,4 +1,4 @@
-package com.frama.miserend.hu.churchlist;
+package com.frama.miserend.hu.home.pages.churches;
 
 import android.support.annotation.NonNull;
 import android.support.v7.recyclerview.extensions.DiffCallback;

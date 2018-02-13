@@ -1,4 +1,4 @@
-package com.frama.miserend.hu.churchlist;
+package com.frama.miserend.hu.home.pages.churches.near;
 
 import android.arch.paging.PagedListAdapter;
 import android.location.Location;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.relations.ChurchWithMasses;
+import com.frama.miserend.hu.home.pages.churches.ChurchDiffCallback;
+import com.frama.miserend.hu.home.pages.churches.ChurchViewHolder;
 
 import java.util.Calendar;
 

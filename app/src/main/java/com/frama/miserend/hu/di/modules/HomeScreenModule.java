@@ -3,12 +3,8 @@ package com.frama.miserend.hu.di.modules;
 import android.app.Application;
 import android.arch.lifecycle.ViewModelProviders;
 
-import com.frama.miserend.hu.churchlist.NearChurchesFragment;
-import com.frama.miserend.hu.churchlist.NearChurchesViewModel;
-import com.frama.miserend.hu.database.MiserendDatabase;
 import com.frama.miserend.hu.database.manager.DatabaseManager;
 import com.frama.miserend.hu.di.scopes.PerActivity;
-import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.home.HomeScreenActivity;
 import com.frama.miserend.hu.home.HomeViewModel;
 

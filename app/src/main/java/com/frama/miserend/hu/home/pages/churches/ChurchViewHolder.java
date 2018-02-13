@@ -1,4 +1,4 @@
-package com.frama.miserend.hu.churchlist;
+package com.frama.miserend.hu.home.pages.churches;
 
 import android.content.Context;
 import android.content.res.Resources;

@@ -1,4 +1,4 @@
-package com.frama.miserend.hu.churchlist;
+package com.frama.miserend.hu.home.pages.churches.near;
 
 import android.location.Location;
 import android.os.Bundle;

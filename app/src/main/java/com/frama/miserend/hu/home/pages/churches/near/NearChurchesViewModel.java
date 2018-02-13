@@ -1,4 +1,4 @@
-package com.frama.miserend.hu.churchlist;
+package com.frama.miserend.hu.home.pages.churches.near;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
