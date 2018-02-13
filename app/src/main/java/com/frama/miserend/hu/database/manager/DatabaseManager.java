@@ -2,6 +2,8 @@ package com.frama.miserend.hu.database.manager;
 
 import android.content.Context;
 
+import com.frama.miserend.hu.home.HomeViewModel;
+
 import java.io.File;
 
 /**
@@ -33,5 +35,9 @@ public class DatabaseManager {
 
     public int getRequiredDataBaseVersion() {
         return DATABASE_VERSION;
+    }
+
+    public void downloadDatabase(DatabaseDownloaderTask.OnDbDownloadedListener listener) {
+        new DatabaseDownloaderTask(context, listener).execute(DATABASE_URL);
     }
 }

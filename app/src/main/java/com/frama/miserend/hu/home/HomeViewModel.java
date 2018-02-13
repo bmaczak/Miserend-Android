@@ -8,8 +8,10 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
+import com.frama.miserend.hu.database.manager.DatabaseDownloaderTask;
 import com.frama.miserend.hu.database.manager.DatabaseManager;
 import com.frama.miserend.hu.database.manager.DatabaseState;
+import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
 
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -37,6 +39,20 @@ public class HomeViewModel extends AndroidViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(databaseState -> this.databaseState.setValue(databaseState));
         return databaseState;
+    }
+
+    public void downloadDatabase() {
+        databaseManager.downloadDatabase(new DatabaseDownloaderTask.OnDbDownloadedListener() {
+            @Override
+            public void onDbDownloadStarted() {
+
+            }
+
+            @Override
+            public void onDbDownloadFinished(boolean success) {
+                HomeViewModel.this.databaseState.setValue(DatabaseState.UP_TO_DATE);
+            }
+        });
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
