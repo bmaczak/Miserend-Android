@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -11,9 +12,11 @@ import android.view.MenuItem;
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.manager.DatabaseState;
 import com.frama.miserend.hu.di.components.HomeScreenComponent;
+import com.frama.miserend.hu.home.pages.churches.ChurchesFragment;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
 import com.frama.miserend.hu.home.pages.map.ChurchesMapFragment;
 import com.frama.miserend.hu.home.pages.masses.MassesFragment;
+import com.frama.miserend.hu.view.BottomNavigationViewBehavior;
 
 import javax.inject.Inject;
 
@@ -40,12 +43,14 @@ public class HomeScreenActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         viewModel.getDatabaseState().observe(this, this::onDatabaseStateChanged);
         bottomNavigationView.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewBehavior());
     }
 
     private void onDatabaseStateChanged(DatabaseState databaseState) {
         switch (databaseState) {
             case UP_TO_DATE:
-                showFragment(new NearChurchesFragment());
+                showFragment(new ChurchesFragment());
                 break;
             case NOT_FOUND:
                 viewModel.downloadDatabase();
@@ -60,7 +65,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_churches:
-                showFragment(new NearChurchesFragment());
+                showFragment(new ChurchesFragment());
                 return true;
             case R.id.action_masses:
                 showFragment(new MassesFragment());
