@@ -14,5 +14,7 @@
     <color name="white_60">#9AFFFFFF</color>
     <color name="white_40">#66FFFFFF</color>
     <color name="white_20">#33FFFFFF</color>
-    <color name="subtitle_gray">#535353</color>
+
+    <color name="transparent">#0000</color>
+
 </resources>

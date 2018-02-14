@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -13,10 +12,12 @@ import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.manager.DatabaseState;
 import com.frama.miserend.hu.di.components.HomeScreenComponent;
 import com.frama.miserend.hu.home.pages.churches.ChurchesFragment;
-import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
 import com.frama.miserend.hu.home.pages.map.ChurchesMapFragment;
 import com.frama.miserend.hu.home.pages.masses.MassesFragment;
-import com.frama.miserend.hu.view.BottomNavigationViewBehavior;
+import com.mancj.materialsearchbar.MaterialSearchBar;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -32,6 +33,8 @@ public class HomeScreenActivity extends AppCompatActivity {
     @Inject
     HomeViewModel viewModel;
 
+    @BindView(R.id.search_bar)
+    MaterialSearchBar materialSearchBar;
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
 
@@ -43,8 +46,6 @@ public class HomeScreenActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         viewModel.getDatabaseState().observe(this, this::onDatabaseStateChanged);
         bottomNavigationView.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationViewBehavior());
     }
 
     private void onDatabaseStateChanged(DatabaseState databaseState) {

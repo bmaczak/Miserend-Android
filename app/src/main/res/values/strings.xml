@@ -10,4 +10,6 @@
     <string name="map">Térkép</string>
     <string name="masses">Misék</string>
 
+    <string name="search_hint">Település, név...</string>
+
 </resources>

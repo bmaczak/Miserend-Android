@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.frama.miserend.hu"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 14
         versionName "2.2"
@@ -56,4 +56,6 @@ dependencies {
 
     //Fresco
     implementation 'com.facebook.fresco:fresco:1.8.1'
+
+    implementation 'com.github.mancj:MaterialSearchBar:0.7.5'
 }
