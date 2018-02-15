@@ -30,12 +30,20 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+    <View
+        android:id="@+id/search_fader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_60"
+        android:visibility="gone" />
+
     <com.mancj.materialsearchbar.MaterialSearchBar
         android:id="@+id/search_bar"
         style="@style/MaterialSearchBarLight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:fitsSystemWindows="true"
         app:layout_behavior="com.frama.miserend.hu.view.SearchBarBehavior"
         app:mt_hint="@string/search_hint"
         app:mt_maxSuggestionsCount="10" />
