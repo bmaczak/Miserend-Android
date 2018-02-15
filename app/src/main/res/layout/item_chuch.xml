@@ -60,7 +60,8 @@
                     android:id="@+id/church_action_favorite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_launcher_round" />
+                    android:background="?attr/selectableItemBackground"
+                    android:src="@drawable/ic_favorite_border" />
             </LinearLayout>
 
         </LinearLayout>
