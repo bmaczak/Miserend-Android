@@ -19,4 +19,7 @@ public interface ChurchDao {
     @Query("SELECT * FROM templomok")
     Flowable<List<Church>> getAll();
 
+    @Query("SELECT * FROM templomok WHERE nev LIKE '%' || :searchTerm || '%' OR '%' || ismertnev LIKE :searchTerm || '%'")
+    Flowable<List<Church>> getBySearchTerm(String searchTerm);
+
 }

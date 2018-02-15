@@ -16,10 +16,8 @@ public class CustomSuggestionAdapter extends SuggestionsAdapter<Suggestion, Sugg
 
     private static final int TYPE_CITY = 0;
 
-
-    public CustomSuggestionAdapter(LayoutInflater inflater, List<Suggestion> suggestions) {
+    public CustomSuggestionAdapter(LayoutInflater inflater) {
         super(inflater);
-        this.suggestions = suggestions;
     }
 
     @Override

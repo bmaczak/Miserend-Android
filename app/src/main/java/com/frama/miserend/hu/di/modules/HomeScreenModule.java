@@ -3,10 +3,12 @@ package com.frama.miserend.hu.di.modules;
 import android.app.Application;
 import android.arch.lifecycle.ViewModelProviders;
 
+import com.frama.miserend.hu.database.MiserendDatabase;
 import com.frama.miserend.hu.database.manager.DatabaseManager;
 import com.frama.miserend.hu.di.scopes.PerActivity;
 import com.frama.miserend.hu.home.HomeScreenActivity;
 import com.frama.miserend.hu.home.HomeViewModel;
+import com.frama.miserend.hu.search.suggestions.SuggestionViewModel;
 
 import dagger.Module;
 import dagger.Provides;
@@ -36,4 +38,16 @@ public class HomeScreenModule {
         return new HomeViewModel.Factory(application, databaseManager);
     }
 
+    @PerActivity
+    @Provides
+    SuggestionViewModel provideSuggestionViewModel(SuggestionViewModel.Factory factory) {
+        return ViewModelProviders.of(activity, factory)
+                .get(SuggestionViewModel.class);
+    }
+
+    @PerActivity
+    @Provides
+    SuggestionViewModel.Factory provideSuggestionViewModelFactory(Application application, MiserendDatabase miserendDatabase) {
+        return new SuggestionViewModel.Factory(application, miserendDatabase);
+    }
 }

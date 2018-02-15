@@ -37,16 +37,19 @@
         android:background="@color/black_60"
         android:visibility="gone" />
 
-    <com.mancj.materialsearchbar.MaterialSearchBar
+    <com.frama.miserend.hu.search.searchbar.CustomSearchBar
         android:id="@+id/search_bar"
         style="@style/MaterialSearchBarLight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginBottom="64dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:fitsSystemWindows="true"
         app:layout_behavior="com.frama.miserend.hu.view.SearchBarBehavior"
         app:mt_hint="@string/search_hint"
-        app:mt_maxSuggestionsCount="10" />
+        app:mt_maxSuggestionsCount="5" />
 
 
     <android.support.design.widget.BottomNavigationView

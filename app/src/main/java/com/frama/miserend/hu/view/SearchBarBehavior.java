@@ -28,13 +28,13 @@ public class SearchBarBehavior extends CoordinatorLayout.Behavior<View> {
     }
 
     @Override
-    public boolean onDependentViewChanged(CoordinatorLayout parent, View view, View dependency) {
+    public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
         if (dependency instanceof AppBarLayout) {
-            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
-            int fabBottomMargin = lp.bottomMargin;
-            int distanceToScroll = view.getHeight() + fabBottomMargin;
+            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
+            int topMargin = lp.topMargin;
+            int distanceToScroll = child.getHeight() + topMargin;
             float ratio = dependency.getY() / (float) toolbarHeight;
-            view.setTranslationY(distanceToScroll * ratio);
+            child.setTranslationY(distanceToScroll * ratio);
         }
         return true;
     }

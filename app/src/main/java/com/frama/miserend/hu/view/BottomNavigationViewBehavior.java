@@ -28,13 +28,13 @@ public class BottomNavigationViewBehavior extends CoordinatorLayout.Behavior<Bot
     }
 
     @Override
-    public boolean onDependentViewChanged(CoordinatorLayout parent, BottomNavigationView fab, View dependency) {
+    public boolean onDependentViewChanged(CoordinatorLayout parent, BottomNavigationView child, View dependency) {
         if (dependency instanceof AppBarLayout) {
-            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
-            int fabBottomMargin = lp.bottomMargin;
-            int distanceToScroll = fab.getHeight() + fabBottomMargin;
+            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
+            int bottomMargin = lp.bottomMargin;
+            int distanceToScroll = child.getHeight() + bottomMargin;
             float ratio = dependency.getY() / (float) toolbarHeight;
-            fab.setTranslationY(-distanceToScroll * ratio);
+            child.setTranslationY(-distanceToScroll * ratio);
         }
         return true;
     }

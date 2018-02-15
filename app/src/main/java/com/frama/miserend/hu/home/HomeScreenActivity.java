@@ -1,14 +1,21 @@
 package com.frama.miserend.hu.home;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.manager.DatabaseState;
@@ -16,9 +23,11 @@ import com.frama.miserend.hu.di.components.HomeScreenComponent;
 import com.frama.miserend.hu.home.pages.churches.ChurchesFragment;
 import com.frama.miserend.hu.home.pages.map.ChurchesMapFragment;
 import com.frama.miserend.hu.home.pages.masses.MassesFragment;
+import com.frama.miserend.hu.search.searchbar.CustomSearchBar;
 import com.frama.miserend.hu.search.suggestions.CitySuggestion;
 import com.frama.miserend.hu.search.suggestions.CustomSuggestionAdapter;
 import com.frama.miserend.hu.search.suggestions.Suggestion;
+import com.frama.miserend.hu.search.suggestions.SuggestionViewModel;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 
 import java.util.ArrayList;
@@ -37,9 +46,11 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     @Inject
     HomeViewModel viewModel;
+    @Inject
+    SuggestionViewModel suggestionViewModel;
 
     @BindView(R.id.search_bar)
-    MaterialSearchBar materialSearchBar;
+    CustomSearchBar searchBar;
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
     @BindView(R.id.search_fader)
@@ -53,12 +64,23 @@ public class HomeScreenActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         viewModel.getDatabaseState().observe(this, this::onDatabaseStateChanged);
         bottomNavigationView.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
-        getSuggestions();
-        searchFader.setOnClickListener(view -> {
-            materialSearchBar.clearFocus();
-            materialSearchBar.hideSuggestionsList();
-            materialSearchBar.disableSearch();
+        suggestionViewModel.getSuggestions().observe(this, this::onSuggestionsChanged);
+        searchFader.setOnClickListener(view -> searchBar.close());
+        searchBar.setSearchBarCallback(new CustomSearchBar.SearchBarCallback() {
+            @Override
+            public void onSearchTermChanged(String searchTerm) {
+                suggestionViewModel.updateSuggestions(searchTerm);
+            }
+
+            @Override
+            public void onSearchStateChanged(boolean enabled) {
+                searchFader.setVisibility(enabled ? View.VISIBLE : View.GONE);
+            }
         });
+    }
+
+    private void onSuggestionsChanged(List<Suggestion> suggestions) {
+        searchBar.updateLastSuggestions(suggestions);
     }
 
     private void onDatabaseStateChanged(DatabaseState databaseState) {
@@ -70,34 +92,6 @@ public class HomeScreenActivity extends AppCompatActivity {
                 viewModel.downloadDatabase();
                 break;
         }
-    }
-
-    private void getSuggestions() {
-        List<Suggestion> suggestions = new ArrayList<>();
-        suggestions.add(new CitySuggestion("Budapest"));
-        suggestions.add(new CitySuggestion("Esztergom"));
-        suggestions.add(new CitySuggestion("Székesfehérvár"));
-
-        CustomSuggestionAdapter suggestionAdapter = new CustomSuggestionAdapter(getLayoutInflater(), suggestions);
-        materialSearchBar.setCustomSuggestionAdapter(suggestionAdapter);
-
-        materialSearchBar.setCardViewElevation(10);
-        materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
-            @Override
-            public void onSearchStateChanged(boolean enabled) {
-                searchFader.setVisibility(enabled ? View.VISIBLE : View.GONE);
-            }
-
-            @Override
-            public void onSearchConfirmed(CharSequence text) {
-
-            }
-
-            @Override
-            public void onButtonClicked(int buttonCode) {
-
-            }
-        });
     }
 
     private void showFragment(Fragment fragment) {
