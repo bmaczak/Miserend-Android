@@ -18,7 +18,7 @@
             android:background="@color/colorPrimary"
             android:elevation="0dp"
             app:elevation="0dp"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:layout_scrollFlags="scroll|enterAlways|snap">
 
         </android.support.v7.widget.Toolbar>
 
