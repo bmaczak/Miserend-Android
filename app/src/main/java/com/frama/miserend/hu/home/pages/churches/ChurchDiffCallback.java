@@ -3,7 +3,7 @@ package com.frama.miserend.hu.home.pages.churches;
 import android.support.annotation.NonNull;
 import android.support.v7.recyclerview.extensions.DiffCallback;
 
-import com.frama.miserend.hu.database.relations.ChurchWithMasses;
+import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 
 /**
  * Created by Balazs on 2018. 02. 12..

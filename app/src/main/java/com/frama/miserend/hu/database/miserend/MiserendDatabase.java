@@ -1,12 +1,12 @@
-package com.frama.miserend.hu.database;
+package com.frama.miserend.hu.database.miserend;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
 
-import com.frama.miserend.hu.database.dao.ChurchDao;
-import com.frama.miserend.hu.database.dao.ChurchWithMassesDao;
-import com.frama.miserend.hu.database.entities.Church;
-import com.frama.miserend.hu.database.entities.Mass;
+import com.frama.miserend.hu.database.miserend.dao.ChurchDao;
+import com.frama.miserend.hu.database.miserend.dao.ChurchWithMassesDao;
+import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.database.miserend.entities.Mass;
 
 /**
  * Created by Balazs on 2018. 02. 10..

@@ -1,36 +1,24 @@
 package com.frama.miserend.hu.home;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
 
 import com.frama.miserend.hu.R;
-import com.frama.miserend.hu.database.manager.DatabaseState;
+import com.frama.miserend.hu.database.miserend.manager.DatabaseState;
 import com.frama.miserend.hu.di.components.HomeScreenComponent;
 import com.frama.miserend.hu.home.pages.churches.ChurchesFragment;
 import com.frama.miserend.hu.home.pages.map.ChurchesMapFragment;
 import com.frama.miserend.hu.home.pages.masses.MassesFragment;
 import com.frama.miserend.hu.search.searchbar.CustomSearchBar;
-import com.frama.miserend.hu.search.suggestions.CitySuggestion;
-import com.frama.miserend.hu.search.suggestions.CustomSuggestionAdapter;
 import com.frama.miserend.hu.search.suggestions.Suggestion;
 import com.frama.miserend.hu.search.suggestions.SuggestionViewModel;
-import com.mancj.materialsearchbar.MaterialSearchBar;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;

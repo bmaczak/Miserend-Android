@@ -8,10 +8,9 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import com.frama.miserend.hu.database.manager.DatabaseDownloaderTask;
-import com.frama.miserend.hu.database.manager.DatabaseManager;
-import com.frama.miserend.hu.database.manager.DatabaseState;
-import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
+import com.frama.miserend.hu.database.miserend.manager.DatabaseDownloaderTask;
+import com.frama.miserend.hu.database.miserend.manager.DatabaseManager;
+import com.frama.miserend.hu.database.miserend.manager.DatabaseState;
 
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

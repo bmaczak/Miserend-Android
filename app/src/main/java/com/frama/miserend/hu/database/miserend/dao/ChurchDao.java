@@ -1,9 +1,9 @@
-package com.frama.miserend.hu.database.dao;
+package com.frama.miserend.hu.database.miserend.dao;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Query;
 
-import com.frama.miserend.hu.database.entities.Church;
+import com.frama.miserend.hu.database.miserend.entities.Church;
 
 import java.util.List;
 

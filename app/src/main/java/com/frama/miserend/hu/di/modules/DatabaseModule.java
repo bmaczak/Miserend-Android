@@ -3,8 +3,9 @@ package com.frama.miserend.hu.di.modules;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 
-import com.frama.miserend.hu.database.MiserendDatabase;
-import com.frama.miserend.hu.database.manager.DatabaseManager;
+import com.frama.miserend.hu.database.local.LocalDatabase;
+import com.frama.miserend.hu.database.miserend.MiserendDatabase;
+import com.frama.miserend.hu.database.miserend.manager.DatabaseManager;
 import com.frama.miserend.hu.di.qualifiers.ApplicationContext;
 
 import javax.inject.Named;
@@ -34,8 +35,21 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
+    public LocalDatabase provideLocalDatabase(@ApplicationContext Context context, @Named("local database name") String databaseName) {
+        return Room.databaseBuilder(context, LocalDatabase.class, databaseName).build();
+    }
+
+    @Provides
+    @Singleton
     @Named("database name")
     String provideDatabaseName() {
         return "miserend.sqlite3";
+    }
+
+    @Provides
+    @Singleton
+    @Named("local database name")
+    String provideLocalDatabaseName() {
+        return "localdatabase.sqlite3";
     }
 }

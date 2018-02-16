@@ -1,10 +1,10 @@
-package com.frama.miserend.hu.database.relations;
+package com.frama.miserend.hu.database.miserend.relations;
 
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Relation;
 
-import com.frama.miserend.hu.database.entities.Church;
-import com.frama.miserend.hu.database.entities.Mass;
+import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.database.miserend.entities.Mass;
 
 import java.util.List;
 

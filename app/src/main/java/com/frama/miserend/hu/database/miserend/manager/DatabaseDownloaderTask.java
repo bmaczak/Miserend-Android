@@ -1,10 +1,8 @@
-package com.frama.miserend.hu.database.manager;
+package com.frama.miserend.hu.database.miserend.manager;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-
-import com.frama.miserend.hu.database.manager.DatabaseManager;
 
 import java.io.BufferedInputStream;
 import java.io.File;

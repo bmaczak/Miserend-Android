@@ -7,16 +7,12 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import com.frama.miserend.hu.database.MiserendDatabase;
-import com.frama.miserend.hu.database.entities.Church;
-import com.frama.miserend.hu.database.manager.DatabaseManager;
-import com.frama.miserend.hu.database.manager.DatabaseState;
-import com.frama.miserend.hu.home.HomeViewModel;
+import com.frama.miserend.hu.database.miserend.MiserendDatabase;
+import com.frama.miserend.hu.database.miserend.entities.Church;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 

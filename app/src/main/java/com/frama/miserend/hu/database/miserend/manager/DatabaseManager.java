@@ -1,8 +1,6 @@
-package com.frama.miserend.hu.database.manager;
+package com.frama.miserend.hu.database.miserend.manager;
 
 import android.content.Context;
-
-import com.frama.miserend.hu.home.HomeViewModel;
 
 import java.io.File;
 

@@ -1,4 +1,4 @@
-package com.frama.miserend.hu.database.manager;
+package com.frama.miserend.hu.database.miserend.manager;
 
 /**
  * Created by Balazs on 2018. 02. 12..

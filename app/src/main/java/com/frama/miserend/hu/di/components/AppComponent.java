@@ -4,8 +4,9 @@ import android.app.Application;
 import android.content.Context;
 
 import com.frama.miserend.hu.application.MiserendApplication;
-import com.frama.miserend.hu.database.MiserendDatabase;
-import com.frama.miserend.hu.database.manager.DatabaseManager;
+import com.frama.miserend.hu.database.local.LocalDatabase;
+import com.frama.miserend.hu.database.miserend.MiserendDatabase;
+import com.frama.miserend.hu.database.miserend.manager.DatabaseManager;
 import com.frama.miserend.hu.di.modules.ApplicationModule;
 import com.frama.miserend.hu.di.modules.DatabaseModule;
 import com.frama.miserend.hu.di.qualifiers.ApplicationContext;
@@ -30,6 +31,8 @@ public interface AppComponent {
     Context context();
 
     MiserendDatabase miserendDatabase();
+
+    LocalDatabase localDatabase();
 
     DatabaseManager databaseManager();
 

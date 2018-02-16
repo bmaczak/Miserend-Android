@@ -1,4 +1,4 @@
-package com.frama.miserend.hu.database.entities;
+package com.frama.miserend.hu.database.miserend.entities;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;

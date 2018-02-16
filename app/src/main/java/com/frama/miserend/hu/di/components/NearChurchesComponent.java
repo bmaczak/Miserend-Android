@@ -1,5 +1,6 @@
 package com.frama.miserend.hu.di.components;
 
+import com.frama.miserend.hu.di.modules.FavoritesModule;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
 import com.frama.miserend.hu.di.modules.LocationModule;
 import com.frama.miserend.hu.di.modules.NearChurchesModule;
@@ -11,7 +12,7 @@ import dagger.Component;
  * Created by Balazs on 2018. 02. 11..
  */
 @PerFragment
-@Component(dependencies = AppComponent.class, modules = {NearChurchesModule.class, LocationModule.class})
+@Component(dependencies = AppComponent.class, modules = {NearChurchesModule.class, LocationModule.class, FavoritesModule.class})
 public interface NearChurchesComponent {
 
     void inject(NearChurchesFragment fragment);
@@ -26,6 +27,7 @@ public interface NearChurchesComponent {
             listComponent = DaggerNearChurchesComponent.builder()
                     .appComponent(AppComponent.Injector.getComponent())
                     .nearChurchesModule(new NearChurchesModule(fragment))
+                    .favoritesModule(new FavoritesModule(fragment))
                     .locationModule(new LocationModule(fragment, fragment))
                     .build();
             listComponent.inject(fragment);

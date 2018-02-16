@@ -6,13 +6,20 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.frama.miserend.hu.R;
+import com.frama.miserend.hu.database.local.entities.Favorite;
+import com.frama.miserend.hu.database.miserend.entities.Church;
 import com.frama.miserend.hu.di.components.NearChurchesComponent;
+import com.frama.miserend.hu.home.pages.churches.ChurchViewHolder;
+import com.frama.miserend.hu.home.pages.churches.favorites.FavoritesViewModel;
 import com.frama.miserend.hu.location.LocationRetriever;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -23,13 +30,15 @@ import butterknife.ButterKnife;
  * Created by Balazs on 2018. 02. 10..
  */
 
-public class NearChurchesFragment extends Fragment implements LocationRetriever.LocationResultListener {
+public class NearChurchesFragment extends Fragment implements LocationRetriever.LocationResultListener, ChurchViewHolder.ChurchListActionListener {
 
     @BindView(R.id.recycle_view)
     RecyclerView recyclerView;
 
     @Inject
-    NearChurchesViewModel viewModel;
+    NearChurchesViewModel nearChurchesViewModel;
+    @Inject
+    FavoritesViewModel favoritesViewModel;
     @Inject
     LocationRetriever locationRetriever;
     @Inject
@@ -41,7 +50,12 @@ public class NearChurchesFragment extends Fragment implements LocationRetriever.
         NearChurchesComponent.Injector.inject(this);
         View v = inflater.inflate(R.layout.fragment_near_churches, container, false);
         ButterKnife.bind(this, v);
+        favoritesViewModel.getFavorites().observe(this, this::onFavoritesChanged);
         return v;
+    }
+
+    private void onFavoritesChanged(List<Favorite> favorites) {
+        //TODO update list
     }
 
     @Override
@@ -58,7 +72,7 @@ public class NearChurchesFragment extends Fragment implements LocationRetriever.
 
     @Override
     public void onLocationRetrieved(Location location) {
-        viewModel.getNearestChurches(location.getLatitude(), location.getLongitude()).observe(this, adapter::setList);
+        nearChurchesViewModel.getNearestChurches(location.getLatitude(), location.getLongitude()).observe(this, adapter::setList);
         adapter.setCurrentLocation(location);
         recyclerView.setAdapter(adapter);
     }
@@ -66,5 +80,15 @@ public class NearChurchesFragment extends Fragment implements LocationRetriever.
     @Override
     public void onLocationError() {
 
+    }
+
+    @Override
+    public void onChurchClicked(Church church) {
+        //TODO open church details
+    }
+
+    @Override
+    public void onFavoriteClicked(Church church) {
+        favoritesViewModel.toggleFavorite(church.getTid());
     }
 }

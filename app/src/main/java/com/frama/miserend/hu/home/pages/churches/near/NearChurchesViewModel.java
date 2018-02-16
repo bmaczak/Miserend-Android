@@ -9,8 +9,8 @@ import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
 import android.support.annotation.NonNull;
 
-import com.frama.miserend.hu.database.MiserendDatabase;
-import com.frama.miserend.hu.database.relations.ChurchWithMasses;
+import com.frama.miserend.hu.database.miserend.MiserendDatabase;
+import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 
 /**
  * Created by Balazs on 2018. 02. 10..

@@ -9,13 +9,14 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.frama.miserend.hu.R;
-import com.frama.miserend.hu.database.entities.Church;
-import com.frama.miserend.hu.database.entities.Mass;
-import com.frama.miserend.hu.database.relations.ChurchWithMasses;
+import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.database.miserend.entities.Mass;
+import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 import com.frama.miserend.hu.utils.DateUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Balazs on 2018. 02. 11..
@@ -35,10 +36,14 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
     SimpleDraweeView churchThumbnail;
 
     private int dayOfWeekToday;
+    private ChurchListActionListener churchListActionListener;
 
-    public ChurchViewHolder(View itemView, int dayOfWeekToday) {
+    private ChurchWithMasses churchWithMasses;
+
+    public ChurchViewHolder(View itemView, int dayOfWeekToday, ChurchListActionListener churchListActionListener) {
         super(itemView);
         this.dayOfWeekToday = dayOfWeekToday;
+        this.churchListActionListener = churchListActionListener;
         ButterKnife.bind(this, itemView);
     }
 
@@ -47,6 +52,7 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindTo(ChurchWithMasses churchWithMasses, Location currentLocation) {
+        this.churchWithMasses = churchWithMasses;
         churchName.setText(churchWithMasses.getChurch().getName());
         churchCommonName.setText(churchWithMasses.getChurch().getCommonName());
         churchThumbnail.setImageURI(churchWithMasses.getChurch().getImageUrl());
@@ -93,5 +99,16 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
         } else {
             return String.format("%.2f km", (distance / 1000));
         }
+    }
+
+    @OnClick(R.id.church_action_favorite)
+    void onFaviriteClicked() {
+        churchListActionListener.onFavoriteClicked(churchWithMasses.getChurch());
+    }
+
+    public interface ChurchListActionListener {
+        void onChurchClicked(Church church);
+
+        void onFavoriteClicked(Church church);
     }
 }
