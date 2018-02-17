@@ -2,7 +2,6 @@ package com.frama.miserend.hu.view;
 
 import android.content.Context;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 import android.view.View;

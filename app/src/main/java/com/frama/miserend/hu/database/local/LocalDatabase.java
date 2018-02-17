@@ -5,10 +5,6 @@ import android.arch.persistence.room.RoomDatabase;
 
 import com.frama.miserend.hu.database.local.dao.FavoritesDao;
 import com.frama.miserend.hu.database.local.entities.Favorite;
-import com.frama.miserend.hu.database.miserend.dao.ChurchDao;
-import com.frama.miserend.hu.database.miserend.dao.ChurchWithMassesDao;
-import com.frama.miserend.hu.database.miserend.entities.Church;
-import com.frama.miserend.hu.database.miserend.entities.Mass;
 
 /**
  * Created by Balazs on 2018. 02. 10..

@@ -1,10 +1,10 @@
 package com.frama.miserend.hu.di.components;
 
 import com.frama.miserend.hu.di.modules.FavoritesModule;
-import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
 import com.frama.miserend.hu.di.modules.LocationModule;
 import com.frama.miserend.hu.di.modules.NearChurchesModule;
 import com.frama.miserend.hu.di.scopes.PerFragment;
+import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
 
 import dagger.Component;
 

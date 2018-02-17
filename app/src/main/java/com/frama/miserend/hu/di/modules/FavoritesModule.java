@@ -2,7 +2,6 @@ package com.frama.miserend.hu.di.modules;
 
 import android.app.Application;
 import android.arch.lifecycle.ViewModelProviders;
-import android.support.v4.app.Fragment;
 
 import com.frama.miserend.hu.database.local.LocalDatabase;
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;

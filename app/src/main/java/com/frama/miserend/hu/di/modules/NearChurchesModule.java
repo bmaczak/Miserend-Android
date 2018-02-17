@@ -3,11 +3,11 @@ package com.frama.miserend.hu.di.modules;
 import android.app.Application;
 import android.arch.lifecycle.ViewModelProviders;
 
+import com.frama.miserend.hu.database.miserend.MiserendDatabase;
+import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesAdapter;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesViewModel;
-import com.frama.miserend.hu.database.miserend.MiserendDatabase;
-import com.frama.miserend.hu.di.scopes.PerFragment;
 
 import dagger.Module;
 import dagger.Provides;

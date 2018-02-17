@@ -7,11 +7,8 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
 import com.frama.miserend.hu.database.local.entities.Favorite;
-import com.frama.miserend.hu.database.miserend.entities.Church;
 
 import java.util.List;
-
-import io.reactivex.Flowable;
 
 /**
  * Created by Balazs on 2018. 02. 10..
