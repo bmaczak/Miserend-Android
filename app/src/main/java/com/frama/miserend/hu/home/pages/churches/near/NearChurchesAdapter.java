@@ -7,11 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.frama.miserend.hu.R;
+import com.frama.miserend.hu.database.local.entities.Favorite;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 import com.frama.miserend.hu.home.pages.churches.ChurchDiffCallback;
 import com.frama.miserend.hu.home.pages.churches.ChurchViewHolder;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Balazs on 2018. 02. 11..
@@ -22,12 +25,15 @@ public class NearChurchesAdapter extends PagedListAdapter<ChurchWithMasses, Chur
     private int dayOfWeekToday;
     private Location currentLocation;
 
+    private List<Integer> favorites;
+
     private ChurchViewHolder.ChurchListActionListener churchListActionListener;
 
     public NearChurchesAdapter(ChurchViewHolder.ChurchListActionListener churchListActionListener) {
         super(new ChurchDiffCallback());
         this.churchListActionListener = churchListActionListener;
         dayOfWeekToday = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        favorites = new ArrayList<>();
     }
 
     @Override
@@ -40,7 +46,7 @@ public class NearChurchesAdapter extends PagedListAdapter<ChurchWithMasses, Chur
     public void onBindViewHolder(ChurchViewHolder holder, int position) {
         ChurchWithMasses churchWithMasses = getItem(position);
         if (churchWithMasses != null) {
-            holder.bindTo(churchWithMasses, currentLocation);
+            holder.bindTo(churchWithMasses, currentLocation, favorites.contains(churchWithMasses.getChurch().getTid()));
         } else {
             holder.clear();
         }
@@ -48,5 +54,10 @@ public class NearChurchesAdapter extends PagedListAdapter<ChurchWithMasses, Chur
 
     public void setCurrentLocation(Location currentLocation) {
         this.currentLocation = currentLocation;
+    }
+
+    public void setFavorites(List<Integer> favorites) {
+        this.favorites = favorites;
+        notifyDataSetChanged();
     }
 }

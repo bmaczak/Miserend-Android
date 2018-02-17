@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.location.Location;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -34,6 +35,8 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
     TextView distanceText;
     @BindView(R.id.church_thumb)
     SimpleDraweeView churchThumbnail;
+    @BindView(R.id.church_action_favorite)
+    ImageView favoriteImage;
 
     private int dayOfWeekToday;
     private ChurchListActionListener churchListActionListener;
@@ -47,11 +50,11 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bindTo(ChurchWithMasses churchWithMasses) {
-        bindTo(churchWithMasses, null);
+    public void bindTo(ChurchWithMasses churchWithMasses, boolean isFavorite) {
+        bindTo(churchWithMasses, null, isFavorite);
     }
 
-    public void bindTo(ChurchWithMasses churchWithMasses, Location currentLocation) {
+    public void bindTo(ChurchWithMasses churchWithMasses, Location currentLocation, boolean isFavorite) {
         this.churchWithMasses = churchWithMasses;
         churchName.setText(churchWithMasses.getChurch().getName());
         churchCommonName.setText(churchWithMasses.getChurch().getCommonName());
@@ -63,6 +66,7 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
         } else {
             distanceText.setVisibility(View.GONE);
         }
+        favoriteImage.setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
     }
 
     public void clear() {

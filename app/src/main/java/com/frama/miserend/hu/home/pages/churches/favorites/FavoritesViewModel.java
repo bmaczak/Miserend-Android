@@ -29,14 +29,14 @@ public class FavoritesViewModel extends AndroidViewModel {
 
     private final LocalDatabase localDatabase;
 
-    private LiveData<List<Favorite>> favorites;
+    private LiveData<List<Integer>> favorites;
 
     public FavoritesViewModel(@NonNull Application application, LocalDatabase localDatabase) {
         super(application);
         this.localDatabase = localDatabase;
     }
 
-    public LiveData<List<Favorite>> getFavorites() {
+    public LiveData<List<Integer>> getFavorites() {
         if (favorites == null) {
             favorites = localDatabase.favoritesDao().getAll();
         }
@@ -44,7 +44,7 @@ public class FavoritesViewModel extends AndroidViewModel {
     }
 
     public void toggleFavorite(int churchId) {
-        if (favorites.getValue().contains(new Favorite(churchId))) {
+        if (favorites.getValue().contains(churchId)) {
             removeFavorite(churchId);
         } else {
             addFavorite(churchId);

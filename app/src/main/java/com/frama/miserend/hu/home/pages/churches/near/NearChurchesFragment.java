@@ -54,8 +54,8 @@ public class NearChurchesFragment extends Fragment implements LocationRetriever.
         return v;
     }
 
-    private void onFavoritesChanged(List<Favorite> favorites) {
-        //TODO update list
+    private void onFavoritesChanged(List<Integer> favorites) {
+        adapter.setFavorites(favorites);
     }
 
     @Override

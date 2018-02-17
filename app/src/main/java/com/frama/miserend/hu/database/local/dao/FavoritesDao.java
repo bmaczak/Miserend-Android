@@ -20,8 +20,8 @@ import io.reactivex.Flowable;
 @Dao
 public interface FavoritesDao {
 
-    @Query("SELECT * FROM favorites")
-    LiveData<List<Favorite>> getAll();
+    @Query("SELECT tid FROM favorites")
+    LiveData<List<Integer>> getAll();
 
     @Insert
     void insert(Favorite favorite);
