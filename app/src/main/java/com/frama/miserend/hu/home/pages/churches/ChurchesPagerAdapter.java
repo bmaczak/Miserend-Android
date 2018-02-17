@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.frama.miserend.hu.home.pages.churches.favorites.FavoriteChurchesFragment;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class ChurchesPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
         fragments = new ArrayList<>();
         fragments.add(new NearChurchesFragment());
-        fragments.add(new NearChurchesFragment());
+        fragments.add(new FavoriteChurchesFragment());
     }
 
     @Override

@@ -4,18 +4,15 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.frama.miserend.hu.R;
-import com.frama.miserend.hu.database.local.entities.Favorite;
 import com.frama.miserend.hu.database.miserend.entities.Church;
 import com.frama.miserend.hu.di.components.NearChurchesComponent;
-import com.frama.miserend.hu.home.pages.churches.ChurchViewHolder;
+import com.frama.miserend.hu.home.pages.churches.ChurchListFragment;
 import com.frama.miserend.hu.home.pages.churches.favorites.FavoritesViewModel;
 import com.frama.miserend.hu.location.LocationRetriever;
 
@@ -30,7 +27,7 @@ import butterknife.ButterKnife;
  * Created by Balazs on 2018. 02. 10..
  */
 
-public class NearChurchesFragment extends Fragment implements LocationRetriever.LocationResultListener, ChurchViewHolder.ChurchListActionListener {
+public class NearChurchesFragment extends ChurchListFragment implements LocationRetriever.LocationResultListener {
 
     @BindView(R.id.recycle_view)
     RecyclerView recyclerView;
