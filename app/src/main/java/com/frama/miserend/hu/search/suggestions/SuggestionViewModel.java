@@ -13,7 +13,11 @@ import com.frama.miserend.hu.database.miserend.entities.Church;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -37,16 +41,36 @@ public class SuggestionViewModel extends AndroidViewModel {
     }
 
     public void updateSuggestions(String searchTerm) {
-        miserendDatabase.churchDao().getBySearchTerm(searchTerm)
+        Flowable.zip(getChurchSuggestions(searchTerm), getCitySuggestions(searchTerm),
+                (suggestions, suggestions2) -> {
+                    suggestions.addAll(suggestions2);
+                    return suggestions;
+                })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(suggestionResult -> suggestions.setValue(suggestionResult));
+    }
+
+    private Flowable<List<Suggestion>> getChurchSuggestions(String searchTerm) {
+        return miserendDatabase.churchDao().getByName(searchTerm)
                 .map(churches -> {
                     List<Suggestion> names = new ArrayList<>();
                     for (Church church : churches) {
                         names.add(new CitySuggestion(church.getName()));
                     }
                     return names;
-                }).subscribe(names -> suggestions.setValue(names));
+                });
+    }
+
+    private Flowable<List<Suggestion>> getCitySuggestions(String searchTerm) {
+        return miserendDatabase.churchDao().getCities(searchTerm)
+                .map(cities -> {
+                    List<Suggestion> names = new ArrayList<>();
+                    for (String city : cities) {
+                        names.add(new CitySuggestion(city));
+                    }
+                    return names;
+                });
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
