@@ -9,15 +9,14 @@ import android.support.annotation.NonNull;
 
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.search.suggestions.church.ChurchSuggestion;
+import com.frama.miserend.hu.search.suggestions.city.CitySuggestion;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.BiFunction;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -56,7 +55,7 @@ public class SuggestionViewModel extends AndroidViewModel {
                 .map(churches -> {
                     List<Suggestion> names = new ArrayList<>();
                     for (Church church : churches) {
-                        names.add(new CitySuggestion(church.getName()));
+                        names.add(new ChurchSuggestion(church));
                     }
                     return names;
                 });

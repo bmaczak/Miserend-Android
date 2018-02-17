@@ -1,4 +1,6 @@
-package com.frama.miserend.hu.search.suggestions;
+package com.frama.miserend.hu.search.suggestions.city;
+
+import com.frama.miserend.hu.search.suggestions.Suggestion;
 
 /**
  * Created by maczak on 2018. 02. 15..
