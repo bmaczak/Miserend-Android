@@ -110,6 +110,11 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
         churchListActionListener.onFavoriteClicked(church);
     }
 
+    @OnClick(R.id.church_card)
+    void onChurcClicked() {
+        churchListActionListener.onChurchClicked(church);
+    }
+
     public interface ChurchListActionListener {
         void onChurchClicked(Church church);
 
