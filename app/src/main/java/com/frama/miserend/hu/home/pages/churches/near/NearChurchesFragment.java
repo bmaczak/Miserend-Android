@@ -22,7 +22,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.android.support.AndroidSupportInjection;
 
 /**
  * Created by Balazs on 2018. 02. 10..
@@ -83,7 +82,7 @@ public class NearChurchesFragment extends ChurchListFragment implements Location
 
     @Override
     public void onChurchClicked(Church church) {
-        router.showChurcDetails(church);
+        router.showChurchDetails(church);
     }
 
     @Override

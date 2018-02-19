@@ -22,4 +22,7 @@ public interface ChurchWithMassesDao {
     @Query("SELECT * FROM templomok WHERE tid IN (:churchIds)")
     LiveData<List<ChurchWithMasses>> getChurchesById(List<Integer> churchIds);
 
+    @Query("SELECT * FROM templomok WHERE tid = :churchId LIMIT 1")
+    LiveData<ChurchWithMasses> getChurchById(int churchId);
+
 }

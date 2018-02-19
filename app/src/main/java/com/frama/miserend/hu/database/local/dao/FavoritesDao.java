@@ -20,6 +20,9 @@ public interface FavoritesDao {
     @Query("SELECT tid FROM favorites")
     LiveData<List<Integer>> getAll();
 
+    @Query("SELECT COUNT(*) FROM favorites WHERE tid = :churchId")
+    LiveData<Integer> getCountById(int churchId);
+
     @Insert
     void insert(Favorite favorite);
 

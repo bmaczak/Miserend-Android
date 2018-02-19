@@ -1,5 +1,7 @@
 package com.frama.miserend.hu.di.modules.builder;
 
+import com.frama.miserend.hu.churchdetails.ChurchDetailsActivity;
+import com.frama.miserend.hu.di.modules.ChurchDetailsModule;
 import com.frama.miserend.hu.di.modules.HomeScreenModule;
 import com.frama.miserend.hu.di.modules.RouterModule;
 import com.frama.miserend.hu.di.scopes.PerActivity;
@@ -18,5 +20,9 @@ public abstract class ActivityBuilder {
     @PerActivity
     @ContributesAndroidInjector(modules = {HomeScreenModule.class, FragmentBuilder.class, RouterModule.class})
     abstract HomeScreenActivity bindHomeScreenActivity();
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = {ChurchDetailsModule.class, FragmentBuilder.class, RouterModule.class})
+    abstract ChurchDetailsActivity bindChurchDetailsActivity();
 
 }

@@ -12,14 +12,19 @@ import com.frama.miserend.hu.database.miserend.entities.Church;
 
 public class Router {
 
+    public static class IntentExtra {
+        public static String CHURCH_ID = "church_id";
+    }
+
     private Activity activity;
 
     public Router(Activity activity) {
         this.activity = activity;
     }
 
-    public void showChurcDetails(Church church) {
+    public void showChurchDetails(Church church) {
         Intent churchDetailsIntent = new Intent(activity, ChurchDetailsActivity.class);
+        churchDetailsIntent.putExtra(IntentExtra.CHURCH_ID, church.getTid());
         activity.startActivity(churchDetailsIntent);
     }
 }
