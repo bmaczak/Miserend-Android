@@ -20,7 +20,6 @@ import dagger.Provides;
 @Module
 public class DatabaseModule {
 
-
     @Provides
     @Singleton
     DatabaseManager provideDatabaseManager(@ApplicationContext Context context) {

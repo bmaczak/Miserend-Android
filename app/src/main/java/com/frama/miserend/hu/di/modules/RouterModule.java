@@ -1,11 +1,8 @@
 package com.frama.miserend.hu.di.modules;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 
 import com.frama.miserend.hu.di.scopes.PerActivity;
-import com.frama.miserend.hu.di.scopes.PerFragment;
-import com.frama.miserend.hu.location.LocationRetriever;
 import com.frama.miserend.hu.router.Router;
 
 import dagger.Module;
@@ -17,15 +14,9 @@ import dagger.Provides;
 @Module
 public class RouterModule {
 
-    private Activity activity;
-
-    public RouterModule(Activity activity) {
-        this.activity = activity;
-    }
-
     @Provides
     @PerActivity
-    Router provideRouter() {
+    Router provideRouter(Activity activity) {
         return new Router(activity);
     }
 }

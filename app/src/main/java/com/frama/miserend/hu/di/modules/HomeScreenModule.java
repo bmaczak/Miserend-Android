@@ -1,10 +1,13 @@
 package com.frama.miserend.hu.di.modules;
 
+import android.app.Activity;
 import android.app.Application;
 import android.arch.lifecycle.ViewModelProviders;
 
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseManager;
+import com.frama.miserend.hu.di.components.FavoriteChurchesFragmentComponent;
+import com.frama.miserend.hu.di.components.NearChurchesFragmentComponent;
 import com.frama.miserend.hu.di.scopes.PerActivity;
 import com.frama.miserend.hu.home.HomeScreenActivity;
 import com.frama.miserend.hu.home.HomeViewModel;
@@ -16,19 +19,20 @@ import dagger.Provides;
 /**
  * Created by Balazs on 2018. 02. 11..
  */
-@Module
+@Module(subcomponents = {
+        NearChurchesFragmentComponent.class, FavoriteChurchesFragmentComponent.class})
 public class HomeScreenModule {
 
-    private HomeScreenActivity activity;
-
-    public HomeScreenModule(HomeScreenActivity activity) {
-        this.activity = activity;
+    @PerActivity
+    @Provides
+    Activity provideActivity(HomeScreenActivity homeScreenActivity) {
+        return homeScreenActivity;
     }
 
     @PerActivity
     @Provides
-    HomeViewModel provideHomeViewModel(HomeViewModel.Factory factory) {
-        return ViewModelProviders.of(activity, factory)
+    HomeViewModel provideHomeViewModel(HomeScreenActivity homeScreenActivity, HomeViewModel.Factory factory) {
+        return ViewModelProviders.of(homeScreenActivity, factory)
                 .get(HomeViewModel.class);
     }
 
@@ -40,8 +44,8 @@ public class HomeScreenModule {
 
     @PerActivity
     @Provides
-    SuggestionViewModel provideSuggestionViewModel(SuggestionViewModel.Factory factory) {
-        return ViewModelProviders.of(activity, factory)
+    SuggestionViewModel provideSuggestionViewModel(HomeScreenActivity homeScreenActivity, SuggestionViewModel.Factory factory) {
+        return ViewModelProviders.of(homeScreenActivity, factory)
                 .get(SuggestionViewModel.class);
     }
 

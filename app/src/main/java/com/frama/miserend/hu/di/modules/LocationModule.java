@@ -14,17 +14,9 @@ import dagger.Provides;
 @Module
 public class LocationModule {
 
-    private Fragment fragment;
-    private LocationRetriever.LocationResultListener locationResultListener;
-
-    public LocationModule(Fragment fragment, LocationRetriever.LocationResultListener locationResultListener) {
-        this.fragment = fragment;
-        this.locationResultListener = locationResultListener;
-    }
-
     @Provides
     @PerFragment
-    LocationRetriever provideLocationRetriever() {
+    LocationRetriever provideLocationRetriever(Fragment fragment, LocationRetriever.LocationResultListener locationResultListener) {
         return new LocationRetriever(fragment, locationResultListener);
     }
 }

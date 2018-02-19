@@ -11,7 +11,6 @@ import android.view.View;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseState;
-import com.frama.miserend.hu.di.components.HomeScreenComponent;
 import com.frama.miserend.hu.home.pages.churches.ChurchesFragment;
 import com.frama.miserend.hu.home.pages.map.ChurchesMapFragment;
 import com.frama.miserend.hu.home.pages.masses.MassesFragment;
@@ -25,17 +24,23 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 
 /**
  * Created by Balazs on 2018. 02. 10..
  */
 
-public class HomeScreenActivity extends AppCompatActivity {
+public class HomeScreenActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
     @Inject
     HomeViewModel viewModel;
     @Inject
     SuggestionViewModel suggestionViewModel;
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
     @BindView(R.id.search_bar)
     CustomSearchBar searchBar;
@@ -46,8 +51,8 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        HomeScreenComponent.Injector.inject(this);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         viewModel.getDatabaseState().observe(this, this::onDatabaseStateChanged);
@@ -100,5 +105,10 @@ public class HomeScreenActivity extends AppCompatActivity {
             default:
                 return false;
         }
+    }
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return fragmentDispatchingAndroidInjector;
     }
 }

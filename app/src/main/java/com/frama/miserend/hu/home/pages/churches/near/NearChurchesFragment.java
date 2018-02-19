@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.entities.Church;
-import com.frama.miserend.hu.di.components.NearChurchesComponent;
 import com.frama.miserend.hu.home.pages.churches.ChurchListFragment;
 import com.frama.miserend.hu.home.pages.churches.favorites.FavoritesViewModel;
 import com.frama.miserend.hu.location.LocationRetriever;
+import com.frama.miserend.hu.router.Router;
 
 import java.util.List;
 
@@ -22,6 +22,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.support.AndroidSupportInjection;
 
 /**
  * Created by Balazs on 2018. 02. 10..
@@ -40,11 +41,13 @@ public class NearChurchesFragment extends ChurchListFragment implements Location
     LocationRetriever locationRetriever;
     @Inject
     NearChurchesAdapter adapter;
+    @Inject
+    Router router;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        NearChurchesComponent.Injector.inject(this);
+        AndroidSupportInjection.inject(this);
         View v = inflater.inflate(R.layout.fragment_near_churches, container, false);
         ButterKnife.bind(this, v);
         favoritesViewModel.getFavorites().observe(this, this::onFavoritesChanged);
@@ -81,7 +84,7 @@ public class NearChurchesFragment extends ChurchListFragment implements Location
 
     @Override
     public void onChurchClicked(Church church) {
-        //TODO open church details
+        router.showChurcDetails(church);
     }
 
     @Override

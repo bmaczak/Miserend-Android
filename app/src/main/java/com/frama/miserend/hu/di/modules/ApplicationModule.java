@@ -3,7 +3,7 @@ package com.frama.miserend.hu.di.modules;
 import android.app.Application;
 import android.content.Context;
 
-import com.frama.miserend.hu.application.MiserendApplication;
+import com.frama.miserend.hu.di.components.HomeScreenActivityComponent;
 import com.frama.miserend.hu.di.qualifiers.ApplicationContext;
 
 import javax.inject.Singleton;
@@ -14,25 +14,15 @@ import dagger.Provides;
 /**
  * Created by Balazs on 2018. 02. 11..
  */
-@Module
+@Module(subcomponents = {
+        HomeScreenActivityComponent.class})
 public class ApplicationModule {
 
-    private final MiserendApplication application;
-
-    public ApplicationModule(MiserendApplication application) {
-        this.application = application;
-    }
 
     @Provides
     @Singleton
     @ApplicationContext
-    Context provideApplicationContext() {
+    Context provideApplicationContext(Application application) {
         return application.getApplicationContext();
-    }
-
-    @Provides
-    @Singleton
-    Application provideApplication() {
-        return application;
     }
 }
