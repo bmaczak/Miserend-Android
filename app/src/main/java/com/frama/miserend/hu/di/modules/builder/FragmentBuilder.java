@@ -7,6 +7,7 @@ import com.frama.miserend.hu.di.modules.NearChurchesFragmentModule;
 import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.home.pages.churches.favorites.FavoriteChurchesFragment;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
+import com.frama.miserend.hu.home.pages.masses.MassesFragment;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -26,4 +27,7 @@ public abstract class FragmentBuilder {
     @ContributesAndroidInjector(modules = {FavoritesModule.class, FavoritesFragmentModule.class})
     abstract FavoriteChurchesFragment bindFavoriteChurchesFragment();
 
+    @PerFragment
+    @ContributesAndroidInjector
+    abstract MassesFragment bindMassesFragment();
 }

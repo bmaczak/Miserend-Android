@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.frama.miserend.hu.R;
+import com.frama.miserend.hu.base.BaseActivity;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseState;
 import com.frama.miserend.hu.home.pages.churches.ChurchesFragment;
 import com.frama.miserend.hu.home.pages.map.ChurchesMapFragment;
@@ -33,14 +34,12 @@ import dagger.android.support.HasSupportFragmentInjector;
  * Created by Balazs on 2018. 02. 10..
  */
 
-public class HomeScreenActivity extends AppCompatActivity implements HasSupportFragmentInjector {
+public class HomeScreenActivity extends BaseActivity {
 
     @Inject
     HomeViewModel viewModel;
     @Inject
     SuggestionViewModel suggestionViewModel;
-    @Inject
-    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
     @BindView(R.id.search_bar)
     CustomSearchBar searchBar;
@@ -51,7 +50,6 @@ public class HomeScreenActivity extends AppCompatActivity implements HasSupportF
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
@@ -105,10 +103,5 @@ public class HomeScreenActivity extends AppCompatActivity implements HasSupportF
             default:
                 return false;
         }
-    }
-
-    @Override
-    public AndroidInjector<Fragment> supportFragmentInjector() {
-        return fragmentDispatchingAndroidInjector;
     }
 }

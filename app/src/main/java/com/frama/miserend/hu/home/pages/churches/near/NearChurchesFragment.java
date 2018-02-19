@@ -47,7 +47,6 @@ public class NearChurchesFragment extends ChurchListFragment implements Location
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        AndroidSupportInjection.inject(this);
         View v = inflater.inflate(R.layout.fragment_near_churches, container, false);
         ButterKnife.bind(this, v);
         favoritesViewModel.getFavorites().observe(this, this::onFavoritesChanged);

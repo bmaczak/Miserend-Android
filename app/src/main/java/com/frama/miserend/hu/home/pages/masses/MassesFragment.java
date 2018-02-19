@@ -8,12 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.frama.miserend.hu.R;
+import com.frama.miserend.hu.base.BaseFragment;
 
 /**
  * Created by Balazs on 2018. 02. 13..
  */
 
-public class MassesFragment extends Fragment {
+public class MassesFragment extends BaseFragment {
 
     @Nullable
     @Override
