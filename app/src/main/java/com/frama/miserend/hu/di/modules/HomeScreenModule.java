@@ -6,8 +6,6 @@ import android.arch.lifecycle.ViewModelProviders;
 
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseManager;
-import com.frama.miserend.hu.di.components.FavoriteChurchesFragmentComponent;
-import com.frama.miserend.hu.di.components.NearChurchesFragmentComponent;
 import com.frama.miserend.hu.di.scopes.PerActivity;
 import com.frama.miserend.hu.home.HomeScreenActivity;
 import com.frama.miserend.hu.home.HomeViewModel;
@@ -19,8 +17,7 @@ import dagger.Provides;
 /**
  * Created by Balazs on 2018. 02. 11..
  */
-@Module(subcomponents = {
-        NearChurchesFragmentComponent.class, FavoriteChurchesFragmentComponent.class})
+@Module
 public class HomeScreenModule {
 
     @PerActivity

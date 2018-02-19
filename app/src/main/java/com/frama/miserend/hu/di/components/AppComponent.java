@@ -3,7 +3,7 @@ package com.frama.miserend.hu.di.components;
 import android.app.Application;
 
 import com.frama.miserend.hu.application.MiserendApplication;
-import com.frama.miserend.hu.di.modules.ActivityBuilder;
+import com.frama.miserend.hu.di.modules.builder.ActivityBuilder;
 import com.frama.miserend.hu.di.modules.ApplicationModule;
 import com.frama.miserend.hu.di.modules.DatabaseModule;
 

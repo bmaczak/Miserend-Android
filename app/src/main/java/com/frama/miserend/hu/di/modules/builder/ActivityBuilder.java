@@ -1,0 +1,22 @@
+package com.frama.miserend.hu.di.modules.builder;
+
+import com.frama.miserend.hu.di.modules.HomeScreenModule;
+import com.frama.miserend.hu.di.modules.RouterModule;
+import com.frama.miserend.hu.di.scopes.PerActivity;
+import com.frama.miserend.hu.home.HomeScreenActivity;
+
+import dagger.Module;
+import dagger.android.ContributesAndroidInjector;
+
+/**
+ * Created by Balazs on 2018. 02. 18..
+ */
+
+@Module
+public abstract class ActivityBuilder {
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = {HomeScreenModule.class, FragmentBuilder.class, RouterModule.class})
+    abstract HomeScreenActivity bindHomeScreenActivity();
+
+}
