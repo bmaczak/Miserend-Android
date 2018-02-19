@@ -48,10 +48,6 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bindTo(Church church, List<Mass> masses) {
-        bindTo(church, masses, false);
-    }
-
     public void bindTo(Church church, List<Mass> masses, boolean isFavorite) {
         bindTo(church, masses, null, isFavorite);
     }

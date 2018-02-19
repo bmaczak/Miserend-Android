@@ -41,7 +41,7 @@ public class FavoriteChurchesAdapter extends RecyclerView.Adapter<ChurchViewHold
     public void onBindViewHolder(ChurchViewHolder holder, int position) {
         ChurchWithMasses churchWithMasses = churches.get(position);
         if (churchWithMasses != null) {
-            holder.bindTo(churchWithMasses.getChurch(), MassFilter.filterForDay(churchWithMasses.getMasses(), Calendar.getInstance()));
+            holder.bindTo(churchWithMasses.getChurch(), MassFilter.filterForDay(churchWithMasses.getMasses(), Calendar.getInstance()), true);
         } else {
             holder.clear();
         }
