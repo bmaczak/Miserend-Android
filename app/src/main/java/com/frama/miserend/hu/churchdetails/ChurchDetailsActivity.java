@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.frama.miserend.hu.R;
@@ -28,6 +28,8 @@ public class ChurchDetailsActivity extends BaseActivity {
     Toolbar toolbar;
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
+    @BindView(R.id.church_name)
+    TextView churchName;
 
     @Inject
     ChurchDetailsViewModel churchDetailsViewModel;
@@ -40,11 +42,12 @@ public class ChurchDetailsActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("");
         churchDetailsViewModel.getChurchWithMasses().observe(this, this::onChurchDetailsLoaded);
     }
 
     private void onChurchDetailsLoaded(ChurchWithMasses churchWithMasses) {
         headerImage.setImageURI(churchWithMasses.getChurch().getImageUrl());
-        collapsingToolbarLayout.setTitle(churchWithMasses.getChurch().getName());
+        churchName.setText(churchWithMasses.getChurch().getName());
     }
 }
