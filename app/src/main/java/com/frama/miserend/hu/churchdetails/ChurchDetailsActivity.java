@@ -3,6 +3,7 @@ package com.frama.miserend.hu.churchdetails;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
@@ -11,8 +12,13 @@ import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.base.BaseActivity;
 import com.frama.miserend.hu.database.miserend.entities.Church;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
+import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.map.StaticMapHelper;
 import com.frama.miserend.hu.utils.ViewUtils;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -41,6 +47,8 @@ public class ChurchDetailsActivity extends BaseActivity {
     TextView churchAddress;
     @BindView(R.id.church_getting_there)
     TextView churchGettingThere;
+    @BindView(R.id.masses_recycler_view)
+    RecyclerView massesRecyclerView;
 
     @Inject
     ChurchDetailsViewModel churchDetailsViewModel;
@@ -65,5 +73,17 @@ public class ChurchDetailsActivity extends BaseActivity {
         staticMap.setImageURI(StaticMapHelper.getSaticMapUrl(this, churchWithMasses.getChurch().getLat(), churchWithMasses.getChurch().getLon(), staticMap.getWidth(), staticMap.getHeight()));
         ViewUtils.setTextOrHide(churchAddress, church.getAddress());
         ViewUtils.setTextOrHide(churchGettingThere, church.getGettingThere());
+        displayMasses(churchWithMasses);
+    }
+
+    private void displayMasses(ChurchWithMasses churchWithMasses) {
+        List<DayOfMasses> dayOfMassesList = new ArrayList<>();
+        for (int i = 0; i < 20; ++i) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_MONTH, i);
+            DayOfMasses dayOfMasses = new DayOfMasses(calendar, MassFilter.filterForDay(churchWithMasses.getMasses(), calendar));
+            dayOfMassesList.add(dayOfMasses);
+        }
+        massesRecyclerView.setAdapter(new MassAdapter(dayOfMassesList));
     }
 }
