@@ -127,15 +127,15 @@
                         android:id="@+id/church_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:textSize="18sp" />
+                        android:padding="16dp"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/church_getting_there"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:textSize="18sp" />
+                        android:padding="16dp"
+                        android:textSize="14sp" />
 
                     <View
                         android:layout_width="match_parent"
@@ -146,7 +146,8 @@
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ÚTVONAL" />
+                        android:text="@string/action_navigate"
+                        android:textColor="@color/colorAccent" />
                 </LinearLayout>
 
 

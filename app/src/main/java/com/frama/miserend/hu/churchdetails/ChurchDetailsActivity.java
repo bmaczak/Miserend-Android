@@ -9,8 +9,10 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.base.BaseActivity;
+import com.frama.miserend.hu.database.miserend.entities.Church;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 import com.frama.miserend.hu.map.StaticMapHelper;
+import com.frama.miserend.hu.utils.ViewUtils;
 
 import javax.inject.Inject;
 
@@ -56,11 +58,12 @@ public class ChurchDetailsActivity extends BaseActivity {
     }
 
     private void onChurchDetailsLoaded(ChurchWithMasses churchWithMasses) {
+        Church church = churchWithMasses.getChurch();
         headerImage.setImageURI(churchWithMasses.getChurch().getImageUrl());
-        churchName.setText(churchWithMasses.getChurch().getName());
-        churchCommonName.setText(churchWithMasses.getChurch().getCommonName());
+        ViewUtils.setTextOrHide(churchName, church.getName());
+        ViewUtils.setTextOrHide(churchCommonName, church.getCommonName());
         staticMap.setImageURI(StaticMapHelper.getSaticMapUrl(this, churchWithMasses.getChurch().getLat(), churchWithMasses.getChurch().getLon(), staticMap.getWidth(), staticMap.getHeight()));
-        churchAddress.setText(churchWithMasses.getChurch().getAddress());
-        churchGettingThere.setText(churchWithMasses.getChurch().getGettingThere());
+        ViewUtils.setTextOrHide(churchAddress, church.getAddress());
+        ViewUtils.setTextOrHide(churchGettingThere, church.getGettingThere());
     }
 }

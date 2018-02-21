@@ -2,6 +2,8 @@ package com.frama.miserend.hu.utils;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.view.View;
+import android.widget.TextView;
 
 import com.frama.miserend.hu.R;
 
@@ -17,5 +19,13 @@ public class ViewUtils {
         styledAttributes.recycle();
 
         return toolbarHeight;
+    }
+
+    public static void setTextOrHide(TextView textView, String text) {
+        if (text != null && text.length() > 0) {
+            textView.setText(text);
+        } else {
+            textView.setVisibility(View.GONE);
+        }
     }
 }
