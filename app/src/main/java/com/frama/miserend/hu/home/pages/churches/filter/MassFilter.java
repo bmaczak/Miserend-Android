@@ -1,6 +1,7 @@
 package com.frama.miserend.hu.home.pages.churches.filter;
 
 import com.frama.miserend.hu.database.miserend.entities.Mass;
+import com.frama.miserend.hu.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,7 +24,7 @@ public class MassFilter {
     }
 
     private static boolean dayCorrect(Mass mass, Calendar day) {
-        return mass.getDay() == (day.get(Calendar.DAY_OF_WEEK) + 5) % 7 + 1 || mass.getDay() == 0;
+        return mass.getDay() == DateUtils.convertCalendarDayToMassDay(day.get(Calendar.DAY_OF_WEEK)) || mass.getDay() == 0;
     }
 
     private static boolean dateRangeCorrect(Mass mass, Calendar day) {

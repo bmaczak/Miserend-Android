@@ -1,6 +1,7 @@
 package com.frama.miserend.hu.utils;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 import com.frama.miserend.hu.R;
 
@@ -22,21 +23,16 @@ public class DateUtils {
                 Calendar.DAY_OF_WEEK) + 1);
     }
 
-    public static String getNameOfDay(Context context, int massDay) {
+    public static String getNameOfDay(Resources resources, int massDay) {
         int today = DateUtils.getTodayInMassDay();
         int tomorrow = DateUtils.getTomorrowInMassDay();
         if (massDay == today) {
-            return context.getResources().getString(R.string.today);
+            return resources.getString(R.string.today);
         } else if (massDay == tomorrow) {
-            return context.getResources().getString(R.string.tomorrow);
+            return resources.getString(R.string.tomorrow);
         } else {
-            return context.getResources().getStringArray(
+            return resources.getStringArray(
                     R.array.days_of_week)[massDay - 1];
         }
-
-    }
-
-    public static int getSundayInMassDay() {
-        return 7;
     }
 }
