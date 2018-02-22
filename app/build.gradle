@@ -57,5 +57,9 @@ dependencies {
     //Fresco
     implementation 'com.facebook.fresco:fresco:1.8.1'
 
+    //Search bar
     implementation 'com.github.mancj:MaterialSearchBar:0.7.5'
+
+    //Testing
+    testCompile 'junit:junit:4.12'
 }
