@@ -70,6 +70,17 @@
                 android:textColor="@color/black_40"
                 android:textSize="14sp" />
 
+            <TextView
+                android:id="@+id/no_masses_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/no_mass_for_church"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/masses_recycler_view"
                 android:layout_width="match_parent"

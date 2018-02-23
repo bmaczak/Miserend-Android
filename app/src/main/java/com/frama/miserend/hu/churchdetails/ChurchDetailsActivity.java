@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -47,6 +48,8 @@ public class ChurchDetailsActivity extends BaseActivity {
     TextView churchAddress;
     @BindView(R.id.church_getting_there)
     TextView churchGettingThere;
+    @BindView(R.id.no_masses_text)
+    TextView noMassesText;
     @BindView(R.id.masses_recycler_view)
     RecyclerView massesRecyclerView;
 
@@ -77,13 +80,18 @@ public class ChurchDetailsActivity extends BaseActivity {
     }
 
     private void displayMasses(ChurchWithMasses churchWithMasses) {
-        List<DayOfMasses> dayOfMassesList = new ArrayList<>();
-        for (int i = 0; i < 20; ++i) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DAY_OF_MONTH, i);
-            DayOfMasses dayOfMasses = new DayOfMasses(calendar, MassFilter.filterForDay(churchWithMasses.getMasses(), calendar));
-            dayOfMassesList.add(dayOfMasses);
+        if (!churchWithMasses.getMasses().isEmpty()) {
+            List<DayOfMasses> dayOfMassesList = new ArrayList<>();
+            for (int i = 0; i < 20; ++i) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DAY_OF_MONTH, i);
+                DayOfMasses dayOfMasses = new DayOfMasses(calendar, MassFilter.filterForDay(churchWithMasses.getMasses(), calendar));
+                dayOfMassesList.add(dayOfMasses);
+            }
+            massesRecyclerView.setAdapter(new MassAdapter(dayOfMassesList));
+        } else {
+            massesRecyclerView.setVisibility(View.GONE);
+            noMassesText.setVisibility(View.VISIBLE);
         }
-        massesRecyclerView.setAdapter(new MassAdapter(dayOfMassesList));
     }
 }
