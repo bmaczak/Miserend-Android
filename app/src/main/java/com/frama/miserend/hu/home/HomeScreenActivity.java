@@ -15,9 +15,11 @@ import com.frama.miserend.hu.database.miserend.manager.DatabaseState;
 import com.frama.miserend.hu.home.pages.churches.ChurchesFragment;
 import com.frama.miserend.hu.home.pages.map.ChurchesMapFragment;
 import com.frama.miserend.hu.home.pages.masses.MassesFragment;
+import com.frama.miserend.hu.router.Router;
 import com.frama.miserend.hu.search.searchbar.CustomSearchBar;
 import com.frama.miserend.hu.search.suggestions.Suggestion;
 import com.frama.miserend.hu.search.suggestions.SuggestionViewModel;
+import com.frama.miserend.hu.search.suggestions.church.ChurchSuggestion;
 
 import java.util.List;
 
@@ -40,6 +42,8 @@ public class HomeScreenActivity extends BaseActivity {
     HomeViewModel viewModel;
     @Inject
     SuggestionViewModel suggestionViewModel;
+    @Inject
+    Router router;
 
     @BindView(R.id.search_bar)
     CustomSearchBar searchBar;
@@ -66,6 +70,13 @@ public class HomeScreenActivity extends BaseActivity {
             @Override
             public void onSearchStateChanged(boolean enabled) {
                 searchFader.setVisibility(enabled ? View.VISIBLE : View.GONE);
+            }
+
+            @Override
+            public void onSuggestionSelected(Suggestion suggestion) {
+                if (suggestion instanceof ChurchSuggestion) {
+                    router.showChurchDetails(((ChurchSuggestion) suggestion).getData());
+                }
             }
         });
     }

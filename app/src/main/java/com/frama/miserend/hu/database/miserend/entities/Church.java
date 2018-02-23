@@ -4,11 +4,13 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.io.Serializable;
+
 /**
  * Created by Balazs on 2018. 02. 10..
  */
 @Entity(tableName = "templomok")
-public class Church {
+public class Church implements Serializable {
 
     @PrimaryKey
     private int tid;

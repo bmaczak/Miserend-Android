@@ -5,12 +5,18 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 
 import com.frama.miserend.hu.search.suggestions.CustomSuggestionAdapter;
+import com.frama.miserend.hu.search.suggestions.Suggestion;
 import com.mancj.materialsearchbar.MaterialSearchBar;
+import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
+
+import java.util.Locale;
 
 /**
  * Created by Balazs on 2018. 02. 16..
@@ -75,7 +81,8 @@ public class CustomSearchBar extends MaterialSearchBar {
             }
         });
 
-        setCustomSuggestionAdapter(new CustomSuggestionAdapter(LayoutInflater.from(getContext())));
+        setCustomSuggestionAdapter(new CustomSuggestionAdapter(LayoutInflater.from(getContext()), searchBarCallback));
+
         RecyclerView suggestionsRecyclerView = findViewById(com.mancj.materialsearchbar.R.id.mt_recycler);
         suggestionsRecyclerView.setNestedScrollingEnabled(false);
         suggestionsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -100,5 +107,7 @@ public class CustomSearchBar extends MaterialSearchBar {
         void onSearchTermChanged(String searchTerm);
 
         void onSearchStateChanged(boolean enabled);
+
+        void onSuggestionSelected(Suggestion suggestion);
     }
 }

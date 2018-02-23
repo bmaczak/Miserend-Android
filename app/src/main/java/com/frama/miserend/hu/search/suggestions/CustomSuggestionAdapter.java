@@ -1,9 +1,11 @@
 package com.frama.miserend.hu.search.suggestions;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.frama.miserend.hu.R;
+import com.frama.miserend.hu.search.searchbar.CustomSearchBar;
 import com.frama.miserend.hu.search.suggestions.church.ChurchSuggestionViewHolder;
 import com.frama.miserend.hu.search.suggestions.city.CitySuggestion;
 import com.frama.miserend.hu.search.suggestions.city.CitySuggestionViewHolder;
@@ -18,13 +20,17 @@ public class CustomSuggestionAdapter extends SuggestionsAdapter<Suggestion, Sugg
     private static final int TYPE_CITY = 0;
     private static final int TYPE_CHURCH = 1;
 
-    public CustomSuggestionAdapter(LayoutInflater inflater) {
+    private CustomSearchBar.SearchBarCallback searchBarCallback;
+
+    public CustomSuggestionAdapter(LayoutInflater inflater, CustomSearchBar.SearchBarCallback searchBarCallback) {
         super(inflater);
+        this.searchBarCallback = searchBarCallback;
     }
 
     @Override
     public void onBindSuggestionHolder(Suggestion suggestion, SuggestionViewHolder holder, int position) {
         holder.bind(suggestion.getData());
+        holder.getRoot().setOnClickListener(view -> searchBarCallback.onSuggestionSelected(suggestion));
     }
 
     @Override
