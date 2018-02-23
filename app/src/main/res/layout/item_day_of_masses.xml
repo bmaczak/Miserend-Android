@@ -28,7 +28,10 @@
             android:id="@+id/mass_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center" />
+            android:layout_marginTop="16dp"
+            android:gravity="top|left"
+            android:lineSpacingMultiplier="1.2"
+            android:textSize="14sp" />
     </LinearLayout>
 
 

@@ -1,6 +1,7 @@
 package com.frama.miserend.hu.churchdetails;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -9,7 +10,9 @@ import com.frama.miserend.hu.database.miserend.entities.Mass;
 import com.frama.miserend.hu.utils.DateUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -41,10 +44,10 @@ public class MassListViewHolder extends RecyclerView.ViewHolder {
     public void bind(DayOfMasses dayOfMasses) {
         dateText.setText(simpleDateFormat.format(dayOfMasses.getDay().getTime()));
         dayText.setText(DateUtils.getNameOfDay(dayText.getResources(), dayOfMasses.getDay()));
-        StringBuilder massesStringBuilder = new StringBuilder();
+        List<String> massStrings = new ArrayList<>();
         for (Mass mass : dayOfMasses.getMasses()) {
-            massesStringBuilder.append(mass.getTime()).append("\n");
+            massStrings.add(DateUtils.cutSecondsFromTime(mass.getTime()));
         }
-        massList.setText(massesStringBuilder.toString());
+        massList.setText(TextUtils.join(", ", massStrings));
     }
 }

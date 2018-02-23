@@ -48,4 +48,17 @@ public class DateUtils {
         return TimeUnit.MILLISECONDS.toDays(Math.abs(end - start));
     }
 
+    public static String cutSecondsFromTime(String time) {
+        if (null != time && time.length() > 0) {
+            int endIndex = time.lastIndexOf(":");
+            if (endIndex != -1) {
+                return time.substring(0, endIndex);
+            } else {
+                return time;
+            }
+        } else {
+            return time;
+        }
+    }
+
 }
