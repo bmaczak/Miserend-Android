@@ -40,7 +40,7 @@ public class MassListViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(DayOfMasses dayOfMasses) {
         dateText.setText(simpleDateFormat.format(dayOfMasses.getDay().getTime()));
-        dayText.setText(DateUtils.getNameOfDay(dayText.getResources(), DateUtils.convertCalendarDayToMassDay(dayOfMasses.getDay().get(Calendar.DAY_OF_WEEK))));
+        dayText.setText(DateUtils.getNameOfDay(dayText.getResources(), dayOfMasses.getDay()));
         StringBuilder massesStringBuilder = new StringBuilder();
         for (Mass mass : dayOfMasses.getMasses()) {
             massesStringBuilder.append(mass.getTime()).append("\n");
