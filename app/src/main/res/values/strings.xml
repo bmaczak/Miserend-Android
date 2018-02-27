@@ -13,6 +13,7 @@
     <string name="search_hint">Település, név...</string>
 
     <string name="church_location">Megközelítés</string>
+    <string name="church_gallery">Képek</string>
 
     <string name="static_map_url">https://maps.googleapis.com/maps/api/staticmap?center=%1$f,%2$f&amp;zoom=16&amp;size=%3$dx%4$d&amp;scale=4</string>
 

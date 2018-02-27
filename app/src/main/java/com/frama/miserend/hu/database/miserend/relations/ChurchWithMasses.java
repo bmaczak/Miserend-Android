@@ -4,6 +4,7 @@ import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Relation;
 
 import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.database.miserend.entities.Image;
 import com.frama.miserend.hu.database.miserend.entities.Mass;
 
 import java.util.List;
@@ -20,6 +21,10 @@ public class ChurchWithMasses {
             entityColumn = "tid")
     private List<Mass> masses;
 
+    @Relation(parentColumn = "tid",
+            entityColumn = "tid")
+    private List<Image> images;
+
     public Church getChurch() {
         return church;
     }
@@ -34,5 +39,13 @@ public class ChurchWithMasses {
 
     public void setMasses(List<Mass> masses) {
         this.masses = masses;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }

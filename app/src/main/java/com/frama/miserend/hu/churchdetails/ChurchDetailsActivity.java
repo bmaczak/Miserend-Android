@@ -3,6 +3,7 @@ package com.frama.miserend.hu.churchdetails;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -52,6 +53,8 @@ public class ChurchDetailsActivity extends BaseActivity {
     TextView noMassesText;
     @BindView(R.id.masses_recycler_view)
     RecyclerView massesRecyclerView;
+    @BindView(R.id.images_pager)
+    ViewPager imagesPager;
 
     @Inject
     ChurchDetailsViewModel churchDetailsViewModel;
@@ -77,6 +80,7 @@ public class ChurchDetailsActivity extends BaseActivity {
         ViewUtils.setTextOrHide(churchAddress, church.getAddress());
         ViewUtils.setTextOrHide(churchGettingThere, church.getGettingThere());
         displayMasses(churchWithMasses);
+        imagesPager.setAdapter(new GalleryPagerAdapter(churchWithMasses.getImages()));
     }
 
     private void displayMasses(ChurchWithMasses churchWithMasses) {
