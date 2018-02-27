@@ -55,6 +55,6 @@ public class FavoriteChurchesFragment extends ChurchListFragment {
 
     @Override
     public void onFavoriteClicked(Church church) {
-        favoritesViewModel.toggleFavorite(church.getTid());
+        favoritesViewModel.toggleFavorite(church.getId());
     }
 }

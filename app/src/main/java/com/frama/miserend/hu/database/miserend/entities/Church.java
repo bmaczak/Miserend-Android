@@ -13,7 +13,8 @@ import java.io.Serializable;
 public class Church implements Serializable {
 
     @PrimaryKey
-    private int tid;
+    @ColumnInfo(name = "tid")
+    private int id;
 
     @ColumnInfo(name = "nev")
     private String name;
@@ -51,12 +52,12 @@ public class Church implements Serializable {
     @ColumnInfo(name = "kep")
     private String imageUrl;
 
-    public int getTid() {
-        return tid;
+    public int getId() {
+        return id;
     }
 
-    public void setTid(int tid) {
-        this.tid = tid;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

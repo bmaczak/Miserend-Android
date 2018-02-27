@@ -13,7 +13,7 @@ public class ChurchDiffCallback extends DiffCallback<ChurchWithMasses> {
 
     @Override
     public boolean areItemsTheSame(@NonNull ChurchWithMasses oldChurch, @NonNull ChurchWithMasses newChurch) {
-        return oldChurch.getChurch().getTid() == newChurch.getChurch().getTid();
+        return oldChurch.getChurch().getId() == newChurch.getChurch().getId();
     }
 
     @Override

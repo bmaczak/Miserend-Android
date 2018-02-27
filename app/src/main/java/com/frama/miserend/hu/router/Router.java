@@ -24,7 +24,7 @@ public class Router {
 
     public void showChurchDetails(Church church) {
         Intent churchDetailsIntent = new Intent(activity, ChurchDetailsActivity.class);
-        churchDetailsIntent.putExtra(IntentExtra.CHURCH_ID, church.getTid());
+        churchDetailsIntent.putExtra(IntentExtra.CHURCH_ID, church.getId());
         activity.startActivity(churchDetailsIntent);
     }
 }

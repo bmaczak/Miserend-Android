@@ -32,7 +32,7 @@ public class ChurchDiffUtilCallback extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldList.get(oldItemPosition).getChurch().getTid() == newList.get(newItemPosition).getChurch().getTid();
+        return oldList.get(oldItemPosition).getChurch().getId() == newList.get(newItemPosition).getChurch().getId();
     }
 
     @Override

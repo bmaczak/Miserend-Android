@@ -45,7 +45,7 @@ public class NearChurchesAdapter extends PagedListAdapter<ChurchWithMasses, Chur
         ChurchWithMasses churchWithMasses = getItem(position);
         if (churchWithMasses != null) {
             holder.bindTo(churchWithMasses.getChurch(), MassFilter.filterForDay(churchWithMasses.getMasses(), Calendar.getInstance()),
-                    currentLocation, favorites.contains(churchWithMasses.getChurch().getTid()));
+                    currentLocation, favorites.contains(churchWithMasses.getChurch().getId()));
         } else {
             holder.clear();
         }

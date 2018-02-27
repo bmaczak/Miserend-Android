@@ -14,7 +14,8 @@ import android.arch.persistence.room.PrimaryKey;
 public class Mass {
 
     @PrimaryKey
-    private int mid;
+    @ColumnInfo(name = "mid")
+    private int id;
 
     @ColumnInfo(name = "tid")
     public int churchId;
@@ -49,12 +50,12 @@ public class Mass {
     @ColumnInfo(name = "megjegyzes")
     private String comment;
 
-    public int getMid() {
-        return mid;
+    public int getId() {
+        return id;
     }
 
-    public void setMid(int mid) {
-        this.mid = mid;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getChurchId() {

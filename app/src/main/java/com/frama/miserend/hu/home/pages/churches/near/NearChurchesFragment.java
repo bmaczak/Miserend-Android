@@ -87,6 +87,6 @@ public class NearChurchesFragment extends ChurchListFragment implements Location
 
     @Override
     public void onFavoriteClicked(Church church) {
-        favoritesViewModel.toggleFavorite(church.getTid());
+        favoritesViewModel.toggleFavorite(church.getId());
     }
 }
