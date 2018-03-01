@@ -1,17 +1,15 @@
 package com.frama.miserend.hu.churchdetails;
 
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.entities.Image;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,9 +20,9 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
     private List<Image> images;
 
-    public GalleryPagerAdapter(List<Image> images) {
+    public GalleryPagerAdapter() {
         super();
-        this.images = images;
+        this.images = new ArrayList<>();
     }
 
     @Override
@@ -48,5 +46,10 @@ public class GalleryPagerAdapter extends PagerAdapter {
     @Override
     public int getCount() {
         return images.size();
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
+        notifyDataSetChanged();
     }
 }

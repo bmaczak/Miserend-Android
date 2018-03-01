@@ -17,6 +17,7 @@ import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.map.StaticMapHelper;
 import com.frama.miserend.hu.utils.ViewUtils;
+import com.rd.PageIndicatorView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,20 +54,37 @@ public class ChurchDetailsActivity extends BaseActivity {
     RecyclerView massesRecyclerView;
     @BindView(R.id.images_pager)
     ViewPager imagesPager;
+    @BindView(R.id.images_pager_indicator)
+    PageIndicatorView imagesPagerIndicator;
 
     @Inject
     ChurchDetailsViewModel churchDetailsViewModel;
+
+    private GalleryPagerAdapter imagesAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_church_details);
         ButterKnife.bind(this);
+        setupActionBar();
+        setupGallery();
+        churchDetailsViewModel.getChurchWithMasses().observe(this, this::onChurchDetailsLoaded);
+    }
+
+    private void setupActionBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("");
-        churchDetailsViewModel.getChurchWithMasses().observe(this, this::onChurchDetailsLoaded);
+    }
+
+    private void setupGallery() {
+        imagesAdapter = new GalleryPagerAdapter();
+        imagesPager.setAdapter(imagesAdapter);
+        imagesPagerIndicator.setViewPager(imagesPager);
+        imagesPagerIndicator.setDynamicCount(true);
+        imagesPagerIndicator.setRadius(4);
     }
 
     private void onChurchDetailsLoaded(ChurchWithMasses churchWithMasses) {
@@ -77,7 +95,7 @@ public class ChurchDetailsActivity extends BaseActivity {
         ViewUtils.setTextOrHide(churchAddress, church.getAddress());
         ViewUtils.setTextOrHide(churchGettingThere, church.getGettingThere());
         displayMasses(churchWithMasses);
-        imagesPager.setAdapter(new GalleryPagerAdapter(churchWithMasses.getImages()));
+        imagesAdapter.setImages(churchWithMasses.getImages());
     }
 
     private void displayMasses(ChurchWithMasses churchWithMasses) {

@@ -60,6 +60,9 @@ dependencies {
     //Search bar
     implementation 'com.github.mancj:MaterialSearchBar:0.7.5'
 
+    //Pager indicator
+    compile 'com.romandanylyk:pageindicatorview:1.0.0'
+
     //Testing
     testCompile 'junit:junit:4.12'
 }
