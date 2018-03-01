@@ -33,8 +33,6 @@ import butterknife.ButterKnife;
 
 public class ChurchDetailsActivity extends BaseActivity {
 
-    @BindView(R.id.church_header_image)
-    SimpleDraweeView headerImage;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.collapsing_toolbar)
@@ -73,7 +71,6 @@ public class ChurchDetailsActivity extends BaseActivity {
 
     private void onChurchDetailsLoaded(ChurchWithMasses churchWithMasses) {
         Church church = churchWithMasses.getChurch();
-        headerImage.setImageURI(churchWithMasses.getChurch().getImageUrl());
         ViewUtils.setTextOrHide(churchName, church.getName());
         ViewUtils.setTextOrHide(churchCommonName, church.getCommonName());
         staticMap.setImageURI(StaticMapHelper.getSaticMapUrl(this, churchWithMasses.getChurch().getLat(), churchWithMasses.getChurch().getLon(), staticMap.getWidth(), staticMap.getHeight()));
