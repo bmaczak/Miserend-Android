@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/church_card"
     android:layout_width="match_parent"
     android:layout_height="160dp"
@@ -76,7 +77,10 @@
                 android:id="@+id/church_thumb"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
+                android:background="@color/black_20"
+                android:scaleType="centerCrop"
+                app:failureImage="@drawable/ic_church"
+                app:failureImageScaleType="center" />
 
             <TextView
                 android:id="@+id/church_distance"
