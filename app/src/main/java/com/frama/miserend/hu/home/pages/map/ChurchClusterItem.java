@@ -1,8 +1,8 @@
 package com.frama.miserend.hu.home.pages.map;
 
 import com.frama.miserend.hu.database.miserend.entities.Church;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.maps.android.clustering.ClusterItem;
+
+import net.sharewire.googlemapsclustering.ClusterItem;
 
 /**
  * Created by Balazs on 2018. 03. 02..
@@ -17,8 +17,13 @@ public class ChurchClusterItem implements ClusterItem {
     }
 
     @Override
-    public LatLng getPosition() {
-        return new LatLng(church.getLat(), church.getLon());
+    public double getLatitude() {
+        return church.getLat();
+    }
+
+    @Override
+    public double getLongitude() {
+        return church.getLon();
     }
 
     @Override
@@ -29,5 +34,9 @@ public class ChurchClusterItem implements ClusterItem {
     @Override
     public String getSnippet() {
         return church.getAddress();
+    }
+
+    public Church getChurch() {
+        return church;
     }
 }
