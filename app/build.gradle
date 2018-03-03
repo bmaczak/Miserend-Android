@@ -33,6 +33,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:11.8.0'
     implementation 'com.google.android.gms:play-services-maps:11.8.0'
 
+    //Maps
+    implementation 'com.google.maps.android:android-maps-utils:0.5'
+
     //Architecture components
     implementation "android.arch.lifecycle:extensions:1.1.0"
     implementation "android.arch.persistence.room:runtime:1.0.0"

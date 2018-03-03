@@ -1,5 +1,6 @@
 package com.frama.miserend.hu.database.miserend.dao;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Query;
 
@@ -17,7 +18,7 @@ import io.reactivex.Flowable;
 public interface ChurchDao {
 
     @Query("SELECT * FROM templomok")
-    Flowable<List<Church>> getAll();
+    LiveData<List<Church>> getAll();
 
     @Query("SELECT * FROM templomok WHERE nev LIKE '%' || :searchTerm || '%' OR ismertnev LIKE '%' || :searchTerm || '%'")
     Flowable<List<Church>> getByName(String searchTerm);

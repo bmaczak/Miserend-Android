@@ -1,5 +1,6 @@
 package com.frama.miserend.hu.di.modules.builder;
 
+import com.frama.miserend.hu.di.modules.ChurchesMapFragmentModule;
 import com.frama.miserend.hu.di.modules.FavoritesFragmentModule;
 import com.frama.miserend.hu.di.modules.FavoritesModule;
 import com.frama.miserend.hu.di.modules.LocationModule;
@@ -7,6 +8,7 @@ import com.frama.miserend.hu.di.modules.NearChurchesFragmentModule;
 import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.home.pages.churches.favorites.FavoriteChurchesFragment;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
+import com.frama.miserend.hu.home.pages.map.ChurchesMapFragment;
 import com.frama.miserend.hu.home.pages.masses.MassesFragment;
 
 import dagger.Module;
@@ -30,4 +32,8 @@ public abstract class FragmentBuilder {
     @PerFragment
     @ContributesAndroidInjector
     abstract MassesFragment bindMassesFragment();
+
+    @PerFragment
+    @ContributesAndroidInjector(modules = {ChurchesMapFragmentModule.class})
+    abstract ChurchesMapFragment bindChurchesMapFragment();
 }
