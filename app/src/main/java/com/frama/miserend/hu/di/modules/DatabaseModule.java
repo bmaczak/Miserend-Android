@@ -3,10 +3,12 @@ package com.frama.miserend.hu.di.modules;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 
+import com.frama.miserend.hu.api.MiserendApi;
 import com.frama.miserend.hu.database.local.LocalDatabase;
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseManager;
 import com.frama.miserend.hu.di.qualifiers.ApplicationContext;
+import com.frama.miserend.hu.preferences.Preferences;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -22,8 +24,8 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    DatabaseManager provideDatabaseManager(@ApplicationContext Context context) {
-        return new DatabaseManager(context);
+    DatabaseManager provideDatabaseManager(@ApplicationContext Context context, MiserendApi api, Preferences preferences) {
+        return new DatabaseManager(context, api, preferences);
     }
 
     @Provides

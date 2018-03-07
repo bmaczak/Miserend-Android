@@ -87,10 +87,11 @@ public class HomeScreenActivity extends BaseActivity {
 
     private void onDatabaseStateChanged(DatabaseState databaseState) {
         switch (databaseState) {
+            case UPDATE_AVAILABLE: //TODO Update available dialog
             case UP_TO_DATE:
                 showFragment(new ChurchesFragment());
                 break;
-            case NOT_FOUND:
+            case NOT_FOUND: //TODO Ask user before download
                 viewModel.downloadDatabase();
                 break;
         }

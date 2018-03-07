@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.frama.miserend.hu.di.qualifiers.ApplicationContext;
+import com.frama.miserend.hu.preferences.Preferences;
 
 import javax.inject.Singleton;
 
@@ -16,11 +17,16 @@ import dagger.Provides;
 @Module
 public class ApplicationModule {
 
-
     @Provides
     @Singleton
     @ApplicationContext
     Context provideApplicationContext(Application application) {
         return application.getApplicationContext();
+    }
+
+    @Provides
+    @Singleton
+    Preferences providePreferences(@ApplicationContext Context context) {
+        return new Preferences(context);
     }
 }

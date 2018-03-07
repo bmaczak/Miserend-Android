@@ -2,7 +2,15 @@ package com.frama.miserend.hu.database.miserend.manager;
 
 import android.content.Context;
 
+import com.frama.miserend.hu.api.MiserendApi;
+import com.frama.miserend.hu.preferences.Preferences;
+
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import io.reactivex.Single;
 
 /**
  * Created by Maczi on 2013.05.16..
@@ -10,9 +18,13 @@ import java.io.File;
 public class DatabaseManager {
 
     private Context context;
+    private MiserendApi api;
+    private Preferences preferences;
 
-    public DatabaseManager(Context context) {
+    public DatabaseManager(Context context, MiserendApi api, Preferences preferences) {
         this.context = context;
+        this.api = api;
+        this.preferences = preferences;
     }
 
     private static String TAG = "DatabaseManager";
@@ -33,6 +45,17 @@ public class DatabaseManager {
 
     public int getRequiredDataBaseVersion() {
         return DATABASE_VERSION;
+    }
+
+    public Single<DatabaseState> getDatabaseState() {
+        if (!isDbExist()) {
+            return Single.just(DatabaseState.NOT_FOUND);
+        } else {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
+            String updated = format.format(new Date(preferences.getDatabaseLastUpdated()));
+            return api.updateAvailable(updated)
+                    .map(integer -> integer == 1 ? DatabaseState.UPDATE_AVAILABLE : DatabaseState.UP_TO_DATE);
+        }
     }
 
     public void downloadDatabase(DatabaseDownloaderTask.OnDbDownloadedListener listener) {
