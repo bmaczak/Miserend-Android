@@ -6,13 +6,14 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.base.BaseActivity;
+import com.frama.miserend.hu.database.dialog.DatabaseDialogCallback;
 import com.frama.miserend.hu.database.dialog.DatabaseMissingDialogFragment;
+import com.frama.miserend.hu.database.dialog.DatabaseUpdateAvailableDialogFragment;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseState;
 import com.frama.miserend.hu.home.pages.churches.ChurchesFragment;
 import com.frama.miserend.hu.home.pages.map.ChurchesMapFragment;
@@ -29,16 +30,12 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.android.AndroidInjection;
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.support.HasSupportFragmentInjector;
 
 /**
  * Created by Balazs on 2018. 02. 10..
  */
 
-public class HomeScreenActivity extends BaseActivity {
+public class HomeScreenActivity extends BaseActivity implements DatabaseDialogCallback {
 
     @Inject
     HomeViewModel viewModel;
@@ -89,11 +86,14 @@ public class HomeScreenActivity extends BaseActivity {
 
     private void onDatabaseStateChanged(DatabaseState databaseState) {
         switch (databaseState) {
-            case UPDATE_AVAILABLE: //TODO Update available dialog
+
             case UP_TO_DATE:
                 showFragment(new ChurchesFragment());
                 break;
-            case NOT_FOUND: //TODO Ask user before download
+            case UPDATE_AVAILABLE:
+                showDatabaseUpdateDialog();
+                break;
+            case NOT_FOUND:
                 showDatabaseMissingDialog();
                 break;
         }
@@ -102,7 +102,11 @@ public class HomeScreenActivity extends BaseActivity {
     private void showDatabaseMissingDialog() {
         DialogFragment newFragment = DatabaseMissingDialogFragment.newInstance();
         newFragment.show(getSupportFragmentManager(), "dialog");
+    }
 
+    private void showDatabaseUpdateDialog() {
+        DialogFragment newFragment = DatabaseUpdateAvailableDialogFragment.newInstance();
+        newFragment.show(getSupportFragmentManager(), "dialog");
     }
 
     public void downloadDatabase() {
@@ -126,6 +130,20 @@ public class HomeScreenActivity extends BaseActivity {
                 return true;
             default:
                 return false;
+        }
+    }
+
+    @Override
+    public void onDownloadClicked() {
+        downloadDatabase();
+    }
+
+    @Override
+    public void onDontDownloadClicked(boolean dbMissing) {
+        if (dbMissing) {
+            finish();
+        } else {
+            showFragment(new ChurchesFragment());
         }
     }
 }

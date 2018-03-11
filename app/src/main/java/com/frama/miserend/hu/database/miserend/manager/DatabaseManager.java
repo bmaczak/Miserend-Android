@@ -7,6 +7,7 @@ import com.frama.miserend.hu.preferences.Preferences;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -22,6 +23,7 @@ public class DatabaseManager {
     private static String TAG = "DatabaseManager";
     private static int DATABASE_VERSION = 4;
     private static final String DATABASE_URL = "http://miserend.hu/fajlok/sqlite/miserend_v" + DATABASE_VERSION + ".sqlite3";
+    private static final int DB_UPDATE_CHECK_PERIOD_IN_MILLIS = 1000 * 60 * 60 * 24 * 7;
 
     private Context context;
     private MiserendApi api;
@@ -49,11 +51,13 @@ public class DatabaseManager {
     public Single<DatabaseState> getDatabaseState() {
         if (!isDbExist()) {
             return Single.just(DatabaseState.NOT_FOUND);
-        } else {
+        } else if (Calendar.getInstance().getTimeInMillis() > preferences.getDatabaseLastUpdated() + DB_UPDATE_CHECK_PERIOD_IN_MILLIS) {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
             String updated = format.format(new Date(preferences.getDatabaseLastUpdated()));
             return api.updateAvailable(updated)
                     .map(integer -> integer == 1 ? DatabaseState.UPDATE_AVAILABLE : DatabaseState.UP_TO_DATE);
+        } else {
+            return Single.just(DatabaseState.UP_TO_DATE);
         }
     }
 

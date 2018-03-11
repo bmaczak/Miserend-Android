@@ -12,14 +12,15 @@ import com.frama.miserend.hu.R;
  * Created by Balazs on 2018. 03. 11..
  */
 
-public class DatabaseMissingDialogFragment extends DialogFragment {
+public class DatabaseUpdateAvailableDialogFragment extends DialogFragment {
 
     private DatabaseDialogCallback callback;
 
-    public static DatabaseMissingDialogFragment newInstance() {
-        DatabaseMissingDialogFragment frag = new DatabaseMissingDialogFragment();
+    public static DatabaseUpdateAvailableDialogFragment newInstance() {
+        DatabaseUpdateAvailableDialogFragment frag = new DatabaseUpdateAvailableDialogFragment();
         return frag;
     }
+
 
     @Override
     public void onAttach(Context context) {
@@ -35,14 +36,15 @@ public class DatabaseMissingDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.dialog_db_missing_title)
-                .setMessage(R.string.dialog_db_missing_message)
-                .setPositiveButton(R.string.dialog_db_missing_btn_ok,
+                .setTitle(R.string.dialog_db_update_title)
+                .setMessage(R.string.dialog_db_update_message)
+                .setPositiveButton(R.string.dialog_db_update_btn_ok,
                         (dialog, whichButton) -> callback.onDownloadClicked()
                 )
-                .setNegativeButton(R.string.dialog_db_missing_btn_cancel,
-                        (dialog, whichButton) -> callback.onDontDownloadClicked(true)
+                .setNegativeButton(R.string.dialog_db_update_btn_cancel,
+                        (dialog, whichButton) -> callback.onDontDownloadClicked(false)
                 )
                 .create();
     }
+
 }
