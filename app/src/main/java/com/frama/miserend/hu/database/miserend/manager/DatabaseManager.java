@@ -17,6 +17,12 @@ import io.reactivex.Single;
  */
 public class DatabaseManager {
 
+    public static String DATABASE_FILE_NAME = "miserend.sqlite3";
+
+    private static String TAG = "DatabaseManager";
+    private static int DATABASE_VERSION = 4;
+    private static final String DATABASE_URL = "http://miserend.hu/fajlok/sqlite/miserend_v" + DATABASE_VERSION + ".sqlite3";
+
     private Context context;
     private MiserendApi api;
     private Preferences preferences;
@@ -27,13 +33,6 @@ public class DatabaseManager {
         this.preferences = preferences;
     }
 
-    private static String TAG = "DatabaseManager";
-
-    private static int DATABASE_VERSION = 4;
-
-    public static String DATABASE_FILE_NAME = "miserend.sqlite3";
-
-    public static final String DATABASE_URL = "http://miserend.hu/fajlok/sqlite/miserend_v" + DATABASE_VERSION + ".sqlite3";
 
     public boolean isDbExist() {
         return getDatabaseFile().exists();

@@ -8,7 +8,6 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import com.frama.miserend.hu.api.MiserendApi;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseDownloaderTask;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseManager;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseState;
