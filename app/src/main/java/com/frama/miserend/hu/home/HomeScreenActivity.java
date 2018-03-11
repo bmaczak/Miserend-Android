@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -11,6 +12,7 @@ import android.view.View;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.base.BaseActivity;
+import com.frama.miserend.hu.database.dialog.DatabaseMissingDialogFragment;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseState;
 import com.frama.miserend.hu.home.pages.churches.ChurchesFragment;
 import com.frama.miserend.hu.home.pages.map.ChurchesMapFragment;
@@ -92,9 +94,19 @@ public class HomeScreenActivity extends BaseActivity {
                 showFragment(new ChurchesFragment());
                 break;
             case NOT_FOUND: //TODO Ask user before download
-                viewModel.downloadDatabase();
+                showDatabaseMissingDialog();
                 break;
         }
+    }
+
+    private void showDatabaseMissingDialog() {
+        DialogFragment newFragment = DatabaseMissingDialogFragment.newInstance();
+        newFragment.show(getSupportFragmentManager(), "dialog");
+
+    }
+
+    public void downloadDatabase() {
+        viewModel.downloadDatabase();
     }
 
     private void showFragment(Fragment fragment) {

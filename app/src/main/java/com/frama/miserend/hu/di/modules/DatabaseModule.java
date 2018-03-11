@@ -44,7 +44,7 @@ public class DatabaseModule {
     @Singleton
     @Named("database name")
     String provideDatabaseName() {
-        return "miserend.sqlite3";
+        return DatabaseManager.DATABASE_FILE_NAME;
     }
 
     @Provides
