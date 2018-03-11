@@ -5,18 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 
 import com.frama.miserend.hu.search.suggestions.CustomSuggestionAdapter;
 import com.frama.miserend.hu.search.suggestions.Suggestion;
 import com.mancj.materialsearchbar.MaterialSearchBar;
-import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
-
-import java.util.Locale;
 
 /**
  * Created by Balazs on 2018. 02. 16..

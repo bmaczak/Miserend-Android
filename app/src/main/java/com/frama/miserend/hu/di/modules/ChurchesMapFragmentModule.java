@@ -6,12 +6,8 @@ import android.support.v4.app.Fragment;
 
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.di.scopes.PerFragment;
-import com.frama.miserend.hu.home.pages.churches.near.NearChurchesAdapter;
-import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
-import com.frama.miserend.hu.home.pages.churches.near.NearChurchesViewModel;
 import com.frama.miserend.hu.home.pages.map.ChurchesMapFragment;
 import com.frama.miserend.hu.home.pages.map.ChurchesMapViewModel;
-import com.frama.miserend.hu.location.LocationRetriever;
 
 import dagger.Module;
 import dagger.Provides;

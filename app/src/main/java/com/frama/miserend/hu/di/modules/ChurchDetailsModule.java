@@ -8,12 +8,8 @@ import com.frama.miserend.hu.churchdetails.ChurchDetailsActivity;
 import com.frama.miserend.hu.churchdetails.ChurchDetailsViewModel;
 import com.frama.miserend.hu.database.local.LocalDatabase;
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
-import com.frama.miserend.hu.database.miserend.manager.DatabaseManager;
 import com.frama.miserend.hu.di.scopes.PerActivity;
-import com.frama.miserend.hu.home.HomeScreenActivity;
-import com.frama.miserend.hu.home.HomeViewModel;
 import com.frama.miserend.hu.router.Router;
-import com.frama.miserend.hu.search.suggestions.SuggestionViewModel;
 
 import javax.inject.Named;
 

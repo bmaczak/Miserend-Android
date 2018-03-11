@@ -1,7 +1,6 @@
 package com.frama.miserend.hu.search.suggestions;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.frama.miserend.hu.R;

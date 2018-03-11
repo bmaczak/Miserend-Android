@@ -13,8 +13,6 @@ import com.frama.miserend.hu.database.local.entities.Favorite;
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 
-import java.util.List;
-
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 

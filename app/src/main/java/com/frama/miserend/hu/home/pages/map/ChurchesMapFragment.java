@@ -3,7 +3,6 @@ package com.frama.miserend.hu.home.pages.map;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.frama.miserend.hu.database.miserend.entities.Church;
 import com.frama.miserend.hu.router.Router;
