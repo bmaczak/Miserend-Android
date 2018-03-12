@@ -5,6 +5,7 @@ import android.arch.persistence.room.RoomDatabase;
 
 import com.frama.miserend.hu.database.miserend.dao.ChurchDao;
 import com.frama.miserend.hu.database.miserend.dao.ChurchWithMassesDao;
+import com.frama.miserend.hu.database.miserend.dao.MassesDao;
 import com.frama.miserend.hu.database.miserend.entities.Church;
 import com.frama.miserend.hu.database.miserend.entities.Image;
 import com.frama.miserend.hu.database.miserend.entities.Mass;
@@ -17,4 +18,7 @@ public abstract class MiserendDatabase extends RoomDatabase {
     public abstract ChurchDao churchDao();
 
     public abstract ChurchWithMassesDao churchWithMassesDao();
+
+    public abstract MassesDao massesDao();
+
 }
