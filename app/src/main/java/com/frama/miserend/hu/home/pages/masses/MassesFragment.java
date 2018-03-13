@@ -11,7 +11,10 @@ import android.view.ViewGroup;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.base.BaseFragment;
+import com.frama.miserend.hu.database.miserend.relations.MassWithChuch;
 import com.frama.miserend.hu.location.LocationRetriever;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -56,9 +59,13 @@ public class MassesFragment extends BaseFragment implements LocationRetriever.Lo
 
     @Override
     public void onLocationRetrieved(Location location) {
-        massesViewModel.getRecommendedMasses(location.getLatitude(), location.getLongitude()).observe(this, adapter::setList);
+        massesViewModel.getRecommendedMasses(location).observe(this, this::onMassesChanged);
         //adapter.setCurrentLocation(location);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void onMassesChanged(List<MassWithChuch> massWithChuches) {
+        adapter.update(massWithChuches);
     }
 
     @Override

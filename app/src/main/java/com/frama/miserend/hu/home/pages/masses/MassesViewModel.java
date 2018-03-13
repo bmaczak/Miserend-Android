@@ -3,15 +3,24 @@ package com.frama.miserend.hu.home.pages.masses;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
-import android.arch.paging.LivePagedListBuilder;
-import android.arch.paging.PagedList;
+import android.location.Location;
 import android.support.annotation.NonNull;
 
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
-import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 import com.frama.miserend.hu.database.miserend.relations.MassWithChuch;
+import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
+import com.frama.miserend.hu.utils.DateUtils;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Balazs on 2018. 02. 10..
@@ -19,19 +28,37 @@ import com.frama.miserend.hu.database.miserend.relations.MassWithChuch;
 
 public class MassesViewModel extends AndroidViewModel {
 
-    private LiveData<PagedList<MassWithChuch>> churches;
+    private MutableLiveData<List<MassWithChuch>> masses;
     private MiserendDatabase database;
 
     public MassesViewModel(@NonNull Application application, MiserendDatabase database) {
         super(application);
         this.database = database;
+        this.masses = new MutableLiveData<>();
     }
 
 
-    public LiveData<PagedList<MassWithChuch>> getRecommendedMasses(double latitude, double longitude) {
-        churches = new LivePagedListBuilder<>(
-                database.massesDao().getRecommendedMasses(latitude, longitude, 2), 20).build();
-        return churches;
+    public LiveData<List<MassWithChuch>> getRecommendedMasses(Location currentLocation) {
+        Calendar today = Calendar.getInstance();
+        int dayOfWeek = DateUtils.convertCalendarDayToMassDay(today.get(Calendar.DAY_OF_WEEK));
+        database.massesDao().getMassesInRadius(currentLocation.getLatitude(), currentLocation.getLongitude(), dayOfWeek)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(massWithChuches -> {
+                    List<MassWithChuch> masses = new ArrayList<>();
+                    for (MassWithChuch massWithChuch : massWithChuches) {
+                        if (MassFilter.isMassOnDay(massWithChuch.getMass(), Calendar.getInstance())) {
+                            masses.add(massWithChuch);
+                        }
+                    }
+                    return masses;
+                })
+                .map(massWithChuches -> {
+                    Collections.sort(massWithChuches, new MassComparator(currentLocation));
+                    return massWithChuches;
+                })
+                .subscribe(massWithChuches -> masses.setValue(massWithChuches));
+        return masses;
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {

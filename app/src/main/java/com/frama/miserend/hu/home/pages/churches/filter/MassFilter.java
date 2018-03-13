@@ -16,11 +16,15 @@ public class MassFilter {
     public static List<Mass> filterForDay(List<Mass> masses, Calendar day) {
         List<Mass> filtered = new ArrayList<>();
         for (Mass mass : masses) {
-            if (dayCorrect(mass, day) && dateRangeCorrect(mass, day)) {
+            if (isMassOnDay(mass, day)) {
                 filtered.add(mass);
             }
         }
         return filtered;
+    }
+
+    public static boolean isMassOnDay(Mass mass, Calendar day) {
+        return dayCorrect(mass, day) && dateRangeCorrect(mass, day);
     }
 
     private static boolean dayCorrect(Mass mass, Calendar day) {

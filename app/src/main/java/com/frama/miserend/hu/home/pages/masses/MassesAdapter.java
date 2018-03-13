@@ -12,6 +12,9 @@ import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.relations.MassWithChuch;
 import com.frama.miserend.hu.utils.DateUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -19,10 +22,12 @@ import butterknife.ButterKnife;
  * Created by maczak on 2018. 03. 12..
  */
 
-public class MassesAdapter extends PagedListAdapter<MassWithChuch, MassesAdapter.MassViewHolder> {
+public class MassesAdapter extends RecyclerView.Adapter<MassesAdapter.MassViewHolder> {
+
+    private List<MassWithChuch> masses;
 
     public MassesAdapter() {
-        super(new MassDiffCallback());
+        masses = new ArrayList<>();
     }
 
     @Override
@@ -35,6 +40,21 @@ public class MassesAdapter extends PagedListAdapter<MassWithChuch, MassesAdapter
         if (getItem(position) != null) {
             holder.bind(getItem(position));
         }
+    }
+
+    @Override
+    public int getItemCount() {
+        return masses.size();
+    }
+
+    public void update(List<MassWithChuch> masses) {
+        this.masses.clear();
+        this.masses.addAll(masses);
+        notifyDataSetChanged();
+    }
+
+    private MassWithChuch getItem(int position) {
+        return masses.get(position);
     }
 
     public class MassViewHolder extends RecyclerView.ViewHolder {
