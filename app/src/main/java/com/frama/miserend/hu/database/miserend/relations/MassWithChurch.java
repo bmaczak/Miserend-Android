@@ -12,7 +12,7 @@ import java.util.List;
  * Created by maczak on 2018. 03. 12..
  */
 
-public class MassWithChuch {
+public class MassWithChurch {
     @Embedded
     private Mass mass;
 

@@ -1,6 +1,5 @@
 package com.frama.miserend.hu.home.pages.masses;
 
-import android.arch.paging.PagedListAdapter;
 import android.location.Location;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +9,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.frama.miserend.hu.R;
-import com.frama.miserend.hu.database.miserend.relations.MassWithChuch;
+import com.frama.miserend.hu.database.miserend.relations.MassWithChurch;
 import com.frama.miserend.hu.utils.ChurchUtils;
 import com.frama.miserend.hu.utils.DateUtils;
 
@@ -26,7 +25,7 @@ import butterknife.ButterKnife;
 
 public class MassesAdapter extends RecyclerView.Adapter<MassesAdapter.MassViewHolder> {
 
-    private List<MassWithChuch> masses;
+    private List<MassWithChurch> masses;
     private Location currentLocation;
 
     public MassesAdapter() {
@@ -50,7 +49,7 @@ public class MassesAdapter extends RecyclerView.Adapter<MassesAdapter.MassViewHo
         return masses.size();
     }
 
-    public void update(List<MassWithChuch> masses) {
+    public void update(List<MassWithChurch> masses) {
         this.masses.clear();
         this.masses.addAll(masses);
         notifyDataSetChanged();
@@ -61,11 +60,11 @@ public class MassesAdapter extends RecyclerView.Adapter<MassesAdapter.MassViewHo
         notifyDataSetChanged();
     }
 
-    private MassWithChuch getItem(int position) {
+    private MassWithChurch getItem(int position) {
         return masses.get(position);
     }
 
-    public class MassViewHolder extends RecyclerView.ViewHolder {
+    public static class MassViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.church_thumb)
         SimpleDraweeView churchThumb;
@@ -81,11 +80,11 @@ public class MassesAdapter extends RecyclerView.Adapter<MassesAdapter.MassViewHo
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(MassWithChuch massWithChuch, Location location) {
-            churchThumb.setImageURI(massWithChuch.getChurch().getImageUrl());
-            churchName.setText(massWithChuch.getChurch().getName());
-            massTime.setText(DateUtils.cutSecondsFromTime(massWithChuch.getMass().getTime()));
-            distance.setText(getDistanceText(ChurchUtils.distanceTo(currentLocation, massWithChuch.getChurch())));
+        public void bind(MassWithChurch massWithChurch, Location location) {
+            churchThumb.setImageURI(massWithChurch.getChurch().getImageUrl());
+            churchName.setText(massWithChurch.getChurch().getName());
+            massTime.setText(DateUtils.cutSecondsFromTime(massWithChurch.getMass().getTime()));
+            distance.setText(getDistanceText(ChurchUtils.distanceTo(location, massWithChurch.getChurch())));
         }
 
         public String getDistanceText(float distance) {

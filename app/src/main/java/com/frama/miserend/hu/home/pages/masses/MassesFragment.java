@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.base.BaseFragment;
-import com.frama.miserend.hu.database.miserend.relations.MassWithChuch;
+import com.frama.miserend.hu.database.miserend.relations.MassWithChurch;
 import com.frama.miserend.hu.location.LocationRetriever;
 
 import java.util.List;
@@ -64,8 +64,8 @@ public class MassesFragment extends BaseFragment implements LocationRetriever.Lo
         recyclerView.setAdapter(adapter);
     }
 
-    private void onMassesChanged(List<MassWithChuch> massWithChuches) {
-        adapter.update(massWithChuches);
+    private void onMassesChanged(List<MassWithChurch> massWithChurches) {
+        adapter.update(massWithChurches);
     }
 
     @Override

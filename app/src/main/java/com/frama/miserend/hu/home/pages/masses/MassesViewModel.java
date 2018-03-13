@@ -10,7 +10,7 @@ import android.location.Location;
 import android.support.annotation.NonNull;
 
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
-import com.frama.miserend.hu.database.miserend.relations.MassWithChuch;
+import com.frama.miserend.hu.database.miserend.relations.MassWithChurch;
 import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.utils.DateUtils;
 
@@ -28,7 +28,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MassesViewModel extends AndroidViewModel {
 
-    private MutableLiveData<List<MassWithChuch>> masses;
+    private MutableLiveData<List<MassWithChurch>> masses;
     private MiserendDatabase database;
 
     public MassesViewModel(@NonNull Application application, MiserendDatabase database) {
@@ -38,17 +38,17 @@ public class MassesViewModel extends AndroidViewModel {
     }
 
 
-    public LiveData<List<MassWithChuch>> getRecommendedMasses(Location currentLocation) {
+    public LiveData<List<MassWithChurch>> getRecommendedMasses(Location currentLocation) {
         Calendar today = Calendar.getInstance();
         int dayOfWeek = DateUtils.convertCalendarDayToMassDay(today.get(Calendar.DAY_OF_WEEK));
         database.massesDao().getMassesInRadius(currentLocation.getLatitude(), currentLocation.getLongitude(), dayOfWeek)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(massWithChuches -> {
-                    List<MassWithChuch> masses = new ArrayList<>();
-                    for (MassWithChuch massWithChuch : massWithChuches) {
-                        if (MassFilter.isMassOnDay(massWithChuch.getMass(), Calendar.getInstance())) {
-                            masses.add(massWithChuch);
+                    List<MassWithChurch> masses = new ArrayList<>();
+                    for (MassWithChurch massWithChurch : massWithChuches) {
+                        if (MassFilter.isMassOnDay(massWithChurch.getMass(), Calendar.getInstance())) {
+                            masses.add(massWithChurch);
                         }
                     }
                     return masses;
