@@ -4,6 +4,7 @@ import android.location.Location;
 
 import com.frama.miserend.hu.database.miserend.entities.Church;
 import com.frama.miserend.hu.database.miserend.relations.MassWithChuch;
+import com.frama.miserend.hu.utils.ChurchUtils;
 
 import java.util.Comparator;
 
@@ -21,13 +22,7 @@ public class MassComparator implements Comparator<MassWithChuch> {
 
     @Override
     public int compare(MassWithChuch massWithChuch, MassWithChuch t1) {
-        return (int) (getDistance(massWithChuch.getChurch()) - getDistance(t1.getChurch()));
-    }
-
-    private float getDistance(Church church) {
-        Location locationA = new Location("point A");
-        locationA.setLatitude(church.getLat());
-        locationA.setLongitude(church.getLon());
-        return currentLocation.distanceTo(locationA);
+        return (int) (ChurchUtils.distanceTo(currentLocation, massWithChuch.getChurch())
+                - ChurchUtils.distanceTo(currentLocation, t1.getChurch()));
     }
 }

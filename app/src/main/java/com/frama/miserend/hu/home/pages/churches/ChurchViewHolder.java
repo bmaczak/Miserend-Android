@@ -12,6 +12,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.entities.Church;
 import com.frama.miserend.hu.database.miserend.entities.Mass;
+import com.frama.miserend.hu.utils.ChurchUtils;
 
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
         massesText.setText(getMassesText(masses));
         if (currentLocation != null) {
             distanceText.setVisibility(View.VISIBLE);
-            distanceText.setText(getDistanceText(getDistance(currentLocation, church)));
+            distanceText.setText(getDistanceText(ChurchUtils.distanceTo(currentLocation, church)));
         } else {
             distanceText.setVisibility(View.GONE);
         }
@@ -83,13 +84,6 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
             massesText = "-";
         }
         return String.format(res.getString(R.string.masses_text), massesText);
-    }
-
-    private float getDistance(Location location, Church church) {
-        Location locationA = new Location("point A");
-        locationA.setLatitude(church.getLat());
-        locationA.setLongitude(church.getLon());
-        return location.distanceTo(locationA);
     }
 
 

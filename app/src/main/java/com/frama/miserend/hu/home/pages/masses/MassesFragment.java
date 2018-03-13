@@ -60,7 +60,7 @@ public class MassesFragment extends BaseFragment implements LocationRetriever.Lo
     @Override
     public void onLocationRetrieved(Location location) {
         massesViewModel.getRecommendedMasses(location).observe(this, this::onMassesChanged);
-        //adapter.setCurrentLocation(location);
+        adapter.setCurrentLocation(location);
         recyclerView.setAdapter(adapter);
     }
 
