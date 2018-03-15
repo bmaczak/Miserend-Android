@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.frama.miserend.hu.churchdetails.ChurchDetailsActivity;
 import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.search.advanced.AdvancedSearchActivity;
 
 /**
  * Created by Balazs on 2018. 02. 18..
@@ -26,5 +27,9 @@ public class Router {
         Intent churchDetailsIntent = new Intent(activity, ChurchDetailsActivity.class);
         churchDetailsIntent.putExtra(IntentExtra.CHURCH_ID, church.getId());
         activity.startActivity(churchDetailsIntent);
+    }
+
+    public void showAdvancedSearch() {
+        activity.startActivity(new Intent(activity, AdvancedSearchActivity.class));
     }
 }

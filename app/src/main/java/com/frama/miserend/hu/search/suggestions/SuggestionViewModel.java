@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.search.suggestions.advanced.AdvancedSearchSuggestion;
 import com.frama.miserend.hu.search.suggestions.church.ChurchSuggestion;
 import com.frama.miserend.hu.search.suggestions.city.CitySuggestion;
 
@@ -40,14 +41,22 @@ public class SuggestionViewModel extends AndroidViewModel {
     }
 
     public void updateSuggestions(String searchTerm) {
-        Flowable.zip(getChurchSuggestions(searchTerm), getCitySuggestions(searchTerm),
-                (suggestions, suggestions2) -> {
-                    suggestions.addAll(suggestions2);
-                    return suggestions;
-                })
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(suggestionResult -> suggestions.setValue(suggestionResult));
+        if (searchTerm.length() > 2) {
+            Flowable.zip(getChurchSuggestions(searchTerm), getCitySuggestions(searchTerm),
+                    (suggestions, suggestions2) -> {
+                        suggestions.addAll(suggestions2);
+                        suggestions.add(0, new AdvancedSearchSuggestion());
+                        return suggestions;
+                    })
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(suggestionResult -> suggestions.setValue(suggestionResult));
+        } else {
+            List<Suggestion> suggestionList = new ArrayList<>();
+            suggestionList.add(new AdvancedSearchSuggestion());
+            suggestions.setValue(suggestionList);
+        }
+
     }
 
     private Flowable<List<Suggestion>> getChurchSuggestions(String searchTerm) {

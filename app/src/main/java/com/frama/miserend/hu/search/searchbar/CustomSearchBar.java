@@ -49,7 +49,7 @@ public class CustomSearchBar extends MaterialSearchBar {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.length() > 2) {
+                if (charSequence.length() > 0) {
                     searchBarCallback.onSearchTermChanged(charSequence.toString());
                 } else {
                     clearSuggestions();

@@ -22,6 +22,7 @@ import com.frama.miserend.hu.router.Router;
 import com.frama.miserend.hu.search.searchbar.CustomSearchBar;
 import com.frama.miserend.hu.search.suggestions.Suggestion;
 import com.frama.miserend.hu.search.suggestions.SuggestionViewModel;
+import com.frama.miserend.hu.search.suggestions.advanced.AdvancedSearchSuggestion;
 import com.frama.miserend.hu.search.suggestions.church.ChurchSuggestion;
 
 import java.util.List;
@@ -75,6 +76,8 @@ public class HomeScreenActivity extends BaseActivity implements DatabaseDialogCa
             public void onSuggestionSelected(Suggestion suggestion) {
                 if (suggestion instanceof ChurchSuggestion) {
                     router.showChurchDetails(((ChurchSuggestion) suggestion).getData());
+                } else if (suggestion instanceof AdvancedSearchSuggestion) {
+                    router.showAdvancedSearch();
                 }
             }
         });
