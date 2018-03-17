@@ -5,9 +5,11 @@ import com.frama.miserend.hu.di.modules.AdvancedSearchModule;
 import com.frama.miserend.hu.di.modules.ChurchDetailsModule;
 import com.frama.miserend.hu.di.modules.HomeScreenModule;
 import com.frama.miserend.hu.di.modules.RouterModule;
+import com.frama.miserend.hu.di.modules.SearchResultModule;
 import com.frama.miserend.hu.di.scopes.PerActivity;
 import com.frama.miserend.hu.home.HomeScreenActivity;
 import com.frama.miserend.hu.search.advanced.AdvancedSearchActivity;
+import com.frama.miserend.hu.search.result.SearchResultActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -30,4 +32,8 @@ public abstract class ActivityBuilder {
     @PerActivity
     @ContributesAndroidInjector(modules = {AdvancedSearchModule.class, FragmentBuilder.class, RouterModule.class})
     abstract AdvancedSearchActivity bindAdvancedSearchActivity();
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = {SearchResultModule.class, FragmentBuilder.class, RouterModule.class})
+    abstract SearchResultActivity bindSearchResultActivity();
 }

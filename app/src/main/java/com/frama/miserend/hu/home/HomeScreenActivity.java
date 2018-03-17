@@ -80,6 +80,12 @@ public class HomeScreenActivity extends BaseActivity implements DatabaseDialogCa
                     router.showAdvancedSearch();
                 }
             }
+
+            @Override
+            public void onSearchConfirmed(String searchTerm) {
+                searchBar.close();
+                router.showSearchResults(searchTerm);
+            }
         });
     }
 

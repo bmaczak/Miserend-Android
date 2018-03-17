@@ -69,6 +69,7 @@ public class CustomSearchBar extends MaterialSearchBar {
 
             @Override
             public void onSearchConfirmed(CharSequence text) {
+                searchBarCallback.onSearchConfirmed(text.toString());
             }
 
             @Override
@@ -104,5 +105,7 @@ public class CustomSearchBar extends MaterialSearchBar {
         void onSearchStateChanged(boolean enabled);
 
         void onSuggestionSelected(Suggestion suggestion);
+
+        void onSearchConfirmed(String searchTerm);
     }
 }
