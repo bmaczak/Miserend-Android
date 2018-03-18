@@ -14,6 +14,7 @@ import com.frama.miserend.hu.base.BaseActivity;
 import com.frama.miserend.hu.database.dialog.DatabaseDialogCallback;
 import com.frama.miserend.hu.database.dialog.DatabaseMissingDialogFragment;
 import com.frama.miserend.hu.database.dialog.DatabaseUpdateAvailableDialogFragment;
+import com.frama.miserend.hu.database.local.LocalDatabase;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseState;
 import com.frama.miserend.hu.home.pages.churches.ChurchesFragment;
 import com.frama.miserend.hu.home.pages.map.ChurchesMapFragment;
@@ -44,6 +45,8 @@ public class HomeScreenActivity extends BaseActivity implements DatabaseDialogCa
     SuggestionViewModel suggestionViewModel;
     @Inject
     Router router;
+    @Inject
+    LocalDatabase localDatabase;
 
     @BindView(R.id.search_bar)
     CustomSearchBar searchBar;
@@ -70,6 +73,9 @@ public class HomeScreenActivity extends BaseActivity implements DatabaseDialogCa
             @Override
             public void onSearchStateChanged(boolean enabled) {
                 searchFader.setVisibility(enabled ? View.VISIBLE : View.GONE);
+                if (enabled) {
+                    suggestionViewModel.updateSuggestions("");
+                }
             }
 
             @Override
@@ -83,6 +89,7 @@ public class HomeScreenActivity extends BaseActivity implements DatabaseDialogCa
 
             @Override
             public void onSearchConfirmed(String searchTerm) {
+                suggestionViewModel.addRecentSearch(searchTerm);
                 searchBar.close();
                 router.showSearchResults(searchTerm);
             }

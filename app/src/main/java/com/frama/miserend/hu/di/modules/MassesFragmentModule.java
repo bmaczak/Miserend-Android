@@ -4,12 +4,8 @@ import android.app.Application;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.v4.app.Fragment;
 
-import com.frama.miserend.hu.churchdetails.MassAdapter;
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.di.scopes.PerFragment;
-import com.frama.miserend.hu.home.pages.churches.near.NearChurchesAdapter;
-import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
-import com.frama.miserend.hu.home.pages.churches.near.NearChurchesViewModel;
 import com.frama.miserend.hu.home.pages.masses.MassesAdapter;
 import com.frama.miserend.hu.home.pages.masses.MassesFragment;
 import com.frama.miserend.hu.home.pages.masses.MassesViewModel;

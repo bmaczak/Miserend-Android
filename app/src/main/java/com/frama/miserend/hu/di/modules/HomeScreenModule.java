@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.arch.lifecycle.ViewModelProviders;
 
+import com.frama.miserend.hu.database.local.LocalDatabase;
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseManager;
 import com.frama.miserend.hu.di.scopes.PerActivity;
@@ -49,7 +50,7 @@ public class HomeScreenModule {
 
     @PerActivity
     @Provides
-    SuggestionViewModel.Factory provideSuggestionViewModelFactory(Application application, MiserendDatabase miserendDatabase) {
-        return new SuggestionViewModel.Factory(application, miserendDatabase);
+    SuggestionViewModel.Factory provideSuggestionViewModelFactory(Application application, MiserendDatabase miserendDatabase, LocalDatabase localDatabase) {
+        return new SuggestionViewModel.Factory(application, miserendDatabase, localDatabase);
     }
 }

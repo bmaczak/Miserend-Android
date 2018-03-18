@@ -8,10 +8,10 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="16dp"
-        android:src="@drawable/ic_location_city" />
+        android:src="@drawable/ic_history" />
 
     <TextView
-        android:id="@+id/suggestion_city_name"
+        android:id="@+id/suggestion_recent_search_term"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

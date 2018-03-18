@@ -3,7 +3,6 @@ package com.frama.miserend.hu.di.modules;
 import android.app.Activity;
 
 import com.frama.miserend.hu.di.scopes.PerActivity;
-import com.frama.miserend.hu.search.advanced.AdvancedSearchActivity;
 import com.frama.miserend.hu.search.result.SearchResultActivity;
 
 import dagger.Module;
