@@ -2,12 +2,14 @@ package com.frama.miserend.hu.churchdetails;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.entities.Mass;
 import com.frama.miserend.hu.utils.DateUtils;
+import com.google.android.flexbox.FlexboxLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,13 +31,15 @@ public class MassListViewHolder extends RecyclerView.ViewHolder {
     TextView dateText;
     @BindView(R.id.name_of_day)
     TextView dayText;
-    @BindView(R.id.mass_list)
-    TextView massList;
+    @BindView(R.id.mass_flexbox)
+    FlexboxLayout flexboxLayout;
 
+    private LayoutInflater layoutInflater;
     private SimpleDateFormat simpleDateFormat;
 
     public MassListViewHolder(View itemView) {
         super(itemView);
+        this.layoutInflater = LayoutInflater.from(itemView.getContext());
         simpleDateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.ROOT);
         ButterKnife.bind(this, itemView);
     }
@@ -43,10 +47,16 @@ public class MassListViewHolder extends RecyclerView.ViewHolder {
     public void bind(DayOfMasses dayOfMasses) {
         dateText.setText(simpleDateFormat.format(dayOfMasses.getDay().getTime()));
         dayText.setText(DateUtils.getNameOfDay(dayText.getResources(), dayOfMasses.getDay()));
-        List<String> massStrings = new ArrayList<>();
+
+        flexboxLayout.removeAllViews();
         for (Mass mass : dayOfMasses.getMasses()) {
-            massStrings.add(DateUtils.cutSecondsFromTime(mass.getTime()));
+            flexboxLayout.addView(createFlexboxItem(mass));
         }
-        massList.setText(TextUtils.join(", ", massStrings));
+    }
+
+    private View createFlexboxItem(Mass mass) {
+        View view = layoutInflater.inflate(R.layout.item_mass_flexbox_element, flexboxLayout, false);
+        ((TextView) view.findViewById(R.id.mass_time)).setText(DateUtils.cutSecondsFromTime(mass.getTime()));
+        return view;
     }
 }
