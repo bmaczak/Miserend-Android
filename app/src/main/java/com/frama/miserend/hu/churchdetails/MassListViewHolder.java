@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.entities.Mass;
 import com.frama.miserend.hu.utils.DateUtils;
+import com.frama.miserend.hu.utils.Validation;
 import com.google.android.flexbox.FlexboxLayout;
 
 import java.text.SimpleDateFormat;
@@ -57,6 +58,11 @@ public class MassListViewHolder extends RecyclerView.ViewHolder {
     private View createFlexboxItem(Mass mass) {
         View view = layoutInflater.inflate(R.layout.item_mass_flexbox_element, flexboxLayout, false);
         ((TextView) view.findViewById(R.id.mass_time)).setText(DateUtils.cutSecondsFromTime(mass.getTime()));
+        view.findViewById(R.id.mass_info_icon).setVisibility(hasInfo(mass) ? View.VISIBLE : View.GONE);
         return view;
+    }
+
+    private boolean hasInfo(Mass mass) {
+        return Validation.notEmpty(mass.getComment()) || Validation.notEmpty(mass.getTags()) || (mass.getPeriod() != null && !mass.getPeriod().equals("0"));
     }
 }
