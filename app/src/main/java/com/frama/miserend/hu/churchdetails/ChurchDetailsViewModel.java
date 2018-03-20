@@ -66,6 +66,9 @@ public class ChurchDetailsViewModel extends AndroidViewModel {
                 .subscribe(db -> db.favoritesDao().delete(new Favorite(churchId)));
     }
 
+    public int getChurchId() {
+        return churchId;
+    }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
 

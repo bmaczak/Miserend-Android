@@ -6,6 +6,9 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,6 +19,7 @@ import com.frama.miserend.hu.database.miserend.entities.Church;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.map.StaticMapHelper;
+import com.frama.miserend.hu.report.ReportDialogFragment;
 import com.frama.miserend.hu.utils.ViewUtils;
 import com.rd.PageIndicatorView;
 
@@ -70,6 +74,27 @@ public class ChurchDetailsActivity extends BaseActivity {
         setupActionBar();
         setupGallery();
         churchDetailsViewModel.getChurchWithMasses().observe(this, this::onChurchDetailsLoaded);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.church_details_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.report_error:
+                ReportDialogFragment.newInstance(churchDetailsViewModel.getChurchId()).show(getSupportFragmentManager(), "report");
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void setupActionBar() {

@@ -1,8 +1,13 @@
 package com.frama.miserend.hu.api;
 
 
+import com.frama.miserend.hu.report.ReportProblemBody;
+import com.frama.miserend.hu.report.ReportProblemResponse;
+
 import io.reactivex.Single;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
@@ -13,5 +18,8 @@ public interface MiserendApi {
 
     @GET("api/v4/updated/{date}")
     Single<Integer> updateAvailable(@Path("date") String date);
+
+    @POST("api/v4/report")
+    Single<ReportProblemResponse> reportProblem(@Body ReportProblemBody reportProblemBody);
 
 }

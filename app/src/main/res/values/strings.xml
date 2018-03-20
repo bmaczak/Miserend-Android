@@ -14,6 +14,7 @@
 
     <string name="church_location">Megközelítés</string>
     <string name="church_gallery">Képek</string>
+    <string name="report_error">Hibajelentés</string>
 
     <string name="advanced_search">Részletes kereső</string>
 
@@ -33,5 +34,13 @@
     <string name="dialog_db_update_btn_cancel">Nem</string>
 
     <string name="placeholder">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</string>
+    <string name="report_wrong_location">Rossz pozíció</string>
+    <string name="report_wrong_masses">Rossz miseidőpont</string>
+    <string name="report_other">Egyéb</string>
+    <string name="report_text_hint">Hiba leírása</string>
+    <string name="report_mail_hint">Email cím (opcionális)</string>
+    <string name="menu_report">Hibajelentés</string>
+    <string name="ok">ok</string>
+    <string name="cancel">mégse</string>
 
 </resources>

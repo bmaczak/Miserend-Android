@@ -1,7 +1,6 @@
 package com.frama.miserend.hu.churchdetails;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -13,8 +12,6 @@ import com.frama.miserend.hu.utils.Validation;
 import com.google.android.flexbox.FlexboxLayout;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
