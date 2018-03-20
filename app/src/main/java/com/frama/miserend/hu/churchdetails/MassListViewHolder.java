@@ -42,13 +42,15 @@ public class MassListViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(DayOfMasses dayOfMasses) {
+    public void bind(DayOfMasses dayOfMasses, OnMassClickedListener onMassClickedListener) {
         dateText.setText(simpleDateFormat.format(dayOfMasses.getDay().getTime()));
         dayText.setText(DateUtils.getNameOfDay(dayText.getResources(), dayOfMasses.getDay()));
 
         flexboxLayout.removeAllViews();
         for (Mass mass : dayOfMasses.getMasses()) {
-            flexboxLayout.addView(createFlexboxItem(mass));
+            View view = createFlexboxItem(mass);
+            view.setOnClickListener(view1 -> onMassClickedListener.onMassClicked(mass));
+            flexboxLayout.addView(view);
         }
     }
 

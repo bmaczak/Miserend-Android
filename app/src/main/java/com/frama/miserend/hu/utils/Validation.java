@@ -5,6 +5,10 @@ package com.frama.miserend.hu.utils;
  */
 
 public class Validation {
+    public static boolean isEmpty(String text) {
+        return !notEmpty(text);
+    }
+
     public static boolean notEmpty(String text) {
         return text != null && !text.isEmpty();
     }

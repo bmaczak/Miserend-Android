@@ -16,8 +16,10 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.base.BaseActivity;
 import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.database.miserend.entities.Mass;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
+import com.frama.miserend.hu.home.pages.masses.MassesAdapter;
 import com.frama.miserend.hu.map.StaticMapHelper;
 import com.frama.miserend.hu.report.ReportDialogFragment;
 import com.frama.miserend.hu.utils.ViewUtils;
@@ -36,7 +38,7 @@ import butterknife.ButterKnife;
  * Created by Balazs on 2018. 02. 18..
  */
 
-public class ChurchDetailsActivity extends BaseActivity {
+public class ChurchDetailsActivity extends BaseActivity implements OnMassClickedListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -132,10 +134,17 @@ public class ChurchDetailsActivity extends BaseActivity {
                 DayOfMasses dayOfMasses = new DayOfMasses(calendar, MassFilter.filterForDay(churchWithMasses.getMasses(), calendar));
                 dayOfMassesList.add(dayOfMasses);
             }
-            massesRecyclerView.setAdapter(new MassAdapter(dayOfMassesList));
+            MassAdapter adapter = new MassAdapter(dayOfMassesList);
+            adapter.setOnMassClickedListener(this);
+            massesRecyclerView.setAdapter(adapter);
         } else {
             massesRecyclerView.setVisibility(View.GONE);
             noMassesText.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onMassClicked(Mass mass) {
+        MassDetailsDialogFragment.newInstance(mass).show(getSupportFragmentManager(), "mass_details");
     }
 }

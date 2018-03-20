@@ -15,6 +15,7 @@ import java.util.List;
 public class MassAdapter extends RecyclerView.Adapter<MassListViewHolder> {
 
     private List<DayOfMasses> masses;
+    private OnMassClickedListener onMassClickedListener;
 
     public MassAdapter(List<DayOfMasses> masses) {
         this.masses = masses;
@@ -27,11 +28,15 @@ public class MassAdapter extends RecyclerView.Adapter<MassListViewHolder> {
 
     @Override
     public void onBindViewHolder(MassListViewHolder holder, int position) {
-        holder.bind(masses.get(position));
+        holder.bind(masses.get(position), onMassClickedListener);
     }
 
     @Override
     public int getItemCount() {
         return masses.size();
+    }
+
+    public void setOnMassClickedListener(OnMassClickedListener onMassClickedListener) {
+        this.onMassClickedListener = onMassClickedListener;
     }
 }

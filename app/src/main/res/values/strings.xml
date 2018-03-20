@@ -43,4 +43,20 @@
     <string name="ok">ok</string>
     <string name="cancel">mégse</string>
 
+    <string name="mass_details_title">Mise részletei</string>
+
+    <!-- Tags -->
+    <string name="tag_g">Gitáros</string>
+    <string name="tag_cs">Csendes</string>
+    <string name="tag_csal">Családos / gyerek</string>
+    <string name="tag_d">Diák</string>
+    <string name="tag_ifi">Egyetemista / ifjúsági</string>
+    <string name="tag_ige">Igeliturgia</string>
+    <string name="tag_szent">Szentségimádás</string>
+    <string name="tag_utr">Utrenye</string>
+    <string name="tag_vecs">Vecsernye</string>
+    <string name="tag_gor">Görögkatolikus</string>
+    <string name="tag_rom">Római katolikus</string>
+    <string name="tag_regi">Régi rítusú</string>
+
 </resources>

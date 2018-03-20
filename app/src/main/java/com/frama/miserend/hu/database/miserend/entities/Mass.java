@@ -5,13 +5,15 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.io.Serializable;
+
 /**
  * Created by Balazs on 2018. 02. 10..
  */
 @Entity(tableName = "misek", foreignKeys = @ForeignKey(entity = Church.class,
         parentColumns = "tid",
         childColumns = "tid"))
-public class Mass {
+public class Mass implements Serializable {
 
     @PrimaryKey
     @ColumnInfo(name = "mid")
