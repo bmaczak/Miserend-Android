@@ -6,6 +6,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,10 +20,10 @@ import com.frama.miserend.hu.database.miserend.entities.Church;
 import com.frama.miserend.hu.database.miserend.entities.Mass;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
-import com.frama.miserend.hu.home.pages.masses.MassesAdapter;
 import com.frama.miserend.hu.map.StaticMapHelper;
 import com.frama.miserend.hu.report.ReportDialogFragment;
 import com.frama.miserend.hu.utils.ViewUtils;
+import com.google.android.flexbox.FlexboxLayout;
 import com.rd.PageIndicatorView;
 
 import java.util.ArrayList;
@@ -54,6 +55,10 @@ public class ChurchDetailsActivity extends BaseActivity implements OnMassClicked
     TextView churchAddress;
     @BindView(R.id.church_getting_there)
     TextView churchGettingThere;
+    @BindView(R.id.masses_today_flexbox)
+    FlexboxLayout massesTodayFlexbox;
+    @BindView(R.id.masses_this_sunday_flexbox)
+    FlexboxLayout massesThisSundayFlexbox;
     @BindView(R.id.no_masses_text)
     TextView noMassesText;
     @BindView(R.id.masses_recycler_view)
@@ -127,8 +132,9 @@ public class ChurchDetailsActivity extends BaseActivity implements OnMassClicked
 
     private void displayMasses(ChurchWithMasses churchWithMasses) {
         if (!churchWithMasses.getMasses().isEmpty()) {
+            displayHighlightedMasses(churchWithMasses);
             List<DayOfMasses> dayOfMassesList = new ArrayList<>();
-            for (int i = 0; i < 20; ++i) {
+            for (int i = 1; i < 20; ++i) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.add(Calendar.DAY_OF_MONTH, i);
                 DayOfMasses dayOfMasses = new DayOfMasses(calendar, MassFilter.filterForDay(churchWithMasses.getMasses(), calendar));
@@ -143,8 +149,33 @@ public class ChurchDetailsActivity extends BaseActivity implements OnMassClicked
         }
     }
 
+    private void displayHighlightedMasses(ChurchWithMasses churchWithMasses) {
+
+        Calendar today = Calendar.getInstance();
+        List<Mass> todaysMasses = MassFilter.filterForDay(churchWithMasses.getMasses(), today);
+        addMassesToFlexboxLayout(massesTodayFlexbox, todaysMasses);
+
+        Calendar sunday = Calendar.getInstance();
+        sunday.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        List<Mass> sundayMasses = MassFilter.filterForDay(churchWithMasses.getMasses(), sunday);
+        addMassesToFlexboxLayout(massesThisSundayFlexbox, sundayMasses);
+    }
+
+    private void addMassesToFlexboxLayout(FlexboxLayout flexboxLayout, List<Mass> masses) {
+        LayoutInflater layoutInflater = getLayoutInflater();
+        for (Mass mass : masses) {
+            View view = ViewUtils.createMassFlexboxItem(layoutInflater, flexboxLayout, mass);
+            view.setOnClickListener(view1 -> showMassDetailsDialog(mass));
+            flexboxLayout.addView(view);
+        }
+    }
+
     @Override
     public void onMassClicked(Mass mass) {
+        showMassDetailsDialog(mass);
+    }
+
+    private void showMassDetailsDialog(Mass mass) {
         MassDetailsDialogFragment.newInstance(mass).show(getSupportFragmentManager(), "mass_details");
     }
 }

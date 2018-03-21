@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.frama.miserend.hu.utils.Validation;
+
 import java.io.Serializable;
 
 /**
@@ -146,5 +148,9 @@ public class Mass implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public boolean hasInfo() {
+        return Validation.notEmpty(comment) || Validation.notEmpty(tags) || (period != null && !period.equals("0"));
     }
 }

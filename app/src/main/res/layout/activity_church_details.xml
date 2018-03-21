@@ -81,6 +81,58 @@
                 android:textColor="@color/black_40"
                 android:textSize="14sp" />
 
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/masses_today_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Ma"
+                        android:textColor="@color/black_80"
+                        android:textSize="20sp" />
+
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:id="@+id/masses_today_flexbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        app:alignContent="flex_start"
+                        app:alignItems="flex_start"
+                        app:flexWrap="wrap" />
+
+                    <TextView
+                        android:id="@+id/masses_this_sunday_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="Most vasárnap"
+                        android:textColor="@color/black_80"
+                        android:textSize="20sp" />
+
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:id="@+id/masses_this_sunday_flexbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        app:alignContent="flex_start"
+                        app:alignItems="flex_start"
+                        app:flexWrap="wrap" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
             <TextView
                 android:id="@+id/no_masses_text"
                 android:layout_width="match_parent"
