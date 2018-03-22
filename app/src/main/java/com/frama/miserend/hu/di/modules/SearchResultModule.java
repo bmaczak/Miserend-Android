@@ -1,9 +1,14 @@
 package com.frama.miserend.hu.di.modules;
 
-import android.app.Activity;
+import android.app.Application;
+import android.arch.lifecycle.ViewModelProviders;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 
+import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.di.scopes.PerActivity;
-import com.frama.miserend.hu.search.result.SearchResultActivity;
+import com.frama.miserend.hu.di.scopes.PerFragment;
+import com.frama.miserend.hu.search.result.SearchResultViewModel;
 
 import dagger.Module;
 import dagger.Provides;
@@ -14,9 +19,15 @@ import dagger.Provides;
 @Module
 public class SearchResultModule {
 
-    @PerActivity
+    @PerFragment
     @Provides
-    Activity provideActivity(SearchResultActivity searchResultActivity) {
-        return searchResultActivity;
+    SearchResultViewModel provideSearchResultViewModel(Fragment fragment, SearchResultViewModel.Factory factory) {
+        return ViewModelProviders.of(fragment, factory).get(SearchResultViewModel.class);
+    }
+
+    @PerFragment
+    @Provides
+    SearchResultViewModel.Factory provideSearchResultViewModelFactory(@NonNull Application application, MiserendDatabase miserendDatabase) {
+        return new SearchResultViewModel.Factory(application, miserendDatabase);
     }
 }

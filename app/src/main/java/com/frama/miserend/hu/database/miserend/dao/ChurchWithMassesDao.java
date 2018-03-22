@@ -25,4 +25,11 @@ public interface ChurchWithMassesDao {
     @Query("SELECT * FROM templomok WHERE tid = :churchId LIMIT 1")
     LiveData<ChurchWithMasses> getChurchById(int churchId);
 
+    @Query("SELECT * FROM templomok WHERE (nev LIKE '%' || :searchTerm || '%' OR ismertnev LIKE '%' || :searchTerm || '%')")
+    LiveData<List<ChurchWithMasses>> getBySearch(String searchTerm);
+
+    @Query("SELECT * FROM templomok WHERE (nev LIKE '%' || :searchTerm || '%' OR ismertnev LIKE '%' || :searchTerm || '%') " +
+            "AND varos = :city")
+    LiveData<List<ChurchWithMasses>> getBySearch(String searchTerm, String city);
+
 }

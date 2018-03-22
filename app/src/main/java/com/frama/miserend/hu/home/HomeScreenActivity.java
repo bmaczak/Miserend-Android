@@ -20,11 +20,14 @@ import com.frama.miserend.hu.home.pages.churches.ChurchesFragment;
 import com.frama.miserend.hu.home.pages.map.ChurchesMapFragment;
 import com.frama.miserend.hu.home.pages.masses.MassesFragment;
 import com.frama.miserend.hu.router.Router;
+import com.frama.miserend.hu.search.SearchParams;
 import com.frama.miserend.hu.search.searchbar.CustomSearchBar;
 import com.frama.miserend.hu.search.suggestions.Suggestion;
 import com.frama.miserend.hu.search.suggestions.SuggestionViewModel;
 import com.frama.miserend.hu.search.suggestions.advanced.AdvancedSearchSuggestion;
 import com.frama.miserend.hu.search.suggestions.church.ChurchSuggestion;
+import com.frama.miserend.hu.search.suggestions.city.CitySuggestion;
+import com.frama.miserend.hu.search.suggestions.recent.RecentSearchSuggestion;
 
 import java.util.List;
 
@@ -84,6 +87,13 @@ public class HomeScreenActivity extends BaseActivity implements DatabaseDialogCa
                     router.showChurchDetails(((ChurchSuggestion) suggestion).getData());
                 } else if (suggestion instanceof AdvancedSearchSuggestion) {
                     router.showAdvancedSearch();
+                } else if (suggestion instanceof CitySuggestion) {
+                    SearchParams searchParams = new SearchParams();
+                    searchParams.setCity(((CitySuggestion) suggestion).getData());
+                    router.showSearchResults(searchParams);
+                } else if (suggestion instanceof RecentSearchSuggestion) {
+                    SearchParams searchParams = new SearchParams(((RecentSearchSuggestion) suggestion).getData());
+                    router.showSearchResults(searchParams);
                 }
             }
 
@@ -91,7 +101,7 @@ public class HomeScreenActivity extends BaseActivity implements DatabaseDialogCa
             public void onSearchConfirmed(String searchTerm) {
                 suggestionViewModel.addRecentSearch(searchTerm);
                 searchBar.close();
-                router.showSearchResults(searchTerm);
+                router.showSearchResults(new SearchParams(searchTerm));
             }
         });
     }
@@ -102,7 +112,6 @@ public class HomeScreenActivity extends BaseActivity implements DatabaseDialogCa
 
     private void onDatabaseStateChanged(DatabaseState databaseState) {
         switch (databaseState) {
-
             case UP_TO_DATE:
                 showFragment(new ChurchesFragment());
                 break;

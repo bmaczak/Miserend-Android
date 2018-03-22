@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.frama.miserend.hu.churchdetails.ChurchDetailsActivity;
 import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.search.SearchParams;
 import com.frama.miserend.hu.search.advanced.AdvancedSearchActivity;
 import com.frama.miserend.hu.search.result.SearchResultActivity;
 
@@ -16,7 +17,7 @@ public class Router {
 
     public static class IntentExtra {
         public static String CHURCH_ID = "church_id";
-        public static String SEARCH_TERM = "search_term";
+        public static String SEARCH_PARAMS = "search_params";
     }
 
     private Activity activity;
@@ -35,9 +36,9 @@ public class Router {
         activity.startActivity(new Intent(activity, AdvancedSearchActivity.class));
     }
 
-    public void showSearchResults(String searchTerm) {
+    public void showSearchResults(SearchParams searchParams) {
         Intent searchResultIntent = new Intent(activity, SearchResultActivity.class);
-        searchResultIntent.putExtra(IntentExtra.SEARCH_TERM, searchTerm);
+        searchResultIntent.putExtra(IntentExtra.SEARCH_PARAMS, searchParams);
         activity.startActivity(searchResultIntent);
     }
 }
