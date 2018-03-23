@@ -1,0 +1,56 @@
+package com.frama.miserend.hu.home.di;
+
+import android.app.Activity;
+import android.app.Application;
+import android.arch.lifecycle.ViewModelProviders;
+
+import com.frama.miserend.hu.database.local.LocalDatabase;
+import com.frama.miserend.hu.database.miserend.MiserendDatabase;
+import com.frama.miserend.hu.database.miserend.manager.DatabaseManager;
+import com.frama.miserend.hu.di.scopes.PerActivity;
+import com.frama.miserend.hu.home.view.HomeScreenActivity;
+import com.frama.miserend.hu.home.viewmodel.HomeViewModel;
+import com.frama.miserend.hu.preferences.Preferences;
+import com.frama.miserend.hu.search.suggestions.viewmodel.SuggestionViewModel;
+
+import dagger.Module;
+import dagger.Provides;
+
+/**
+ * Created by Balazs on 2018. 02. 11..
+ */
+@Module
+public class HomeScreenModule {
+
+    @PerActivity
+    @Provides
+    Activity provideActivity(HomeScreenActivity homeScreenActivity) {
+        return homeScreenActivity;
+    }
+
+    @PerActivity
+    @Provides
+    HomeViewModel provideHomeViewModel(HomeScreenActivity homeScreenActivity, HomeViewModel.Factory factory) {
+        return ViewModelProviders.of(homeScreenActivity, factory)
+                .get(HomeViewModel.class);
+    }
+
+    @PerActivity
+    @Provides
+    HomeViewModel.Factory provideHomeViewModelFactory(Application application, DatabaseManager databaseManager, Preferences preferences) {
+        return new HomeViewModel.Factory(application, databaseManager, preferences);
+    }
+
+    @PerActivity
+    @Provides
+    SuggestionViewModel provideSuggestionViewModel(HomeScreenActivity homeScreenActivity, SuggestionViewModel.Factory factory) {
+        return ViewModelProviders.of(homeScreenActivity, factory)
+                .get(SuggestionViewModel.class);
+    }
+
+    @PerActivity
+    @Provides
+    SuggestionViewModel.Factory provideSuggestionViewModelFactory(Application application, MiserendDatabase miserendDatabase, LocalDatabase localDatabase) {
+        return new SuggestionViewModel.Factory(application, miserendDatabase, localDatabase);
+    }
+}

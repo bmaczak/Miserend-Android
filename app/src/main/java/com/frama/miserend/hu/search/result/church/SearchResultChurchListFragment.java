@@ -12,7 +12,7 @@ import com.frama.miserend.hu.base.BaseFragment;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 import com.frama.miserend.hu.router.Router;
 import com.frama.miserend.hu.search.SearchParams;
-import com.frama.miserend.hu.search.result.SearchResultViewModel;
+import com.frama.miserend.hu.search.result.viewmodel.SearchResultViewModel;
 
 import java.util.List;
 

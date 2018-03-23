@@ -6,7 +6,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.entities.Church;
-import com.frama.miserend.hu.search.suggestions.SuggestionViewHolder;
+import com.frama.miserend.hu.search.suggestions.view.SuggestionViewHolder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

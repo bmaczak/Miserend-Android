@@ -1,16 +1,15 @@
 package com.frama.miserend.hu.di.modules.builder;
 
-import com.frama.miserend.hu.churchdetails.ChurchDetailsActivity;
-import com.frama.miserend.hu.di.modules.AdvancedSearchModule;
-import com.frama.miserend.hu.di.modules.ChurchDetailsModule;
-import com.frama.miserend.hu.di.modules.HomeScreenModule;
+import com.frama.miserend.hu.churchdetails.view.ChurchDetailsActivity;
+import com.frama.miserend.hu.search.advanced.di.AdvancedSearchModule;
+import com.frama.miserend.hu.churchdetails.di.ChurchDetailsModule;
+import com.frama.miserend.hu.home.di.HomeScreenModule;
 import com.frama.miserend.hu.di.modules.RouterModule;
-import com.frama.miserend.hu.di.modules.SearchResultActivityModule;
-import com.frama.miserend.hu.di.modules.SearchResultModule;
+import com.frama.miserend.hu.search.result.di.SearchResultActivityModule;
 import com.frama.miserend.hu.di.scopes.PerActivity;
-import com.frama.miserend.hu.home.HomeScreenActivity;
+import com.frama.miserend.hu.home.view.HomeScreenActivity;
 import com.frama.miserend.hu.search.advanced.AdvancedSearchActivity;
-import com.frama.miserend.hu.search.result.SearchResultActivity;
+import com.frama.miserend.hu.search.result.view.SearchResultActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;

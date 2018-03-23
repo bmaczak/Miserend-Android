@@ -47,7 +47,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:fitsSystemWindows="true"
-        app:layout_behavior="com.frama.miserend.hu.view.SearchBarBehavior"
+        app:layout_behavior="com.frama.miserend.hu.home.view.SearchBarBehavior"
         app:mt_hint="@string/search_hint"
         app:mt_maxSuggestionsCount="5" />
 
@@ -60,6 +60,6 @@
         app:itemBackground="@color/colorPrimary"
         app:itemIconTint="@color/bottom_navigation_item_color"
         app:itemTextColor="@color/bottom_navigation_item_color"
-        app:layout_behavior="com.frama.miserend.hu.view.BottomNavigationViewBehavior"
+        app:layout_behavior="com.frama.miserend.hu.home.view.BottomNavigationViewBehavior"
         app:menu="@menu/home_navigation_menu" />
 </android.support.design.widget.CoordinatorLayout>

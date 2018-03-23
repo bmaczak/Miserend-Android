@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 
-import com.frama.miserend.hu.search.suggestions.CustomSuggestionAdapter;
+import com.frama.miserend.hu.search.suggestions.view.CustomSuggestionAdapter;
 import com.frama.miserend.hu.search.suggestions.Suggestion;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 

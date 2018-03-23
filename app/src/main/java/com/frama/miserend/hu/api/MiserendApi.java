@@ -1,8 +1,8 @@
 package com.frama.miserend.hu.api;
 
 
-import com.frama.miserend.hu.report.ReportProblemBody;
-import com.frama.miserend.hu.report.ReportProblemResponse;
+import com.frama.miserend.hu.report.model.ReportProblemBody;
+import com.frama.miserend.hu.report.model.ReportProblemResponse;
 
 import io.reactivex.Single;
 import retrofit2.http.Body;

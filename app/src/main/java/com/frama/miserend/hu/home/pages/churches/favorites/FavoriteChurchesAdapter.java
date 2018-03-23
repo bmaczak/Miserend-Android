@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
-import com.frama.miserend.hu.home.pages.churches.ChurchDiffUtilCallback;
-import com.frama.miserend.hu.home.pages.churches.ChurchViewHolder;
+import com.frama.miserend.hu.home.pages.churches.view.ChurchDiffUtilCallback;
+import com.frama.miserend.hu.home.pages.churches.view.ChurchViewHolder;
 import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 
 import java.util.ArrayList;

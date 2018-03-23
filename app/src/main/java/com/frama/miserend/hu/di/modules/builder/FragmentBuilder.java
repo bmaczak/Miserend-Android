@@ -1,20 +1,20 @@
 package com.frama.miserend.hu.di.modules.builder;
 
-import com.frama.miserend.hu.di.modules.ChurchesMapFragmentModule;
-import com.frama.miserend.hu.di.modules.FavoritesFragmentModule;
+import com.frama.miserend.hu.home.pages.map.di.ChurchesMapFragmentModule;
+import com.frama.miserend.hu.home.pages.churches.favorites.di.FavoritesFragmentModule;
 import com.frama.miserend.hu.di.modules.FavoritesModule;
 import com.frama.miserend.hu.di.modules.LocationModule;
-import com.frama.miserend.hu.di.modules.MassesFragmentModule;
-import com.frama.miserend.hu.di.modules.NearChurchesFragmentModule;
-import com.frama.miserend.hu.di.modules.ReportDialogModule;
-import com.frama.miserend.hu.di.modules.SearchResultChurchListModule;
-import com.frama.miserend.hu.di.modules.SearchResultModule;
+import com.frama.miserend.hu.home.pages.masses.di.MassesFragmentModule;
+import com.frama.miserend.hu.home.pages.churches.near.di.NearChurchesFragmentModule;
+import com.frama.miserend.hu.report.di.ReportDialogModule;
+import com.frama.miserend.hu.search.result.church.di.SearchResultChurchListModule;
+import com.frama.miserend.hu.search.result.di.SearchResultModule;
 import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.home.pages.churches.favorites.FavoriteChurchesFragment;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
-import com.frama.miserend.hu.home.pages.map.ChurchesMapFragment;
-import com.frama.miserend.hu.home.pages.masses.MassesFragment;
-import com.frama.miserend.hu.report.ReportDialogFragment;
+import com.frama.miserend.hu.home.pages.map.view.ChurchesMapFragment;
+import com.frama.miserend.hu.home.pages.masses.view.MassesFragment;
+import com.frama.miserend.hu.report.view.ReportDialogFragment;
 import com.frama.miserend.hu.search.result.church.SearchResultChurchListFragment;
 
 import dagger.Module;

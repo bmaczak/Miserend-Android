@@ -3,11 +3,11 @@ package com.frama.miserend.hu.router;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.frama.miserend.hu.churchdetails.ChurchDetailsActivity;
+import com.frama.miserend.hu.churchdetails.view.ChurchDetailsActivity;
 import com.frama.miserend.hu.database.miserend.entities.Church;
 import com.frama.miserend.hu.search.SearchParams;
 import com.frama.miserend.hu.search.advanced.AdvancedSearchActivity;
-import com.frama.miserend.hu.search.result.SearchResultActivity;
+import com.frama.miserend.hu.search.result.view.SearchResultActivity;
 
 /**
  * Created by Balazs on 2018. 02. 18..
