@@ -15,7 +15,7 @@ import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
 import com.frama.miserend.hu.home.pages.map.view.ChurchesMapFragment;
 import com.frama.miserend.hu.home.pages.masses.view.MassesFragment;
 import com.frama.miserend.hu.report.view.ReportDialogFragment;
-import com.frama.miserend.hu.search.result.church.SearchResultChurchListFragment;
+import com.frama.miserend.hu.search.result.church.view.SearchResultChurchListFragment;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -48,6 +48,6 @@ public abstract class FragmentBuilder {
     abstract ReportDialogFragment bindReportDialogFragment();
 
     @PerFragment
-    @ContributesAndroidInjector(modules = {SearchResultChurchListModule.class, SearchResultModule.class})
+    @ContributesAndroidInjector(modules = {SearchResultChurchListModule.class, SearchResultModule.class, FavoritesModule.class})
     abstract SearchResultChurchListFragment bindSearchResultChurchListFragment();
 }

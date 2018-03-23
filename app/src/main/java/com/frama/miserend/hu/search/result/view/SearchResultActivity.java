@@ -2,18 +2,12 @@ package com.frama.miserend.hu.search.result.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.widget.FrameLayout;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.base.BaseActivity;
 import com.frama.miserend.hu.router.Router;
 import com.frama.miserend.hu.search.SearchParams;
-import com.frama.miserend.hu.search.result.church.SearchResultChurchListFragment;
-
-import javax.inject.Inject;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import com.frama.miserend.hu.search.result.church.view.SearchResultChurchListFragment;
 
 /**
  * Created by Balazs on 2018. 03. 16..

@@ -46,10 +46,12 @@ public class FavoritesViewModel extends AndroidViewModel {
     }
 
     public void toggleFavorite(int churchId) {
-        if (favorites.getValue().contains(churchId)) {
-            removeFavorite(churchId);
-        } else {
-            addFavorite(churchId);
+        if (favorites.getValue() != null) {
+            if (favorites.getValue().contains(churchId)) {
+                removeFavorite(churchId);
+            } else {
+                addFavorite(churchId);
+            }
         }
     }
 
