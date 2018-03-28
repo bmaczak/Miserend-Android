@@ -22,18 +22,18 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class ActivityBuilder {
 
     @PerActivity
-    @ContributesAndroidInjector(modules = {HomeScreenModule.class, FragmentBuilder.class, RouterModule.class})
+    @ContributesAndroidInjector(modules = {HomeScreenModule.class, RouterModule.class})
     abstract HomeScreenActivity bindHomeScreenActivity();
 
     @PerActivity
-    @ContributesAndroidInjector(modules = {ChurchDetailsModule.class, FragmentBuilder.class, RouterModule.class})
+    @ContributesAndroidInjector(modules = {ChurchDetailsModule.class, RouterModule.class})
     abstract ChurchDetailsActivity bindChurchDetailsActivity();
 
     @PerActivity
-    @ContributesAndroidInjector(modules = {AdvancedSearchModule.class, FragmentBuilder.class, RouterModule.class})
+    @ContributesAndroidInjector()
     abstract AdvancedSearchActivity bindAdvancedSearchActivity();
 
     @PerActivity
-    @ContributesAndroidInjector(modules = {SearchResultActivityModule.class, FragmentBuilder.class, RouterModule.class})
+    @ContributesAndroidInjector(modules = {SearchResultActivityModule.class, RouterModule.class})
     abstract SearchResultActivity bindSearchResultActivity();
 }
