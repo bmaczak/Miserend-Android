@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.base.BaseActivity;
+import com.frama.miserend.hu.base.FragmentHostActivity;
 import com.frama.miserend.hu.churchdetails.viewmodel.ChurchDetailsViewModel;
 import com.frama.miserend.hu.massdetails.view.MassDetailsDialogFragment;
 import com.frama.miserend.hu.database.miserend.entities.Church;
@@ -41,7 +42,7 @@ import butterknife.ButterKnife;
  * Created by Balazs on 2018. 02. 18..
  */
 
-public class ChurchDetailsActivity extends BaseActivity implements OnMassClickedListener {
+public class ChurchDetailsActivity extends FragmentHostActivity implements OnMassClickedListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;

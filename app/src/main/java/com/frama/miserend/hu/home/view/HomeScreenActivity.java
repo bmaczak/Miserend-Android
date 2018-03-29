@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.base.BaseActivity;
+import com.frama.miserend.hu.base.FragmentHostActivity;
 import com.frama.miserend.hu.database.dialog.DatabaseDialogCallback;
 import com.frama.miserend.hu.database.dialog.DatabaseMissingDialogFragment;
 import com.frama.miserend.hu.database.dialog.DatabaseUpdateAvailableDialogFragment;
@@ -41,7 +42,7 @@ import butterknife.ButterKnife;
  * Created by Balazs on 2018. 02. 10..
  */
 
-public class HomeScreenActivity extends BaseActivity implements DatabaseDialogCallback {
+public class HomeScreenActivity extends FragmentHostActivity implements DatabaseDialogCallback {
 
     @Inject
     HomeViewModel viewModel;
