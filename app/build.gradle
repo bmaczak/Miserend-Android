@@ -74,6 +74,9 @@ dependencies {
     //Flexbox
     implementation 'com.google.android:flexbox:0.3.2'
 
+    //Date and time
+    compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
+
     //Testing
     testCompile 'junit:junit:4.12'
 }

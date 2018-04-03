@@ -25,4 +25,7 @@ public interface ChurchDao {
 
     @Query("SELECT DISTINCT varos FROM templomok WHERE varos LIKE '%' || :searchTerm || '%'")
     Flowable<List<String>> getCities(String searchTerm);
+
+    @Query("SELECT DISTINCT varos FROM templomok")
+    Flowable<List<String>> getAllCities();
 }

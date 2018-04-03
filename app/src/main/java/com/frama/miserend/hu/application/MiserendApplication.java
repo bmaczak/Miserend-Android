@@ -5,6 +5,7 @@ import android.app.Application;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.frama.miserend.hu.di.components.DaggerAppComponent;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import javax.inject.Inject;
 
@@ -24,6 +25,7 @@ public class MiserendApplication extends Application implements HasActivityInjec
     public void onCreate() {
         super.onCreate();
         Fresco.initialize(this);
+        AndroidThreeTen.init(this);
         DaggerAppComponent
                 .builder()
                 .application(this)

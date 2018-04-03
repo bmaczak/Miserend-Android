@@ -9,6 +9,8 @@ import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 /**
  * Created by Balazs on 2018. 02. 10..
  */
@@ -25,11 +27,11 @@ public interface ChurchWithMassesDao {
     @Query("SELECT * FROM templomok WHERE tid = :churchId LIMIT 1")
     LiveData<ChurchWithMasses> getChurchById(int churchId);
 
-    @Query("SELECT * FROM templomok WHERE (nev LIKE '%' || :searchTerm || '%' OR ismertnev LIKE '%' || :searchTerm || '%')")
-    LiveData<List<ChurchWithMasses>> getBySearch(String searchTerm);
+    @Query("SELECT * FROM templomok WHERE (nev LIKE '%' || :churchName || '%' OR ismertnev LIKE '%' || :churchName || '%') LIMIT 999")
+    Flowable<List<ChurchWithMasses>> getByName(String churchName);
 
-    @Query("SELECT * FROM templomok WHERE (nev LIKE '%' || :searchTerm || '%' OR ismertnev LIKE '%' || :searchTerm || '%') " +
-            "AND varos = :city")
-    LiveData<List<ChurchWithMasses>> getBySearch(String searchTerm, String city);
+    @Query("SELECT * FROM templomok WHERE (nev LIKE '%' || :churchName || '%' OR ismertnev LIKE '%' || :churchName || '%') " +
+            "AND varos LIKE '%' || :city || '%' LIMIT 999")
+    Flowable<List<ChurchWithMasses>> getBySearch(String churchName, String city);
 
 }

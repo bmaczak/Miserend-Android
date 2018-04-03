@@ -30,7 +30,7 @@ public abstract class ActivityBuilder {
     abstract ChurchDetailsActivity bindChurchDetailsActivity();
 
     @PerActivity
-    @ContributesAndroidInjector(modules = AdvancedSearchModule.class)
+    @ContributesAndroidInjector(modules = {AdvancedSearchModule.class, RouterModule.class})
     abstract AdvancedSearchActivity bindAdvancedSearchActivity();
 
     @PerActivity
