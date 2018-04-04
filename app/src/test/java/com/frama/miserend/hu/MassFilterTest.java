@@ -95,7 +95,7 @@ public class MassFilterTest {
     public void massFilter_LeftBorderOfInterval() {
         date = LocalDate.of(2018, 3, 1);
         mass.setDay(0);
-        mass.setFromDate(401);
+        mass.setFromDate(301);
         mass.setToDate(501);
         assertEquals(true, MassFilter.isMassOnDay(mass, date));
     }
@@ -104,8 +104,8 @@ public class MassFilterTest {
     public void massFilter_RightBorderOfInterval() {
         date = LocalDate.of(2018, 3, 1);
         mass.setDay(0);
-        mass.setFromDate(301);
-        mass.setToDate(401);
+        mass.setFromDate(201);
+        mass.setToDate(301);
         assertEquals(true, MassFilter.isMassOnDay(mass, date));
     }
 

@@ -29,7 +29,7 @@ public class MassFilter {
     }
 
     private static boolean dayCorrect(Mass mass, LocalDate day) {
-        return mass.getDay() == DateUtils.convertJavaDayToMassDay(day.getDayOfWeek().getValue()) || mass.getDay() == 0;
+        return mass.getDay() == day.getDayOfWeek().getValue() || mass.getDay() == 0;
     }
 
     private static boolean dateRangeCorrect(Mass mass, LocalDate day) {

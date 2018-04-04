@@ -10,10 +10,6 @@ import static org.threeten.bp.temporal.ChronoUnit.DAYS;
 
 public class DateUtils {
 
-    public static int convertJavaDayToMassDay(int calendarDay) {
-        return (calendarDay + 5) % 7 + 1;
-    }
-
     public static String getNameOfDay(Resources resources, LocalDate day) {
         long daysBetween = daysBetween(LocalDate.now(), day);
         if (daysBetween == 0) {
@@ -21,7 +17,7 @@ public class DateUtils {
         } else if (daysBetween == 1) {
             return resources.getString(R.string.tomorrow);
         } else {
-            int massDay = convertJavaDayToMassDay(day.getDayOfWeek().getValue());
+            int massDay = day.getDayOfWeek().getValue();
             return resources.getStringArray(
                     R.array.days_of_week)[massDay - 1];
         }

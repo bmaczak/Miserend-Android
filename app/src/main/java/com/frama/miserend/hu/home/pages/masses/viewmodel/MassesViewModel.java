@@ -42,7 +42,7 @@ public class MassesViewModel extends AndroidViewModel {
 
     public LiveData<List<MassWithChurch>> getRecommendedMasses(Location currentLocation) {
         LocalDate today = LocalDate.now();
-        int dayOfWeek = DateUtils.convertJavaDayToMassDay(today.getDayOfWeek().getValue());
+        int dayOfWeek = today.getDayOfWeek().getValue();
         database.massesDao().getMassesInRadius(currentLocation.getLatitude(), currentLocation.getLongitude(), dayOfWeek)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
