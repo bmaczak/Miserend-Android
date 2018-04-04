@@ -12,8 +12,9 @@ import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.home.pages.churches.view.ChurchDiffUtilCallback;
 import com.frama.miserend.hu.home.pages.churches.view.ChurchViewHolder;
 
+import org.threeten.bp.LocalDate;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -43,7 +44,7 @@ public class ChurchSearchResultAdapter extends RecyclerView.Adapter<ChurchViewHo
         ChurchWithMasses churchWithMasses = churches.get(position);
         if (churchWithMasses != null) {
             boolean isFavorite = favorites != null && favorites.contains(churchWithMasses.getChurch().getId());
-            holder.bindTo(churchWithMasses.getChurch(), MassFilter.filterForDay(churchWithMasses.getMasses(), Calendar.getInstance()), isFavorite);
+            holder.bindTo(churchWithMasses.getChurch(), MassFilter.filterForDay(churchWithMasses.getMasses(), LocalDate.now()), isFavorite);
         } else {
             holder.clear();
         }

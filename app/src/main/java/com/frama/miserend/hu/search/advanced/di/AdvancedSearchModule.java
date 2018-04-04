@@ -4,15 +4,11 @@ import android.app.Activity;
 import android.app.Application;
 import android.arch.lifecycle.ViewModelProviders;
 
-import com.frama.miserend.hu.churchdetails.view.ChurchDetailsActivity;
-import com.frama.miserend.hu.churchdetails.viewmodel.ChurchDetailsViewModel;
 import com.frama.miserend.hu.database.local.LocalDatabase;
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.di.scopes.PerActivity;
 import com.frama.miserend.hu.search.advanced.AdvancedSearchActivity;
 import com.frama.miserend.hu.search.advanced.AdvancedSearchViewModel;
-
-import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;

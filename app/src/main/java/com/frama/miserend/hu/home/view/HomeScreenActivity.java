@@ -10,26 +10,25 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.frama.miserend.hu.R;
-import com.frama.miserend.hu.base.BaseActivity;
 import com.frama.miserend.hu.base.FragmentHostActivity;
 import com.frama.miserend.hu.database.dialog.DatabaseDialogCallback;
 import com.frama.miserend.hu.database.dialog.DatabaseMissingDialogFragment;
 import com.frama.miserend.hu.database.dialog.DatabaseUpdateAvailableDialogFragment;
 import com.frama.miserend.hu.database.local.LocalDatabase;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseState;
-import com.frama.miserend.hu.home.viewmodel.HomeViewModel;
 import com.frama.miserend.hu.home.pages.churches.view.ChurchesFragment;
 import com.frama.miserend.hu.home.pages.map.view.ChurchesMapFragment;
 import com.frama.miserend.hu.home.pages.masses.view.MassesFragment;
+import com.frama.miserend.hu.home.viewmodel.HomeViewModel;
 import com.frama.miserend.hu.router.Router;
 import com.frama.miserend.hu.search.SearchParams;
 import com.frama.miserend.hu.search.searchbar.CustomSearchBar;
 import com.frama.miserend.hu.search.suggestions.Suggestion;
-import com.frama.miserend.hu.search.suggestions.viewmodel.SuggestionViewModel;
 import com.frama.miserend.hu.search.suggestions.advanced.AdvancedSearchSuggestion;
 import com.frama.miserend.hu.search.suggestions.church.ChurchSuggestion;
 import com.frama.miserend.hu.search.suggestions.city.CitySuggestion;
 import com.frama.miserend.hu.search.suggestions.recent.RecentSearchSuggestion;
+import com.frama.miserend.hu.search.suggestions.viewmodel.SuggestionViewModel;
 
 import java.util.List;
 

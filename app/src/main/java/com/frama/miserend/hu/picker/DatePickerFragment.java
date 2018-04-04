@@ -2,16 +2,12 @@ package com.frama.miserend.hu.picker;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.text.format.DateFormat;
 import android.widget.DatePicker;
-import android.widget.TimePicker;
 
 import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalTime;
 
 /**
  * Created by Balazs on 2018. 03. 29..

@@ -15,22 +15,24 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.frama.miserend.hu.R;
-import com.frama.miserend.hu.base.BaseActivity;
 import com.frama.miserend.hu.base.FragmentHostActivity;
 import com.frama.miserend.hu.churchdetails.viewmodel.ChurchDetailsViewModel;
-import com.frama.miserend.hu.massdetails.view.MassDetailsDialogFragment;
 import com.frama.miserend.hu.database.miserend.entities.Church;
 import com.frama.miserend.hu.database.miserend.entities.Mass;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.map.StaticMapHelper;
+import com.frama.miserend.hu.massdetails.view.MassDetailsDialogFragment;
 import com.frama.miserend.hu.report.view.ReportDialogFragment;
 import com.frama.miserend.hu.utils.ViewUtils;
 import com.google.android.flexbox.FlexboxLayout;
 import com.rd.PageIndicatorView;
 
+import org.threeten.bp.DayOfWeek;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.temporal.ChronoUnit;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -138,9 +140,8 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
             displayHighlightedMasses(churchWithMasses);
             List<DayOfMasses> dayOfMassesList = new ArrayList<>();
             for (int i = 1; i < 20; ++i) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.add(Calendar.DAY_OF_MONTH, i);
-                DayOfMasses dayOfMasses = new DayOfMasses(calendar, MassFilter.filterForDay(churchWithMasses.getMasses(), calendar));
+                LocalDate day = LocalDate.now().plus(i, ChronoUnit.DAYS);
+                DayOfMasses dayOfMasses = new DayOfMasses(day, MassFilter.filterForDay(churchWithMasses.getMasses(), day));
                 dayOfMassesList.add(dayOfMasses);
             }
             MassAdapter adapter = new MassAdapter(dayOfMassesList);
@@ -154,13 +155,10 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
 
     private void displayHighlightedMasses(ChurchWithMasses churchWithMasses) {
 
-        Calendar today = Calendar.getInstance();
-        List<Mass> todaysMasses = MassFilter.filterForDay(churchWithMasses.getMasses(), today);
+        List<Mass> todaysMasses = MassFilter.filterForDay(churchWithMasses.getMasses(), LocalDate.now());
         addMassesToFlexboxLayout(massesTodayFlexbox, todaysMasses);
 
-        Calendar sunday = Calendar.getInstance();
-        sunday.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-        List<Mass> sundayMasses = MassFilter.filterForDay(churchWithMasses.getMasses(), sunday);
+        List<Mass> sundayMasses = MassFilter.filterForDay(churchWithMasses.getMasses(), LocalDate.now().with(DayOfWeek.SUNDAY));
         addMassesToFlexboxLayout(massesThisSundayFlexbox, sundayMasses);
     }
 

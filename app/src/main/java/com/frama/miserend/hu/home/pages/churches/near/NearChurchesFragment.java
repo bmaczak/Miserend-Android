@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.entities.Church;
-import com.frama.miserend.hu.home.pages.churches.view.ChurchListFragment;
 import com.frama.miserend.hu.home.pages.churches.favorites.FavoritesViewModel;
+import com.frama.miserend.hu.home.pages.churches.view.ChurchListFragment;
 import com.frama.miserend.hu.location.LocationRetriever;
 import com.frama.miserend.hu.router.Router;
 

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.frama.miserend.hu.R;
-import com.frama.miserend.hu.base.BaseActivity;
 import com.frama.miserend.hu.base.FragmentHostActivity;
 import com.frama.miserend.hu.router.Router;
 import com.frama.miserend.hu.search.SearchParams;

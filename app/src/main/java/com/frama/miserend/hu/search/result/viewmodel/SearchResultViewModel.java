@@ -14,7 +14,8 @@ import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.search.SearchParams;
 import com.frama.miserend.hu.utils.Validation;
 
-import java.util.Calendar;
+import org.threeten.bp.LocalDate;
+
 import java.util.List;
 
 import io.reactivex.Flowable;
@@ -43,7 +44,7 @@ public class SearchResultViewModel extends AndroidViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(churchWithMasses -> {
                     for (int i = churchWithMasses.size() - 1; i >= 0; --i) {
-                        if (MassFilter.filterForDay(churchWithMasses.get(i).getMasses(), Calendar.getInstance()).isEmpty()) {
+                        if (MassFilter.filterForDay(churchWithMasses.get(i).getMasses(), LocalDate.now()).isEmpty()) {
                             churchWithMasses.remove(i);
                         }
                     }

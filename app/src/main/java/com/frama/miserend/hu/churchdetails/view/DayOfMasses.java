@@ -2,7 +2,8 @@ package com.frama.miserend.hu.churchdetails.view;
 
 import com.frama.miserend.hu.database.miserend.entities.Mass;
 
-import java.util.Calendar;
+import org.threeten.bp.LocalDate;
+
 import java.util.List;
 
 /**
@@ -10,15 +11,15 @@ import java.util.List;
  */
 
 public class DayOfMasses {
-    private Calendar day;
+    private LocalDate day;
     private List<Mass> masses;
 
-    public DayOfMasses(Calendar day, List<Mass> masses) {
+    public DayOfMasses(LocalDate day, List<Mass> masses) {
         this.day = day;
         this.masses = masses;
     }
 
-    public Calendar getDay() {
+    public LocalDate getDay() {
         return day;
     }
 

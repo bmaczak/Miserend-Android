@@ -15,8 +15,9 @@ import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.home.pages.masses.model.MassComparator;
 import com.frama.miserend.hu.utils.DateUtils;
 
+import org.threeten.bp.LocalDate;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,25 +41,25 @@ public class MassesViewModel extends AndroidViewModel {
 
 
     public LiveData<List<MassWithChurch>> getRecommendedMasses(Location currentLocation) {
-        Calendar today = Calendar.getInstance();
-        int dayOfWeek = DateUtils.convertCalendarDayToMassDay(today.get(Calendar.DAY_OF_WEEK));
+        LocalDate today = LocalDate.now();
+        int dayOfWeek = DateUtils.convertJavaDayToMassDay(today.getDayOfWeek().getValue());
         database.massesDao().getMassesInRadius(currentLocation.getLatitude(), currentLocation.getLongitude(), dayOfWeek)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(massWithChuches -> {
                     List<MassWithChurch> masses = new ArrayList<>();
                     for (MassWithChurch massWithChurch : massWithChuches) {
-                        if (MassFilter.isMassOnDay(massWithChurch.getMass(), Calendar.getInstance())) {
+                        if (MassFilter.isMassOnDay(massWithChurch.getMass(), LocalDate.now())) {
                             masses.add(massWithChurch);
                         }
                     }
                     return masses;
                 })
-                .map(massWithChuches -> {
-                    Collections.sort(massWithChuches, new MassComparator(currentLocation));
-                    return massWithChuches;
+                .map(massWithChurches -> {
+                    Collections.sort(massWithChurches, new MassComparator(currentLocation));
+                    return massWithChurches;
                 })
-                .subscribe(massWithChuches -> masses.setValue(massWithChuches));
+                .subscribe(massWithChurches -> masses.setValue(massWithChurches));
         return masses;
     }
 

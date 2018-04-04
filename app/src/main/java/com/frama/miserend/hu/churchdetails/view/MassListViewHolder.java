@@ -11,8 +11,7 @@ import com.frama.miserend.hu.utils.DateUtils;
 import com.frama.miserend.hu.utils.ViewUtils;
 import com.google.android.flexbox.FlexboxLayout;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,7 +22,7 @@ import butterknife.ButterKnife;
 
 public class MassListViewHolder extends RecyclerView.ViewHolder {
 
-    private static String DATE_FORMAT = "yyyy. MM. dd.";
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy. MM. dd.");
 
     @BindView(R.id.date)
     TextView dateText;
@@ -33,17 +32,15 @@ public class MassListViewHolder extends RecyclerView.ViewHolder {
     FlexboxLayout flexboxLayout;
 
     private LayoutInflater layoutInflater;
-    private SimpleDateFormat simpleDateFormat;
 
     public MassListViewHolder(View itemView) {
         super(itemView);
         this.layoutInflater = LayoutInflater.from(itemView.getContext());
-        simpleDateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.ROOT);
         ButterKnife.bind(this, itemView);
     }
 
     public void bind(DayOfMasses dayOfMasses, OnMassClickedListener onMassClickedListener) {
-        dateText.setText(simpleDateFormat.format(dayOfMasses.getDay().getTime()));
+        dateText.setText(dayOfMasses.getDay().format(dateFormatter));
         dayText.setText(DateUtils.getNameOfDay(dayText.getResources(), dayOfMasses.getDay()));
 
         flexboxLayout.removeAllViews();

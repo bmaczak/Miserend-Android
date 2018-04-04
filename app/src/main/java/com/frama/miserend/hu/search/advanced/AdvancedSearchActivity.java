@@ -7,14 +7,12 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.base.BaseActivity;
 import com.frama.miserend.hu.picker.DatePickerFragment;
 import com.frama.miserend.hu.picker.TimePickerFragment;
 import com.frama.miserend.hu.router.Router;
-import com.frama.miserend.hu.search.SearchParams;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;

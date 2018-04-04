@@ -8,12 +8,13 @@ import android.view.ViewGroup;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
+import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.home.pages.churches.view.ChurchDiffUtilCallback;
 import com.frama.miserend.hu.home.pages.churches.view.ChurchViewHolder;
-import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
+
+import org.threeten.bp.LocalDate;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public class FavoriteChurchesAdapter extends RecyclerView.Adapter<ChurchViewHold
     public void onBindViewHolder(ChurchViewHolder holder, int position) {
         ChurchWithMasses churchWithMasses = churches.get(position);
         if (churchWithMasses != null) {
-            holder.bindTo(churchWithMasses.getChurch(), MassFilter.filterForDay(churchWithMasses.getMasses(), Calendar.getInstance()), true);
+            holder.bindTo(churchWithMasses.getChurch(), MassFilter.filterForDay(churchWithMasses.getMasses(), LocalDate.now()), true);
         } else {
             holder.clear();
         }
