@@ -40,6 +40,8 @@ public class AdvancedSearchActivity extends BaseActivity implements TimePickerFr
     EditText churchName;
     @BindView(R.id.search_city_name)
     AutoCompleteTextView cityName;
+    @BindView(R.id.search_date_time_layout)
+    View dateTimeLayout;
     @BindView(R.id.search_time_range_selection)
     View timeRangeSelection;
     @BindView(R.id.search_date)
@@ -89,6 +91,11 @@ public class AdvancedSearchActivity extends BaseActivity implements TimePickerFr
         timeRangeSelection.setVisibility(checked ? View.GONE : View.VISIBLE);
     }
 
+    @OnCheckedChanged(R.id.search_filter_for_masses)
+    void onFilterForMassesCheckedChanged(boolean checked) {
+        dateTimeLayout.setVisibility(checked ? View.VISIBLE : View.GONE);
+        advancedSearchViewModel.setFilterForMasses(checked);
+    }
 
     @OnClick(R.id.search_time_from_btn)
     void onTimeFromButtonClicked() {

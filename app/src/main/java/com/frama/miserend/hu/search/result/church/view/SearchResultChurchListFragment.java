@@ -38,12 +38,8 @@ public class SearchResultChurchListFragment extends ChurchListFragment {
 
     RecyclerView recyclerView;
 
-    public static SearchResultChurchListFragment newInstance(SearchParams searchParams) {
-        SearchResultChurchListFragment fragment = new SearchResultChurchListFragment();
-        Bundle params = new Bundle();
-        params.putSerializable(Router.IntentExtra.SEARCH_PARAMS, searchParams);
-        fragment.setArguments(params);
-        return fragment;
+    public static SearchResultChurchListFragment newInstance() {
+        return new SearchResultChurchListFragment();
     }
 
     @Nullable
@@ -58,10 +54,8 @@ public class SearchResultChurchListFragment extends ChurchListFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        SearchParams searchParams = (SearchParams) getArguments().getSerializable(Router.IntentExtra.SEARCH_PARAMS);
         favoritesViewModel.getFavorites().observe(this, this::onFavoritesLoaded);
-        searchResultViewModel.getChurchSearchResults(searchParams)
-                .observe(this, this::onSearchResultsLoaded);
+        searchResultViewModel.getChurchSearchResults().observe(this, this::onSearchResultsLoaded);
     }
 
     private void onFavoritesLoaded(List<Integer> favorites) {

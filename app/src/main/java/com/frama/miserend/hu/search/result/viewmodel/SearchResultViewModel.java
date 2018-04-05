@@ -30,26 +30,20 @@ public class SearchResultViewModel extends AndroidViewModel {
 
     private final MiserendDatabase miserendDatabase;
     private MutableLiveData<List<ChurchWithMasses>> churches;
+    private SearchParams searchParams;
 
-    public SearchResultViewModel(@NonNull Application application, MiserendDatabase miserendDatabase) {
+    public SearchResultViewModel(@NonNull Application application, MiserendDatabase miserendDatabase, SearchParams searchParams) {
         super(application);
         this.miserendDatabase = miserendDatabase;
+        this.searchParams = searchParams;
         churches = new MutableLiveData<>();
+        searchParams.normalize();
     }
 
-    public LiveData<List<ChurchWithMasses>> getChurchSearchResults(SearchParams searchParams) {
-        normalize(searchParams);
+    public LiveData<List<ChurchWithMasses>> getChurchSearchResults() {
         selectChurchListFlowable(searchParams)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(churchWithMasses -> {
-                    for (int i = churchWithMasses.size() - 1; i >= 0; --i) {
-                        if (MassFilter.filterForDay(churchWithMasses.get(i).getMasses(), LocalDate.now()).isEmpty()) {
-                            churchWithMasses.remove(i);
-                        }
-                    }
-                    return churchWithMasses;
-                })
                 .subscribe(churchWithMasses -> churches.setValue(churchWithMasses));
         return churches;
     }
@@ -64,34 +58,24 @@ public class SearchResultViewModel extends AndroidViewModel {
         }
     }
 
-    private void normalize(SearchParams searchParams) {
-        if (searchParams.getSearchTerm() == null) {
-            searchParams.setSearchTerm("");
-        }
-        if (searchParams.getChurchName() == null) {
-            searchParams.setChurchName("");
-        }
-        if (searchParams.getCity() == null) {
-            searchParams.setCity("");
-        }
-    }
-
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
         @NonNull
         private final Application application;
         private final MiserendDatabase miserendDatabase;
+        private SearchParams searchParams;
 
 
-        public Factory(@NonNull Application application, MiserendDatabase miserendDatabase) {
+        public Factory(@NonNull Application application, MiserendDatabase miserendDatabase, SearchParams searchParams) {
             this.application = application;
             this.miserendDatabase = miserendDatabase;
+            this.searchParams = searchParams;
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new SearchResultViewModel(application, miserendDatabase);
+            return (T) new SearchResultViewModel(application, miserendDatabase, searchParams);
         }
     }
 }

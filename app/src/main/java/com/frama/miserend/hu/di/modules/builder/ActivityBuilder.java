@@ -8,7 +8,7 @@ import com.frama.miserend.hu.home.di.HomeScreenModule;
 import com.frama.miserend.hu.home.view.HomeScreenActivity;
 import com.frama.miserend.hu.search.advanced.AdvancedSearchActivity;
 import com.frama.miserend.hu.search.advanced.di.AdvancedSearchModule;
-import com.frama.miserend.hu.search.result.di.SearchResultActivityModule;
+import com.frama.miserend.hu.search.result.di.SearchResultModule;
 import com.frama.miserend.hu.search.result.view.SearchResultActivity;
 
 import dagger.Module;
@@ -34,6 +34,6 @@ public abstract class ActivityBuilder {
     abstract AdvancedSearchActivity bindAdvancedSearchActivity();
 
     @PerActivity
-    @ContributesAndroidInjector(modules = {SearchResultActivityModule.class, RouterModule.class})
+    @ContributesAndroidInjector(modules = {SearchResultModule.class, RouterModule.class})
     abstract SearchResultActivity bindSearchResultActivity();
 }

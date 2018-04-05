@@ -11,6 +11,7 @@ import java.io.Serializable;
 
 public class SearchParams implements Serializable {
     private String searchTerm;
+    private boolean filterForMasses;
     private String city;
     private String churchName;
     private LocalDate date;
@@ -26,12 +27,33 @@ public class SearchParams implements Serializable {
         this.searchTerm = searchTerm;
     }
 
+    public void normalize() {
+        if (searchTerm == null) {
+            searchTerm = "";
+        }
+        if (churchName == null) {
+            churchName = "";
+        }
+        if (city == null) {
+            city = "";
+        }
+    }
+
+
     public String getSearchTerm() {
         return searchTerm;
     }
 
     public void setSearchTerm(String searchTerm) {
         this.searchTerm = searchTerm;
+    }
+
+    public boolean isFilterForMasses() {
+        return filterForMasses;
+    }
+
+    public void setFilterForMasses(boolean filterForMasses) {
+        this.filterForMasses = filterForMasses;
     }
 
     public String getCity() {
