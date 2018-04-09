@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
+import com.frama.miserend.hu.database.miserend.relations.MassWithChurch;
 import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.search.SearchParams;
 import com.frama.miserend.hu.utils.Validation;
@@ -56,6 +57,14 @@ public class SearchResultViewModel extends AndroidViewModel {
             return miserendDatabase.churchWithMassesDao()
                     .getBySearch(searchParams.getChurchName(), searchParams.getCity());
         }
+    }
+
+    public LiveData<List<MassWithChurch>> getMassSearchResults() {
+        return miserendDatabase.massesDao().getMassesBySearch(searchParams.getChurchName(), searchParams.getCity(), searchParams.getDate().getDayOfWeek().getValue());
+    }
+
+    public boolean shouldShowMasses() {
+        return searchParams.isFilterForMasses();
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {

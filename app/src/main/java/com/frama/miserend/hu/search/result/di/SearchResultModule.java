@@ -7,12 +7,15 @@ import android.support.annotation.NonNull;
 
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.di.modules.FavoritesModule;
+import com.frama.miserend.hu.di.modules.LocationModule;
 import com.frama.miserend.hu.di.scopes.PerActivity;
 import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.router.Router;
 import com.frama.miserend.hu.search.SearchParams;
 import com.frama.miserend.hu.search.result.church.di.SearchResultChurchListModule;
 import com.frama.miserend.hu.search.result.church.view.SearchResultChurchListFragment;
+import com.frama.miserend.hu.search.result.mass.di.SearchResultMassListModule;
+import com.frama.miserend.hu.search.result.mass.view.SearchResultMassListFragment;
 import com.frama.miserend.hu.search.result.view.SearchResultActivity;
 import com.frama.miserend.hu.search.result.viewmodel.SearchResultViewModel;
 
@@ -54,5 +57,9 @@ public abstract class SearchResultModule {
     @PerFragment
     @ContributesAndroidInjector(modules = {SearchResultChurchListModule.class, FavoritesModule.class})
     abstract SearchResultChurchListFragment bindSearchResultChurchListFragment();
+
+    @PerFragment
+    @ContributesAndroidInjector(modules = {SearchResultMassListModule.class})
+    abstract SearchResultMassListFragment bindSearchResultMassListFragment();
 
 }

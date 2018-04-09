@@ -43,13 +43,13 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LocalDate initDate = (LocalDate) getArguments().getSerializable(EXTRA_INIT_DATE);
 
-        return new DatePickerDialog(getActivity(), this, initDate.getYear(), initDate.getMonthValue(),
+        return new DatePickerDialog(getActivity(), this, initDate.getYear(), initDate.getMonthValue() - 1,
                 initDate.getDayOfMonth());
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        listener.onDateSelected(getArguments().getInt(EXTRA_ID), LocalDate.of(year, month, day));
+        listener.onDateSelected(getArguments().getInt(EXTRA_ID), LocalDate.of(year, month + 1, day));
     }
 
 

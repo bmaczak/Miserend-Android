@@ -84,7 +84,12 @@ public class MassesAdapter extends RecyclerView.Adapter<MassesAdapter.MassViewHo
             churchThumb.setImageURI(massWithChurch.getChurch().getImageUrl());
             churchName.setText(massWithChurch.getChurch().getName());
             massTime.setText(DateUtils.cutSecondsFromTime(massWithChurch.getMass().getTime()));
-            distance.setText(getDistanceText(ChurchUtils.distanceTo(location, massWithChurch.getChurch())));
+            if (location != null) {
+                distance.setVisibility(View.VISIBLE);
+                distance.setText(getDistanceText(ChurchUtils.distanceTo(location, massWithChurch.getChurch())));
+            } else {
+                distance.setVisibility(View.GONE);
+            }
         }
 
         public String getDistanceText(float distance) {
