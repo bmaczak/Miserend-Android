@@ -15,6 +15,7 @@ public class SearchParams implements Serializable {
     private String city;
     private String churchName;
     private LocalDate date;
+    private boolean allDay;
     private LocalTime fromTime;
     private LocalTime toTime;
 
@@ -94,5 +95,13 @@ public class SearchParams implements Serializable {
 
     public void setToTime(LocalTime toTime) {
         this.toTime = toTime;
+    }
+
+    public boolean isAllDay() {
+        return allDay;
+    }
+
+    public void setAllDay(boolean allDay) {
+        this.allDay = allDay;
     }
 }

@@ -88,6 +88,7 @@ public class AdvancedSearchActivity extends BaseActivity implements TimePickerFr
 
     @OnCheckedChanged(R.id.search_all_day_checkbox)
     void onAllDayCheckedChanged(boolean checked) {
+        advancedSearchViewModel.setAllDay(checked);
         timeRangeSelection.setVisibility(checked ? View.GONE : View.VISIBLE);
     }
 

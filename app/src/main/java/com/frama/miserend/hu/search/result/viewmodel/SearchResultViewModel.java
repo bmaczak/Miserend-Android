@@ -15,8 +15,6 @@ import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.search.SearchParams;
 import com.frama.miserend.hu.utils.Validation;
 
-import org.threeten.bp.LocalDate;
-
 import java.util.List;
 
 import io.reactivex.Flowable;
@@ -31,6 +29,7 @@ public class SearchResultViewModel extends AndroidViewModel {
 
     private final MiserendDatabase miserendDatabase;
     private MutableLiveData<List<ChurchWithMasses>> churches;
+    private MutableLiveData<List<MassWithChurch>> masses;
     private SearchParams searchParams;
 
     public SearchResultViewModel(@NonNull Application application, MiserendDatabase miserendDatabase, SearchParams searchParams) {
@@ -38,6 +37,7 @@ public class SearchResultViewModel extends AndroidViewModel {
         this.miserendDatabase = miserendDatabase;
         this.searchParams = searchParams;
         churches = new MutableLiveData<>();
+        masses = new MutableLiveData<>();
         searchParams.normalize();
     }
 
@@ -60,7 +60,18 @@ public class SearchResultViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<MassWithChurch>> getMassSearchResults() {
-        return miserendDatabase.massesDao().getMassesBySearch(searchParams.getChurchName(), searchParams.getCity(), searchParams.getDate().getDayOfWeek().getValue());
+        miserendDatabase.massesDao()
+                .getMassesBySearch(searchParams.getChurchName(), searchParams.getCity(), searchParams.getDate().getDayOfWeek().getValue())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(masses -> {
+                    masses = MassFilter.filterMassWithChurchForDay(masses, searchParams.getDate());
+                    if (!searchParams.isAllDay()) {
+                        masses = MassFilter.filterMassWithChurchForTime(masses, searchParams.getFromTime(), searchParams.getToTime());
+                    }
+                    this.masses.setValue(masses);
+                });
+        return masses;
     }
 
     public boolean shouldShowMasses() {

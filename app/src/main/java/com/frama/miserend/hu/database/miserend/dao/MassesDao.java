@@ -1,6 +1,5 @@
 package com.frama.miserend.hu.database.miserend.dao;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Query;
 
@@ -25,5 +24,5 @@ public interface MassesDao {
             "WHERE (church.nev LIKE '%' || :churchName || '%' OR church.ismertnev LIKE '%' || :churchName || '%') " +
             "AND church.varos LIKE '%' || :city || '%' " +
             "AND mass.nap = :dayOfWeek LIMIT 999")
-    LiveData<List<MassWithChurch>> getMassesBySearch(String churchName, String city, int dayOfWeek);
+    Flowable<List<MassWithChurch>> getMassesBySearch(String churchName, String city, int dayOfWeek);
 }

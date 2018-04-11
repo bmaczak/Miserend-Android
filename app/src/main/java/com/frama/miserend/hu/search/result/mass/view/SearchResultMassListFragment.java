@@ -37,7 +37,6 @@ public class SearchResultMassListFragment extends BaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
         searchResultViewModel.getMassSearchResults().observe(this, this::onMassesChanged);
-        recyclerView.setAdapter(adapter);
         return recyclerView;
     }
 

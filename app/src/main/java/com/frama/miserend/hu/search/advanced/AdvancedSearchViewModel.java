@@ -36,6 +36,7 @@ public class AdvancedSearchViewModel extends AndroidViewModel {
     private LocalTime fromTime;
     private LocalTime toTime;
     private boolean filterForMasses;
+    private boolean allDay;
 
     public AdvancedSearchViewModel(@NonNull Application application, MiserendDatabase miserendDatabase, LocalDatabase localDatabase) {
         super(application);
@@ -67,6 +68,7 @@ public class AdvancedSearchViewModel extends AndroidViewModel {
         searchParams.setFromTime(fromTime);
         searchParams.setToTime(toTime);
         searchParams.setFilterForMasses(filterForMasses);
+        searchParams.setAllDay(allDay);
         return searchParams;
     }
 
@@ -100,6 +102,10 @@ public class AdvancedSearchViewModel extends AndroidViewModel {
 
     public void setFilterForMasses(boolean filterForMasses) {
         this.filterForMasses = filterForMasses;
+    }
+
+    public void setAllDay(boolean allDay) {
+        this.allDay = allDay;
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
