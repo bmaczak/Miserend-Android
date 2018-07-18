@@ -20,6 +20,7 @@ deploy:
   overwrite: true
   api_key:
     secure: k1Xzs2AV650tebweSVfGrzhyPRv4eTuuc5U0cHpL1ftKP235a5MrxyWgvy8q4h/kzBaugTF8GhLcHZ3vgkOFxRF6oq6YJMMHtc22Cga7eiErqQNoY98k3Zgn4+FOzrq45v89CzHgLLV9BSBPaNm8whBFGAJE0p3E0pPy2hHF/SDHfAkluMufPjvdV8CglnJywcUHUAb7zt/sBVQPgx1p9uiV6tlawf9vXGlwa1O88WhEkQ7THjLPJrcVpT5VaWXL6jrMjHiROpl5DbOcCc+xc+hnoJQDARqBh+clvkgFGhsRG6T05AgqXR+fGRtdSRdIbOpvq1W34qiNLCQCxa/Ujw7gyNDrc47zGsH4VT1QkR/tFmwMi2jHyCVEWDgMFMfQpA+1r7nAXJMGO93RtapWWIz//ZzSiC4JKuAGyNsvByJBj8zdFhqr5CcfrV7Abpk6wnMnzyoUoplyIF8TIrPrceQpIwfwPHbIoMNmmbZckrgGxjVjvulMgNTD5LuzUAe+AnudqA3x//kMwQi6SkhL/Q+XOWAdQJMrV1W/PUO3OH6GaG9kOfxWSzhcJ9rUlf3WwJt8vOUBpynvNAQEIH4smEwp6rkb/FWVDqlfEImH5UQLll5aJw963RFS+aW5g7Tuq1+FZFu3YfWxsTVEyUTcgFfibgeUiWlyMpwPDsL6mRk=
+  file_glob: true
   file: /home/travis/build/Ripityom/Miserend-Android/app/build/outputs/apk/release/*
   on:
     repo: Ripityom/Miserend-Android
