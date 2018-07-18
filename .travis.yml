@@ -23,3 +23,4 @@ deploy:
   file: /home/travis/build/Ripityom/Miserend-Android/app/build/outputs/apk/release/*
   on:
     repo: Ripityom/Miserend-Android
+    branch: develop
