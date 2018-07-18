@@ -11,6 +11,6 @@ android:
   - sys-img-armeabi-v7a-android-17
 before_install:
 - openssl aes-256-cbc -K $encrypted_8e68a06669bb_key -iv $encrypted_8e68a06669bb_iv
-  -in maczak_balazs_release_keystore.enc -out keystore/maczak_balazs_release_keystore
+  -in keystore/maczak_balazs_release_keystore.enc -out keystore/maczak_balazs_release_keystore
   -d
 - chmod +x gradlew
