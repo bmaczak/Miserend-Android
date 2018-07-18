@@ -84,7 +84,7 @@ public class MassFilterTest {
 
     @Test
     public void massFilter_InsideInterval() {
-        date = LocalDate.now().with(DayOfWeek.MONDAY);
+        date = LocalDate.of(2018, 4, 1).with(DayOfWeek.MONDAY);
         mass.setDay(0);
         mass.setFromDate(301);
         mass.setToDate(501);
