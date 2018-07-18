@@ -25,3 +25,4 @@ deploy:
   on:
     repo: Ripityom/Miserend-Android
     branch: develop
+    tags: true
