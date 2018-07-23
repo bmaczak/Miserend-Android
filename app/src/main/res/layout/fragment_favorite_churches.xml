@@ -12,4 +12,14 @@
         android:background="@color/list_gb"
         android:orientation="vertical"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+
+    <TextView
+        android:id="@+id/no_favorites"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/no_favorites"
+        android:textSize="18sp" />
 </LinearLayout>

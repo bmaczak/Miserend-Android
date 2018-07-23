@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 import com.frama.miserend.hu.home.pages.churches.view.ChurchListFragment;
 
 import java.util.List;
@@ -26,6 +27,8 @@ public class FavoriteChurchesFragment extends ChurchListFragment {
 
     @BindView(R.id.recycle_view)
     RecyclerView recyclerView;
+    @BindView(R.id.no_favorites)
+    View noFavoritesView;
 
     @Inject
     FavoritesViewModel favoritesViewModel;
@@ -44,7 +47,18 @@ public class FavoriteChurchesFragment extends ChurchListFragment {
     }
 
     private void onFavoritesChanged(List<Integer> integers) {
-        favoritesViewModel.getFavoriteChurches().observe(this, churches -> favoriteChurchesAdapter.update(churches));
+        favoritesViewModel.getFavoriteChurches().observe(this, this::onFavoritesLoaded);
+    }
+
+    public void onFavoritesLoaded(List<ChurchWithMasses> churches) {
+        if (churches != null && !churches.isEmpty()) {
+            noFavoritesView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            favoriteChurchesAdapter.update(churches);
+        } else {
+            noFavoritesView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        }
     }
 
     @Override
