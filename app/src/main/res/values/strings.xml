@@ -66,4 +66,6 @@
     <string name="tag_rom">Római katolikus</string>
     <string name="tag_regi">Régi rítusú</string>
 
+    <string name="navigation_url">"https://maps.google.com/maps?f=d&amp;daddr=%1$f,%2$f</string>
+
 </resources>

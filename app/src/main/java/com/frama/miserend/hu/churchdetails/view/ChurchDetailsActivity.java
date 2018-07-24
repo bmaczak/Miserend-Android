@@ -24,6 +24,7 @@ import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.map.StaticMapHelper;
 import com.frama.miserend.hu.massdetails.view.MassDetailsDialogFragment;
 import com.frama.miserend.hu.report.view.ReportDialogFragment;
+import com.frama.miserend.hu.router.Router;
 import com.frama.miserend.hu.utils.ViewUtils;
 import com.google.android.flexbox.FlexboxLayout;
 import com.rd.PageIndicatorView;
@@ -39,6 +40,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Balazs on 2018. 02. 18..
@@ -75,8 +77,12 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
 
     @Inject
     ChurchDetailsViewModel churchDetailsViewModel;
+    @Inject
+    Router router;
 
     private GalleryPagerAdapter imagesAdapter;
+
+    private ChurchWithMasses churchWithMasses;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -125,19 +131,20 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
     }
 
     private void onChurchDetailsLoaded(ChurchWithMasses churchWithMasses) {
+        this.churchWithMasses = churchWithMasses;
         Church church = churchWithMasses.getChurch();
         ViewUtils.setTextOrHide(churchName, church.getName());
         ViewUtils.setTextOrHide(churchCommonName, church.getCommonName());
         staticMap.setImageURI(StaticMapHelper.getSaticMapUrl(this, churchWithMasses.getChurch().getLat(), churchWithMasses.getChurch().getLon(), staticMap.getWidth(), staticMap.getHeight()));
         ViewUtils.setTextOrHide(churchAddress, church.getAddress());
         ViewUtils.setTextOrHide(churchGettingThere, church.getGettingThere());
-        displayMasses(churchWithMasses);
+        displayMasses();
         imagesAdapter.setImages(churchWithMasses.getImages());
     }
 
-    private void displayMasses(ChurchWithMasses churchWithMasses) {
+    private void displayMasses() {
         if (!churchWithMasses.getMasses().isEmpty()) {
-            displayHighlightedMasses(churchWithMasses);
+            displayHighlightedMasses();
             List<DayOfMasses> dayOfMassesList = new ArrayList<>();
             for (int i = 1; i < 20; ++i) {
                 LocalDate day = LocalDate.now().plus(i, ChronoUnit.DAYS);
@@ -153,7 +160,7 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
         }
     }
 
-    private void displayHighlightedMasses(ChurchWithMasses churchWithMasses) {
+    private void displayHighlightedMasses() {
 
         List<Mass> todaysMasses = MassFilter.filterForDay(churchWithMasses.getMasses(), LocalDate.now());
         addMassesToFlexboxLayout(massesTodayFlexbox, todaysMasses);
@@ -178,5 +185,15 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
 
     private void showMassDetailsDialog(Mass mass) {
         MassDetailsDialogFragment.newInstance(mass).show(getSupportFragmentManager(), "mass_details");
+    }
+
+    @OnClick(R.id.btn_navigate)
+    public void navigate() {
+        router.startGoogleNavigation(churchWithMasses.getChurch());
+    }
+
+    @OnClick(R.id.static_map)
+    public void showOnMap() {
+        router.showOnMap(churchWithMasses.getChurch());
     }
 }
