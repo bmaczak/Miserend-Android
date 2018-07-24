@@ -24,7 +24,7 @@ public abstract class SearchResultMassListModule {
 
     @PerFragment
     @Provides
-    static MassesAdapter provideMassesAdapter() {
-        return new MassesAdapter();
+    static MassesAdapter provideMassesAdapter(SearchResultMassListFragment fragment) {
+        return new MassesAdapter(fragment);
     }
 }

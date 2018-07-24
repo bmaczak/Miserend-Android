@@ -29,7 +29,7 @@ public class MassesFragmentModule {
     @PerFragment
     @Provides
     MassesAdapter provideMassesAdapter(MassesFragment fragment) {
-        return new MassesAdapter();
+        return new MassesAdapter(fragment);
     }
 
     @PerFragment

@@ -21,7 +21,7 @@ import javax.inject.Inject;
  * Created by Balazs on 2018. 04. 06..
  */
 
-public class SearchResultMassListFragment extends BaseFragment {
+public class SearchResultMassListFragment extends BaseFragment implements MassesAdapter.MassViewHolder.MassListActionListener{
 
     @Inject
     SearchResultViewModel searchResultViewModel;
@@ -42,5 +42,10 @@ public class SearchResultMassListFragment extends BaseFragment {
 
     private void onMassesChanged(List<MassWithChurch> massWithChurches) {
         adapter.update(massWithChurches);
+    }
+
+    @Override
+    public void onMassListItemClicked(MassWithChurch massWithChurch) {
+
     }
 }

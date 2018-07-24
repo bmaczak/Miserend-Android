@@ -18,6 +18,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by maczak on 2018. 03. 12..
@@ -27,14 +28,17 @@ public class MassesAdapter extends RecyclerView.Adapter<MassesAdapter.MassViewHo
 
     private List<MassWithChurch> masses;
     private Location currentLocation;
+    private MassViewHolder.MassListActionListener actionListener;
 
-    public MassesAdapter() {
+    public MassesAdapter(MassViewHolder.MassListActionListener actionListener) {
+        this.actionListener = actionListener;
         masses = new ArrayList<>();
     }
 
     @Override
     public MassViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MassViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mass, parent, false));
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mass, parent, false);
+        return new MassViewHolder(view, actionListener);
     }
 
     @Override
@@ -75,12 +79,17 @@ public class MassesAdapter extends RecyclerView.Adapter<MassesAdapter.MassViewHo
         @BindView(R.id.church_distance)
         TextView distance;
 
-        public MassViewHolder(View itemView) {
+        private MassWithChurch mass;
+        private MassListActionListener actionListener;
+
+        public MassViewHolder(View itemView, MassListActionListener actionListener) {
             super(itemView);
+            this.actionListener = actionListener;
             ButterKnife.bind(this, itemView);
         }
 
         public void bind(MassWithChurch massWithChurch, Location location) {
+            mass = massWithChurch;
             churchThumb.setImageURI(massWithChurch.getChurch().getImageUrl());
             churchName.setText(massWithChurch.getChurch().getName());
             massTime.setText(DateUtils.cutSecondsFromTime(massWithChurch.getMass().getTime()));
@@ -98,6 +107,15 @@ public class MassesAdapter extends RecyclerView.Adapter<MassesAdapter.MassViewHo
             } else {
                 return String.format("%.2f km", (distance / 1000));
             }
+        }
+
+        @OnClick(R.id.mass_item_root)
+        public void onMassClicked() {
+            actionListener.onMassListItemClicked(mass);
+        }
+
+        public interface MassListActionListener {
+            void onMassListItemClicked(MassWithChurch massWithChurch);
         }
     }
 }

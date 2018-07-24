@@ -16,6 +16,7 @@ import com.frama.miserend.hu.base.BaseFragment;
 import com.frama.miserend.hu.database.miserend.relations.MassWithChurch;
 import com.frama.miserend.hu.home.pages.masses.viewmodel.MassesViewModel;
 import com.frama.miserend.hu.location.LocationRetriever;
+import com.frama.miserend.hu.router.Router;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ import butterknife.OnClick;
  * Created by Balazs on 2018. 02. 13..
  */
 
-public class MassesFragment extends BaseFragment implements LocationRetriever.LocationResultListener {
+public class MassesFragment extends BaseFragment implements LocationRetriever.LocationResultListener, MassesAdapter.MassViewHolder.MassListActionListener {
 
     @Inject
     MassesViewModel massesViewModel;
@@ -37,6 +38,8 @@ public class MassesFragment extends BaseFragment implements LocationRetriever.Lo
     MassesAdapter adapter;
     @Inject
     LocationRetriever locationRetriever;
+    @Inject
+    Router router;
 
     @BindView(R.id.recycle_view)
     RecyclerView recyclerView;
@@ -102,5 +105,10 @@ public class MassesFragment extends BaseFragment implements LocationRetriever.Lo
     @OnClick(R.id.location_permission_button)
     public void onLocationPermissionButtonClicked() {
         locationRetriever.getLastKnownLocation();
+    }
+
+    @Override
+    public void onMassListItemClicked(MassWithChurch massWithChurch) {
+        router.showChurchDetails(massWithChurch.getChurch());
     }
 }
