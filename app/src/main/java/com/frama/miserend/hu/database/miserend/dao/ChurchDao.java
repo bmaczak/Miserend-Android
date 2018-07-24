@@ -17,7 +17,7 @@ import io.reactivex.Flowable;
 @Dao
 public interface ChurchDao {
 
-    @Query("SELECT * FROM templomok")
+    @Query("SELECT * FROM templomok WHERE lat != 0 AND lng != 0")
     LiveData<List<Church>> getAll();
 
     @Query("SELECT * FROM templomok WHERE nev LIKE '%' || :searchTerm || '%' OR ismertnev LIKE '%' || :searchTerm || '%'")
