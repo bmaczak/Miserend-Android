@@ -39,8 +39,8 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:background="@drawable/church_details_actionbar_background"
                 android:layout_height="?attr/actionBarSize"
+                android:background="@drawable/church_details_actionbar_background"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
@@ -195,12 +195,12 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_church" />
+                                android:src="@drawable/map_pin" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_church"
+                                android:src="@drawable/map_pin"
                                 android:visibility="invisible" />
                         </LinearLayout>
                     </FrameLayout>

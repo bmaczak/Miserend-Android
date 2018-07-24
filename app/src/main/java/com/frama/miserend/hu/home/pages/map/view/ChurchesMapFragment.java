@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.entities.Church;
 import com.frama.miserend.hu.home.pages.map.viewmodel.ChurchesMapViewModel;
 import com.frama.miserend.hu.router.Router;
@@ -17,6 +18,8 @@ import com.google.android.gms.maps.model.Marker;
 
 import net.sharewire.googlemapsclustering.Cluster;
 import net.sharewire.googlemapsclustering.ClusterManager;
+import net.sharewire.googlemapsclustering.DefaultIconGenerator;
+import net.sharewire.googlemapsclustering.IconStyle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,13 +64,23 @@ public class ChurchesMapFragment extends SupportMapFragment implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        clusterManager = new ClusterManager<>(getActivity(), map);
-        clusterManager.setCallbacks(this);
-        map.setOnCameraIdleListener(clusterManager);
+        setupClustering();
         map.setOnInfoWindowClickListener(this);
         if (churchesMapViewModel.getChurcesLiveData().getValue() != null) {
             addPins(churchesMapViewModel.getChurcesLiveData().getValue());
         }
+    }
+
+    private void setupClustering() {
+        clusterManager = new ClusterManager<>(getActivity(), map);
+        clusterManager.setCallbacks(this);
+        DefaultIconGenerator<ChurchClusterItem> generator = new DefaultIconGenerator<>(getActivity());
+        IconStyle iconStyle = new IconStyle.Builder(getActivity())
+                .setClusterBackgroundColor(getResources().getColor(R.color.colorPrimary))
+                .setClusterIconResId(R.drawable.map_pin).build();
+        generator.setIconStyle(iconStyle);
+        clusterManager.setIconGenerator(generator);
+        map.setOnCameraIdleListener(clusterManager);
     }
 
     private void addPins(List<Church> churches) {
