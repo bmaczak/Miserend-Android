@@ -1,5 +1,6 @@
 package com.frama.miserend.hu.home.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import com.frama.miserend.hu.home.pages.churches.view.ChurchesFragment;
 import com.frama.miserend.hu.home.pages.map.view.ChurchesMapFragment;
 import com.frama.miserend.hu.home.pages.masses.view.MassesFragment;
 import com.frama.miserend.hu.home.viewmodel.HomeViewModel;
+import com.frama.miserend.hu.location.LocationManager;
 import com.frama.miserend.hu.router.Router;
 import com.frama.miserend.hu.search.SearchParams;
 import com.frama.miserend.hu.search.searchbar.CustomSearchBar;
@@ -51,6 +53,8 @@ public class HomeScreenActivity extends FragmentHostActivity implements Database
     Router router;
     @Inject
     LocalDatabase localDatabase;
+    @Inject
+    LocationManager locationManager;
 
     @BindView(R.id.search_bar)
     CustomSearchBar searchBar;
@@ -156,6 +160,22 @@ public class HomeScreenActivity extends FragmentHostActivity implements Database
                 return true;
             default:
                 return false;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        locationManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (LocationManager.LOCATION_SETTINGS_REQUEST_CODE == requestCode) {
+            locationManager.getLastKnownLocation();
+        } else if (LocationManager.LOCATION_PERMISSION_REQUEST_CODE == requestCode) {
+            locationManager.getLastKnownLocation();
         }
     }
 

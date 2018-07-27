@@ -9,7 +9,7 @@ import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesAdapter;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesViewModel;
-import com.frama.miserend.hu.location.LocationRetriever;
+import com.frama.miserend.hu.location.LocationManager;
 
 import dagger.Module;
 import dagger.Provides;
@@ -47,7 +47,7 @@ public class NearChurchesFragmentModule {
 
     @PerFragment
     @Provides
-    LocationRetriever.LocationResultListener provideLocationResultListener(NearChurchesFragment fragment) {
+    LocationManager.LocationResultListener provideLocationResultListener(NearChurchesFragment fragment) {
         return fragment;
     }
 

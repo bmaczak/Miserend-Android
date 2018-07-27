@@ -1,10 +1,8 @@
 package com.frama.miserend.hu.home.pages.masses.view;
 
-import android.content.Intent;
+import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +13,7 @@ import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.base.BaseFragment;
 import com.frama.miserend.hu.database.miserend.relations.MassWithChurch;
 import com.frama.miserend.hu.home.pages.masses.viewmodel.MassesViewModel;
-import com.frama.miserend.hu.location.LocationRetriever;
+import com.frama.miserend.hu.location.LocationManager;
 import com.frama.miserend.hu.router.Router;
 
 import java.util.List;
@@ -30,14 +28,14 @@ import butterknife.OnClick;
  * Created by Balazs on 2018. 02. 13..
  */
 
-public class MassesFragment extends BaseFragment implements LocationRetriever.LocationResultListener, MassesAdapter.MassViewHolder.MassListActionListener {
+public class MassesFragment extends BaseFragment implements LocationManager.LocationResultListener, MassesAdapter.MassViewHolder.MassListActionListener {
 
     @Inject
     MassesViewModel massesViewModel;
     @Inject
     MassesAdapter adapter;
     @Inject
-    LocationRetriever locationRetriever;
+    LocationManager locationManager;
     @Inject
     Router router;
 
@@ -59,21 +57,19 @@ public class MassesFragment extends BaseFragment implements LocationRetriever.Lo
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        locationRetriever.getLastKnownLocation();
+        locationManager.getLastKnownLocation();
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        locationRetriever.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        locationManager.registerListener(this);
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (LocationRetriever.LOCATION_SETTINGS_REQUEST_CODE == requestCode) {
-            locationRetriever.getLastKnownLocation();
-        }
+    public void onDetach() {
+        super.onDetach();
+        locationManager.unregisterListener(this);
     }
 
     @Override
@@ -91,20 +87,20 @@ public class MassesFragment extends BaseFragment implements LocationRetriever.Lo
     }
 
     @Override
-    public void onLocationError(LocationRetriever.LocationError locationError) {
+    public void onLocationError(LocationManager.LocationError locationError) {
         recyclerView.setVisibility(View.GONE);
-        locationPermissionLayout.setVisibility(locationError == LocationRetriever.LocationError.PERMISSION ? View.VISIBLE : View.GONE);
-        locationSettingsLayout.setVisibility(locationError == LocationRetriever.LocationError.COULD_NOT_RETRIEVE ? View.VISIBLE : View.GONE);
+        locationPermissionLayout.setVisibility(locationError == LocationManager.LocationError.PERMISSION ? View.VISIBLE : View.GONE);
+        locationSettingsLayout.setVisibility(locationError == LocationManager.LocationError.COULD_NOT_RETRIEVE ? View.VISIBLE : View.GONE);
     }
 
     @OnClick(R.id.location_settings_button)
     public void onLocationSettingsClicked() {
-        startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), LocationRetriever.LOCATION_SETTINGS_REQUEST_CODE);
+        locationManager.showLocationSettings();
     }
 
     @OnClick(R.id.location_permission_button)
     public void onLocationPermissionButtonClicked() {
-        locationRetriever.getLastKnownLocation();
+        locationManager.requestPermission();
     }
 
     @Override

@@ -1,9 +1,9 @@
 package com.frama.miserend.hu.di.modules;
 
-import android.support.v4.app.Fragment;
+import android.app.Activity;
 
-import com.frama.miserend.hu.di.scopes.PerFragment;
-import com.frama.miserend.hu.location.LocationRetriever;
+import com.frama.miserend.hu.di.scopes.PerActivity;
+import com.frama.miserend.hu.location.LocationManager;
 
 import dagger.Module;
 import dagger.Provides;
@@ -15,8 +15,8 @@ import dagger.Provides;
 public class LocationModule {
 
     @Provides
-    @PerFragment
-    LocationRetriever provideLocationRetriever(Fragment fragment, LocationRetriever.LocationResultListener locationResultListener) {
-        return new LocationRetriever(fragment, locationResultListener);
+    @PerActivity
+    LocationManager provideLocationRetriever(Activity activity) {
+        return new LocationManager(activity);
     }
 }

@@ -2,6 +2,7 @@ package com.frama.miserend.hu.di.modules.builder;
 
 import com.frama.miserend.hu.churchdetails.di.ChurchDetailsModule;
 import com.frama.miserend.hu.churchdetails.view.ChurchDetailsActivity;
+import com.frama.miserend.hu.di.modules.LocationModule;
 import com.frama.miserend.hu.di.modules.RouterModule;
 import com.frama.miserend.hu.di.scopes.PerActivity;
 import com.frama.miserend.hu.home.di.HomeScreenModule;
@@ -22,7 +23,7 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class ActivityBuilder {
 
     @PerActivity
-    @ContributesAndroidInjector(modules = {HomeScreenModule.class, RouterModule.class})
+    @ContributesAndroidInjector(modules = {HomeScreenModule.class, LocationModule.class, RouterModule.class})
     abstract HomeScreenActivity bindHomeScreenActivity();
 
     @PerActivity

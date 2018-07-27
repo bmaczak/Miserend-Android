@@ -67,7 +67,7 @@ public abstract class HomeScreenModule {
     }
 
     @PerFragment
-    @ContributesAndroidInjector(modules = {NearChurchesFragmentModule.class, LocationModule.class, FavoritesModule.class})
+    @ContributesAndroidInjector(modules = {NearChurchesFragmentModule.class, FavoritesModule.class})
     abstract NearChurchesFragment bindNearChurchesFragment();
 
     @PerFragment
@@ -75,7 +75,7 @@ public abstract class HomeScreenModule {
     abstract FavoriteChurchesFragment bindFavoriteChurchesFragment();
 
     @PerFragment
-    @ContributesAndroidInjector(modules = {MassesFragmentModule.class, LocationModule.class})
+    @ContributesAndroidInjector(modules = {MassesFragmentModule.class})
     abstract MassesFragment bindMassesFragment();
 
     @PerFragment
