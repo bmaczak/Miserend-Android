@@ -49,7 +49,13 @@ public class LocationManager {
     }
 
     public void getLastKnownLocation() {
-        if (checkLocationPermission()) {
+        if (checkLocationPermission(true)) {
+            getLocation();
+        }
+    }
+
+    public void getLastKnownLocation(boolean askForPermission) {
+        if (checkLocationPermission(askForPermission)) {
             getLocation();
         }
     }
@@ -71,14 +77,16 @@ public class LocationManager {
         }
     }
 
-    private boolean checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(activity,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+    public boolean hasPermission() {
+        return ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
 
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_READ_LOCATION);
-
+    private boolean checkLocationPermission(boolean askForPermission) {
+        if (!hasPermission()) {
+            if (askForPermission) {
+                ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_READ_LOCATION);
+            }
             return false;
         } else {
             return true;
@@ -100,8 +108,8 @@ public class LocationManager {
                         notify(LocationError.COULD_NOT_RETRIEVE);
                     }
                 }).addOnFailureListener(e -> {
-                        notify(LocationError.COULD_NOT_RETRIEVE);
-                });
+            notify(LocationError.COULD_NOT_RETRIEVE);
+        });
     }
 
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {

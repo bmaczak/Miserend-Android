@@ -1,12 +1,16 @@
 package com.frama.miserend.hu.home.pages.map.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.entities.Church;
 import com.frama.miserend.hu.home.pages.map.viewmodel.ChurchesMapViewModel;
+import com.frama.miserend.hu.location.LocationManager;
 import com.frama.miserend.hu.router.Router;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,12 +36,16 @@ import dagger.android.support.AndroidSupportInjection;
  * Created by Balazs on 2018. 02. 13..
  */
 
-public class ChurchesMapFragment extends SupportMapFragment implements OnMapReadyCallback, ClusterManager.Callbacks<ChurchClusterItem>, GoogleMap.OnInfoWindowClickListener {
+public class ChurchesMapFragment extends SupportMapFragment implements OnMapReadyCallback, ClusterManager.Callbacks<ChurchClusterItem>, GoogleMap.OnInfoWindowClickListener, LocationManager.LocationResultListener {
+
+    private static int CURRENT_LOCATION_ZOOM = 14;
 
     @Inject
     ChurchesMapViewModel churchesMapViewModel;
     @Inject
     Router router;
+    @Inject
+    LocationManager locationManager;
 
     private GoogleMap map;
     private ClusterManager<ChurchClusterItem> clusterManager;
@@ -53,7 +61,15 @@ public class ChurchesMapFragment extends SupportMapFragment implements OnMapRead
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
         churchesMapViewModel.getChurcesLiveData().observe(this, this::onChurchesLoaded);
+        locationManager.registerListener(this);
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        locationManager.unregisterListener(this);
+    }
+
 
     private void onChurchesLoaded(List<Church> churches) {
         if (map != null) {
@@ -61,6 +77,7 @@ public class ChurchesMapFragment extends SupportMapFragment implements OnMapRead
         }
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
@@ -68,6 +85,10 @@ public class ChurchesMapFragment extends SupportMapFragment implements OnMapRead
         map.setOnInfoWindowClickListener(this);
         if (churchesMapViewModel.getChurcesLiveData().getValue() != null) {
             addPins(churchesMapViewModel.getChurcesLiveData().getValue());
+        }
+        if (locationManager.hasPermission()) {
+            locationManager.getLastKnownLocation(false);
+            map.setMyLocationEnabled(true);
         }
     }
 
@@ -111,5 +132,16 @@ public class ChurchesMapFragment extends SupportMapFragment implements OnMapRead
     public void onInfoWindowClick(Marker marker) {
         Cluster<ChurchClusterItem> cluster = (Cluster) marker.getTag();
         router.showChurchDetails(cluster.getItems().get(0).getChurch());
+    }
+
+    @Override
+    public void onLocationRetrieved(Location location) {
+        LatLng redmond = new LatLng(location.getLatitude(), location.getLongitude());
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(redmond, CURRENT_LOCATION_ZOOM));
+    }
+
+    @Override
+    public void onLocationError(LocationManager.LocationError error) {
+
     }
 }
