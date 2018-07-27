@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.di.modules.FavoritesModule;
-import com.frama.miserend.hu.di.modules.LocationModule;
 import com.frama.miserend.hu.di.scopes.PerActivity;
 import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.router.Router;

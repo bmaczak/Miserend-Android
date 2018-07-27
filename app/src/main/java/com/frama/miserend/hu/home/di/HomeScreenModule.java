@@ -8,7 +8,6 @@ import com.frama.miserend.hu.database.local.LocalDatabase;
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseManager;
 import com.frama.miserend.hu.di.modules.FavoritesModule;
-import com.frama.miserend.hu.di.modules.LocationModule;
 import com.frama.miserend.hu.di.scopes.PerActivity;
 import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.home.pages.churches.favorites.FavoriteChurchesFragment;

@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 
 import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.home.pages.masses.view.MassesAdapter;
-import com.frama.miserend.hu.home.pages.masses.view.MassesFragment;
 import com.frama.miserend.hu.search.result.mass.view.SearchResultMassListFragment;
 
 import dagger.Binds;

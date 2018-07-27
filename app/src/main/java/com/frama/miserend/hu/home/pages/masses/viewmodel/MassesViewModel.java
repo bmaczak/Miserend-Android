@@ -13,7 +13,6 @@ import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.relations.MassWithChurch;
 import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.home.pages.masses.model.MassComparator;
-import com.frama.miserend.hu.utils.DateUtils;
 
 import org.threeten.bp.LocalDate;
 

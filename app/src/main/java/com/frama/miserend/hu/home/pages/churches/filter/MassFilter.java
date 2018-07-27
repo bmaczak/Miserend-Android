@@ -2,7 +2,6 @@ package com.frama.miserend.hu.home.pages.churches.filter;
 
 import com.frama.miserend.hu.database.miserend.entities.Mass;
 import com.frama.miserend.hu.database.miserend.relations.MassWithChurch;
-import com.frama.miserend.hu.utils.DateUtils;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;

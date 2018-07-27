@@ -6,8 +6,6 @@ import android.support.v4.app.Fragment;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.base.FragmentHostActivity;
-import com.frama.miserend.hu.router.Router;
-import com.frama.miserend.hu.search.SearchParams;
 import com.frama.miserend.hu.search.result.church.view.SearchResultChurchListFragment;
 import com.frama.miserend.hu.search.result.mass.view.SearchResultMassListFragment;
 import com.frama.miserend.hu.search.result.viewmodel.SearchResultViewModel;
