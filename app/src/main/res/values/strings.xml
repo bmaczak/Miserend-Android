@@ -35,7 +35,8 @@
 
     <string name="location_not_available">Pozíció nem elérhető. Ellenőrizze, hogy be van-e kapcsolva a helymeghatározás!</string>
     <string name="location_settings_button">Beállítások</string>
-    <string name="location_permission_needed">A közeli templomok megjelenítéséhez az alkalmazásnak hozzáférésre van szüksége készüléke pozíciójához</string>
+    <string name="location_permission_needed_for_near_churches">A közeli templomok megjelenítéséhez az alkalmazásnak hozzáférésre van szüksége készüléke pozíciójához</string>
+    <string name="location_permission_needed_for_near_masses">A közeli misék megjelenítéséhez az alkalmazásnak hozzáférésre van szüksége készüléke pozíciójához</string>
     <string name="location_enable">Engedélyezés</string>
 
     <string name="no_favorites">Még nincs kedvencekhez adott templom</string>

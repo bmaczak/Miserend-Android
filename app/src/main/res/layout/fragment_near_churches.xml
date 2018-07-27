@@ -11,7 +11,6 @@
         android:layout_height="match_parent"
         android:background="@color/list_gb"
         android:orientation="vertical"
-        android:visibility="gone"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
     <LinearLayout
@@ -19,10 +18,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/list_gb"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="48dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="48dp"
         android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_location_off" />
 
         <TextView
             android:layout_width="match_parent"
@@ -30,16 +36,15 @@
             android:gravity="center"
             android:padding="16dp"
             android:text="@string/location_not_available"
-            android:textSize="18sp" />
+            android:textColor="@color/black_40"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/location_settings_button"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/location_settings_button"
-            android:textColor="@color/white"
-            android:theme="@style/PrimaryButton" />
+            android:theme="@style/PrimaryFlatButton" />
     </LinearLayout>
 
     <LinearLayout
@@ -47,26 +52,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/list_gb"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="48dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="48dp"
         android:visibility="visible">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_location_off" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="16dp"
-            android:text="@string/location_permission_needed"
-            android:textSize="18sp" />
+            android:text="@string/location_permission_needed_for_near_churches"
+            android:textColor="@color/black_40"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/location_permission_button"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/location_enable"
-            android:textColor="@color/white"
-            android:theme="@style/PrimaryButton" />
+            android:theme="@style/PrimaryFlatButton" />
     </LinearLayout>
 </LinearLayout>
