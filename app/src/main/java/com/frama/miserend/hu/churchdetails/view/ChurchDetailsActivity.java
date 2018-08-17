@@ -136,8 +136,8 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
         ViewUtils.setTextOrHide(churchName, church.getName());
         ViewUtils.setTextOrHide(churchCommonName, church.getCommonName());
         staticMap.setImageURI(StaticMapHelper.getSaticMapUrl(this, churchWithMasses.getChurch().getLat(), churchWithMasses.getChurch().getLon(), staticMap.getWidth(), staticMap.getHeight()));
-        ViewUtils.setTextOrHide(churchAddress, church.getAddress());
-        ViewUtils.setTextOrHide(churchGettingThere, church.getGettingThere());
+        ViewUtils.setHtmlTextOrHide(churchAddress, church.getAddress());
+        ViewUtils.setHtmlTextOrHide(churchGettingThere, church.getGettingThere());
         displayMasses();
         imagesAdapter.setImages(churchWithMasses.getImages());
     }

@@ -2,6 +2,7 @@ package com.frama.miserend.hu.utils;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -27,6 +28,14 @@ public class ViewUtils {
     public static void setTextOrHide(TextView textView, String text) {
         if (text != null && text.length() > 0) {
             textView.setText(text);
+        } else {
+            textView.setVisibility(View.GONE);
+        }
+    }
+
+    public static void setHtmlTextOrHide(TextView textView, String text) {
+        if (text != null && text.length() > 0) {
+            textView.setText(Html.fromHtml(text));
         } else {
             textView.setVisibility(View.GONE);
         }
