@@ -81,7 +81,7 @@ public class NearChurchesFragment extends ChurchListFragment implements Location
 
     @Override
     public void onLocationRetrieved(Location location) {
-        nearChurchesViewModel.getNearestChurches(location.getLatitude(), location.getLongitude()).observe(this, adapter::setList);
+        nearChurchesViewModel.getNearestChurches(location.getLatitude(), location.getLongitude()).observe(this, adapter::submitList);
         recyclerView.setVisibility(View.VISIBLE);
         locationSettingsLayout.setVisibility(View.GONE);
         locationPermissionLayout.setVisibility(View.GONE);
