@@ -1,5 +1,6 @@
 package com.frama.miserend.hu.home.view;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -63,6 +64,8 @@ public class HomeScreenActivity extends FragmentHostActivity implements Database
     @BindView(R.id.search_fader)
     View searchFader;
 
+    ProgressDialog databaseDownloadingDialog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,14 +121,27 @@ public class HomeScreenActivity extends FragmentHostActivity implements Database
     private void onDatabaseStateChanged(DatabaseState databaseState) {
         switch (databaseState) {
             case UP_TO_DATE:
+                hideDownloadingDialog();
                 showFragment(new ChurchesFragment());
                 break;
             case UPDATE_AVAILABLE:
+                hideDownloadingDialog();
                 showDatabaseUpdateDialog();
                 break;
             case NOT_FOUND:
+                hideDownloadingDialog();
                 showDatabaseMissingDialog();
                 break;
+            case DOWNLOADING:
+                databaseDownloadingDialog = ProgressDialog.show(this, null, getString(R.string.dialog_db_downloading));
+                databaseDownloadingDialog.setCancelable(false);
+                break;
+        }
+    }
+
+    private void hideDownloadingDialog() {
+        if (databaseDownloadingDialog != null) {
+            databaseDownloadingDialog.cancel();
         }
     }
 

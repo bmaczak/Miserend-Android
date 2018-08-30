@@ -30,6 +30,14 @@ public class DatabaseDownloaderTask extends AsyncTask<String, Integer, Boolean> 
     }
 
     @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        if (listener != null) {
+            listener.onDbDownloadStarted();
+        }
+    }
+
+    @Override
     protected Boolean doInBackground(String... params) {
         String url = params[0];
         return downloadFromUrl(url);

@@ -27,6 +27,7 @@
     <string name="dialog_db_missing_message">Az alkalmazás használatához szükség van az adatbázis letöltésére. Letölti most?</string>
     <string name="dialog_db_missing_btn_ok">Letöltés</string>
     <string name="dialog_db_missing_btn_cancel">Kilépés</string>
+    <string name="dialog_db_downloading">Adatbázis letöltése</string>
 
     <string name="dialog_db_update_title">Frissítés elérhető</string>
     <string name="dialog_db_update_message">Elérhető frisebb adatbázis. Letölti most?</string>

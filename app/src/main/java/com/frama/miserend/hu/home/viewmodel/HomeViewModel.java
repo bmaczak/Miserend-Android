@@ -44,12 +44,11 @@ public class HomeViewModel extends AndroidViewModel {
         return databaseState;
     }
 
-
     public void downloadDatabase() {
         databaseManager.downloadDatabase(new DatabaseDownloaderTask.OnDbDownloadedListener() {
             @Override
             public void onDbDownloadStarted() {
-
+                HomeViewModel.this.databaseState.setValue(DatabaseState.DOWNLOADING);
             }
 
             @Override
