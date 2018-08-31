@@ -40,7 +40,14 @@ public class HomeViewModel extends AndroidViewModel {
         databaseManager.getDatabaseState()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(databaseState -> this.databaseState.setValue(databaseState));
+                .subscribe(databaseState -> this.databaseState.setValue(databaseState),
+                        throwable -> {
+                            if (databaseManager.isDbExist()) {
+                                this.databaseState.setValue(DatabaseState.UP_TO_DATE);
+                            } else {
+                                this.databaseState.setValue(DatabaseState.NOT_FOUND);
+                            }
+                        });
         return databaseState;
     }
 
@@ -53,8 +60,12 @@ public class HomeViewModel extends AndroidViewModel {
 
             @Override
             public void onDbDownloadFinished(boolean success) {
-                preferences.setDatabaseLastUpdated(Calendar.getInstance().getTimeInMillis());
-                HomeViewModel.this.databaseState.setValue(DatabaseState.UP_TO_DATE);
+                if (success) {
+                    preferences.setDatabaseLastUpdated(Calendar.getInstance().getTimeInMillis());
+                    HomeViewModel.this.databaseState.setValue(DatabaseState.UP_TO_DATE);
+                } else {
+                    HomeViewModel.this.databaseState.setValue(DatabaseState.NOT_FOUND);
+                }
             }
         });
     }
