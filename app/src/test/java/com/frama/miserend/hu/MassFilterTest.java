@@ -110,6 +110,24 @@ public class MassFilterTest {
     }
 
     @Test
+    public void massFilter_OnOfIntervalForSingleDayMasses() {
+        date = LocalDate.of(2018, 3, 1);
+        mass.setDay(0);
+        mass.setFromDate(301);
+        mass.setToDate(301);
+        assertEquals(true, MassFilter.isMassOnDay(mass, date));
+    }
+
+    @Test
+    public void massFilter_OutOfIntervalForSingleDayMasses() {
+        date = LocalDate.of(2018, 3, 1);
+        mass.setDay(0);
+        mass.setFromDate(815);
+        mass.setToDate(815);
+        assertEquals(false, MassFilter.isMassOnDay(mass, date));
+    }
+
+    @Test
     public void massFilter_OutsideInterval() {
         date = LocalDate.of(2018, 3, 1);
         mass.setDay(0);
