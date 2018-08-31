@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.base.BaseActivity;
+import com.frama.miserend.hu.firebase.Analytics;
 import com.frama.miserend.hu.picker.DatePickerFragment;
 import com.frama.miserend.hu.picker.TimePickerFragment;
 import com.frama.miserend.hu.router.Router;
@@ -55,6 +56,8 @@ public class AdvancedSearchActivity extends BaseActivity implements TimePickerFr
     AdvancedSearchViewModel advancedSearchViewModel;
     @Inject
     Router router;
+    @Inject
+    Analytics analytics;
 
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy. MM. dd.");
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -66,6 +69,12 @@ public class AdvancedSearchActivity extends BaseActivity implements TimePickerFr
         ButterKnife.bind(this);
         advancedSearchViewModel.getCities().observe(this, this::onCitiesLoaded);
         updateUi();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        analytics.setCurrentScreen(this, Analytics.ScreenNames.ADVANCED_SEARCH);
     }
 
     private void updateUi() {

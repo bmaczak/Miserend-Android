@@ -20,6 +20,7 @@ import com.frama.miserend.hu.churchdetails.viewmodel.ChurchDetailsViewModel;
 import com.frama.miserend.hu.database.miserend.entities.Church;
 import com.frama.miserend.hu.database.miserend.entities.Mass;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
+import com.frama.miserend.hu.firebase.Analytics;
 import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.map.StaticMapHelper;
 import com.frama.miserend.hu.massdetails.view.MassDetailsDialogFragment;
@@ -79,6 +80,8 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
     ChurchDetailsViewModel churchDetailsViewModel;
     @Inject
     Router router;
+    @Inject
+    Analytics analytics;
 
     private GalleryPagerAdapter imagesAdapter;
 
@@ -92,6 +95,12 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
         setupActionBar();
         setupGallery();
         churchDetailsViewModel.getChurchWithMasses().observe(this, this::onChurchDetailsLoaded);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        analytics.setCurrentScreen(this, Analytics.ScreenNames.CHURCH_DETAILS);
     }
 
     @Override

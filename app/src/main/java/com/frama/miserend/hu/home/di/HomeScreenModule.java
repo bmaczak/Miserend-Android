@@ -14,6 +14,7 @@ import com.frama.miserend.hu.home.pages.churches.favorites.FavoriteChurchesFragm
 import com.frama.miserend.hu.home.pages.churches.favorites.di.FavoritesFragmentModule;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
 import com.frama.miserend.hu.home.pages.churches.near.di.NearChurchesFragmentModule;
+import com.frama.miserend.hu.home.pages.churches.view.ChurchesFragment;
 import com.frama.miserend.hu.home.pages.map.di.ChurchesMapFragmentModule;
 import com.frama.miserend.hu.home.pages.map.view.ChurchesMapFragment;
 import com.frama.miserend.hu.home.pages.masses.di.MassesFragmentModule;
@@ -64,6 +65,10 @@ public abstract class HomeScreenModule {
     static SuggestionViewModel.Factory provideSuggestionViewModelFactory(Application application, MiserendDatabase miserendDatabase, LocalDatabase localDatabase) {
         return new SuggestionViewModel.Factory(application, miserendDatabase, localDatabase);
     }
+
+    @PerFragment
+    @ContributesAndroidInjector()
+    abstract ChurchesFragment bindChurchesFragment();
 
     @PerFragment
     @ContributesAndroidInjector(modules = {NearChurchesFragmentModule.class, FavoritesModule.class})

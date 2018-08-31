@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.firebase.Analytics;
 import com.frama.miserend.hu.home.pages.map.viewmodel.ChurchesMapViewModel;
 import com.frama.miserend.hu.location.LocationManager;
 import com.frama.miserend.hu.router.Router;
@@ -45,6 +46,8 @@ public class ChurchesMapFragment extends SupportMapFragment implements OnMapRead
     Router router;
     @Inject
     LocationManager locationManager;
+    @Inject
+    Analytics analytics;
 
     private GoogleMap map;
     private ClusterManager<ChurchClusterItem> clusterManager;
@@ -61,6 +64,12 @@ public class ChurchesMapFragment extends SupportMapFragment implements OnMapRead
         super.onAttach(context);
         churchesMapViewModel.getChurcesLiveData().observe(this, this::onChurchesLoaded);
         locationManager.registerListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        analytics.setCurrentScreen(getActivity(), Analytics.ScreenNames.MAP);
     }
 
     @Override

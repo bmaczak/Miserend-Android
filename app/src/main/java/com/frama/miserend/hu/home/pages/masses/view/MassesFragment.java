@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.base.BaseFragment;
 import com.frama.miserend.hu.database.miserend.relations.MassWithChurch;
+import com.frama.miserend.hu.firebase.Analytics;
 import com.frama.miserend.hu.home.pages.masses.viewmodel.MassesViewModel;
 import com.frama.miserend.hu.location.LocationManager;
 import com.frama.miserend.hu.router.Router;
@@ -38,6 +39,8 @@ public class MassesFragment extends BaseFragment implements LocationManager.Loca
     LocationManager locationManager;
     @Inject
     Router router;
+    @Inject
+    Analytics analytics;
 
     @BindView(R.id.recycle_view)
     RecyclerView recyclerView;
@@ -64,6 +67,12 @@ public class MassesFragment extends BaseFragment implements LocationManager.Loca
     public void onAttach(Context context) {
         super.onAttach(context);
         locationManager.registerListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        analytics.setCurrentScreen(getActivity(), Analytics.ScreenNames.MASSES);
     }
 
     @Override
