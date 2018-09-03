@@ -38,5 +38,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD7gu93yYTqPpJ2G5K79AhBs1UoyGNIs_o" />
+
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="@bool/CRASH_REPORTING_ENABLED"/>
     </application>
 </manifest>
