@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/church_card"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
+    android:layout_height="176dp"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     android:layout_marginTop="8dp">
@@ -26,7 +26,8 @@
                 android:id="@+id/church_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/church_common_name"
@@ -34,16 +35,17 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="4dp"
                 android:layout_weight="1"
-                android:maxLines="2"
+                android:maxLines="1"
+                android:textColor="@color/black_40"
                 android:textSize="14sp" />
 
-
-            <TextView
-                android:id="@+id/masses_text"
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/masses_flexbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp" />
-
+                app:alignContent="flex_start"
+                app:alignItems="flex_start"
+                app:flexWrap="wrap" />
 
             <View
                 android:layout_width="match_parent"
@@ -79,8 +81,8 @@
                 android:layout_height="match_parent"
                 android:background="@color/black_20"
                 android:scaleType="centerCrop"
-                app:failureImage="@drawable/ic_church"
-                app:failureImageScaleType="center" />
+                app:failureImage="@drawable/church_blurred"
+                app:failureImageScaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/church_distance"

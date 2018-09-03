@@ -47,4 +47,5 @@ public class ViewUtils {
         view.findViewById(R.id.mass_info_icon).setVisibility(mass.hasInfo() ? View.VISIBLE : View.GONE);
         return view;
     }
+
 }

@@ -11,9 +11,11 @@ import android.view.ViewGroup;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.database.miserend.entities.Mass;
 import com.frama.miserend.hu.home.pages.churches.favorites.FavoritesViewModel;
 import com.frama.miserend.hu.home.pages.churches.view.ChurchListFragment;
 import com.frama.miserend.hu.location.LocationManager;
+import com.frama.miserend.hu.massdetails.view.MassDetailsDialogFragment;
 import com.frama.miserend.hu.router.Router;
 
 import java.util.List;
@@ -114,5 +116,10 @@ public class NearChurchesFragment extends ChurchListFragment implements Location
     @OnClick(R.id.location_permission_button)
     public void onLocationPermissionButtonClicked() {
         locationManager.requestPermission();
+    }
+
+    @Override
+    public void onMassClicked(Mass mass) {
+        MassDetailsDialogFragment.newInstance(mass).show(getChildFragmentManager(), "mass_details");
     }
 }
