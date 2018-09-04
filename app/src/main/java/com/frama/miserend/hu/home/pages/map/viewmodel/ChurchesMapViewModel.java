@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 
 import java.util.List;
 
@@ -32,6 +33,10 @@ public class ChurchesMapViewModel extends AndroidViewModel {
             churcesLiveData = miserendDatabase.churchDao().getAll();
         }
         return churcesLiveData;
+    }
+
+    public LiveData<ChurchWithMasses> selectChurch(int churchId) {
+        return miserendDatabase.churchWithMassesDao().getChurchById(churchId);
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {

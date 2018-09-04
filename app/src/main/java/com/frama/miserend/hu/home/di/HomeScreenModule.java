@@ -83,6 +83,6 @@ public abstract class HomeScreenModule {
     abstract MassesFragment bindMassesFragment();
 
     @PerFragment
-    @ContributesAndroidInjector(modules = {ChurchesMapFragmentModule.class})
+    @ContributesAndroidInjector(modules = {ChurchesMapFragmentModule.class, FavoritesModule.class})
     abstract ChurchesMapFragment bindChurchesMapFragment();
 }
