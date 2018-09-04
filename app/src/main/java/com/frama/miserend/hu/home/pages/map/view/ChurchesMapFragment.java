@@ -22,6 +22,7 @@ import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.home.pages.churches.view.ChurchViewHolder;
 import com.frama.miserend.hu.home.pages.map.viewmodel.ChurchesMapViewModel;
 import com.frama.miserend.hu.location.LocationManager;
+import com.frama.miserend.hu.massdetails.view.MassDetailsDialogFragment;
 import com.frama.miserend.hu.router.Router;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -213,6 +214,6 @@ public class ChurchesMapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onMassClicked(Mass mass) {
-
+        MassDetailsDialogFragment.newInstance(mass).show(getChildFragmentManager(), "mass_details");
     }
 }
