@@ -16,7 +16,7 @@ import java.util.List;
 public interface MassesDao {
 
     @Query("SELECT church.*, mass.*,((church.lng-(:longitude))*(church.lng-(:longitude)) + (church.lat-(:latitude))*(church.lat-(:latitude))) AS len " +
-            "FROM templomok AS church JOIN misek AS mass ON mass.tid = church.tid WHERE lng != 0 AND lat != 0 AND mass.nap = :dayOfWeek ORDER BY len ASC LIMIT 100")
+            "FROM templomok AS church JOIN misek AS mass ON mass.tid = church.tid WHERE lng != 0 AND lat != 0 AND mass.nap = :dayOfWeek ORDER BY len ASC LIMIT 500")
     LiveData<List<MassWithChurch>> getMassesInRadius(double latitude, double longitude, int dayOfWeek);
 
     @Query("SELECT church.*, mass.* FROM templomok AS church JOIN misek AS mass ON mass.tid = church.tid " +
