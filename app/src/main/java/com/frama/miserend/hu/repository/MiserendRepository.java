@@ -23,6 +23,7 @@ import org.threeten.bp.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -82,7 +83,8 @@ public class MiserendRepository {
                 massWithChurches -> {
                     List<MassWithChurch> masses = new ArrayList<>();
                     for (MassWithChurch massWithChurch : massWithChurches) {
-                        if (MassFilter.isMassOnDay(massWithChurch.getMass(), LocalDate.now())) {
+                        if (MassFilter.isMassOnDay(massWithChurch.getMass(), LocalDate.now())
+                                && LocalTime.parse(massWithChurch.getMass().getTime()).isAfter(LocalTime.now())) {
                             masses.add(massWithChurch);
                         }
                     }
