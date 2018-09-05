@@ -114,6 +114,11 @@ public class MassesFragment extends BaseFragment implements LocationManager.Loca
 
     @Override
     public void onMassListItemClicked(MassWithChurch massWithChurch) {
+        router.startGoogleNavigation(massWithChurch.getChurch());
+    }
+
+    @Override
+    public void onChurchImageClicked(MassWithChurch massWithChurch) {
         router.showChurchDetails(massWithChurch.getChurch());
     }
 }
