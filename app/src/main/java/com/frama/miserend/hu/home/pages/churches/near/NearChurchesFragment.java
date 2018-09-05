@@ -42,8 +42,6 @@ public class NearChurchesFragment extends ChurchListFragment implements Location
     @Inject
     NearChurchesViewModel nearChurchesViewModel;
     @Inject
-    FavoritesViewModel favoritesViewModel;
-    @Inject
     LocationManager locationManager;
     @Inject
     NearChurchesAdapter adapter;
@@ -55,7 +53,6 @@ public class NearChurchesFragment extends ChurchListFragment implements Location
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_near_churches, container, false);
         ButterKnife.bind(this, v);
-        favoritesViewModel.getFavorites().observe(this, this::onFavoritesChanged);
         return v;
     }
 
@@ -67,6 +64,7 @@ public class NearChurchesFragment extends ChurchListFragment implements Location
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         locationManager.getLastKnownLocation();
+        nearChurchesViewModel.getFavorites().observe(this, this::onFavoritesChanged);
     }
 
     @Override
@@ -105,7 +103,7 @@ public class NearChurchesFragment extends ChurchListFragment implements Location
 
     @Override
     public void onFavoriteClicked(Church church) {
-        favoritesViewModel.toggleFavorite(church.getId());
+        nearChurchesViewModel.toggleFavorite(church.getId());
     }
 
     @OnClick(R.id.location_settings_button)

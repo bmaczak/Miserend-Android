@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 
 import com.frama.miserend.hu.database.local.LocalDatabase;
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
+import com.frama.miserend.hu.repository.MiserendRepository;
 import com.frama.miserend.hu.search.SearchParams;
 
 import org.threeten.bp.DayOfWeek;
@@ -27,10 +28,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class AdvancedSearchViewModel extends AndroidViewModel {
 
-    private final MiserendDatabase miserendDatabase;
-    private final LocalDatabase localDatabase;
-
-    private MutableLiveData<List<String>> cities;
+    private final MiserendRepository miserendRepository;
 
     private LocalDate date;
     private LocalTime fromTime;
@@ -38,11 +36,9 @@ public class AdvancedSearchViewModel extends AndroidViewModel {
     private boolean filterForMasses;
     private boolean allDay;
 
-    public AdvancedSearchViewModel(@NonNull Application application, MiserendDatabase miserendDatabase, LocalDatabase localDatabase) {
+    public AdvancedSearchViewModel(@NonNull Application application, MiserendRepository miserendRepository) {
         super(application);
-        this.miserendDatabase = miserendDatabase;
-        this.localDatabase = localDatabase;
-        this.cities = new MutableLiveData<>();
+        this.miserendRepository = miserendRepository;
         init();
     }
 
@@ -53,11 +49,7 @@ public class AdvancedSearchViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<String>> getCities() {
-        miserendDatabase.churchDao().getAllCities()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(strings -> cities.setValue(strings));
-        return cities;
+        return miserendRepository.getCities();
     }
 
     public SearchParams createSearchParams(String churchName, String city) {
@@ -112,20 +104,18 @@ public class AdvancedSearchViewModel extends AndroidViewModel {
 
         @NonNull
         private final Application application;
-        private final MiserendDatabase miserendDatabase;
-        private final LocalDatabase localDatabase;
+        private final MiserendRepository miserendRepository;
 
 
-        public Factory(@NonNull Application application, MiserendDatabase miserendDatabase, LocalDatabase localDatabase) {
+        public Factory(@NonNull Application application, MiserendRepository miserendRepository) {
             this.application = application;
-            this.miserendDatabase = miserendDatabase;
-            this.localDatabase = localDatabase;
+            this.miserendRepository = miserendRepository;
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new AdvancedSearchViewModel(application, miserendDatabase, localDatabase);
+            return (T) new AdvancedSearchViewModel(application, miserendRepository);
         }
     }
 }

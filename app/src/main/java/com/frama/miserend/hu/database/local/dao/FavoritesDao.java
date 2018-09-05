@@ -21,7 +21,7 @@ public interface FavoritesDao {
     LiveData<List<Integer>> getAll();
 
     @Query("SELECT COUNT(*) FROM favorites WHERE tid = :churchId")
-    LiveData<Integer> getCountById(int churchId);
+    int getCountById(int churchId);
 
     @Insert
     void insert(Favorite favorite);

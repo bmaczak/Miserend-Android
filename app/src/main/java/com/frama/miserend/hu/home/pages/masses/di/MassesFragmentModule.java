@@ -10,6 +10,7 @@ import com.frama.miserend.hu.home.pages.masses.view.MassesAdapter;
 import com.frama.miserend.hu.home.pages.masses.view.MassesFragment;
 import com.frama.miserend.hu.home.pages.masses.viewmodel.MassesViewModel;
 import com.frama.miserend.hu.location.LocationManager;
+import com.frama.miserend.hu.repository.MiserendRepository;
 
 import dagger.Module;
 import dagger.Provides;
@@ -41,8 +42,8 @@ public class MassesFragmentModule {
 
     @PerFragment
     @Provides
-    MassesViewModel.Factory provideMassesViewModelFactory(Application application, MiserendDatabase database) {
-        return new MassesViewModel.Factory(application, database);
+    MassesViewModel.Factory provideMassesViewModelFactory(Application application, MiserendRepository miserendRepository) {
+        return new MassesViewModel.Factory(application, miserendRepository);
     }
 
     @PerFragment

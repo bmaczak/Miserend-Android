@@ -6,9 +6,10 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.NonNull;
 
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
-import com.frama.miserend.hu.di.modules.FavoritesModule;
 import com.frama.miserend.hu.di.scopes.PerActivity;
 import com.frama.miserend.hu.di.scopes.PerFragment;
+import com.frama.miserend.hu.repository.FavoritesRepository;
+import com.frama.miserend.hu.repository.MiserendRepository;
 import com.frama.miserend.hu.router.Router;
 import com.frama.miserend.hu.search.SearchParams;
 import com.frama.miserend.hu.search.result.church.di.SearchResultChurchListModule;
@@ -42,8 +43,8 @@ public abstract class SearchResultModule {
 
     @PerActivity
     @Provides
-    static SearchResultViewModel.Factory provideSearchResultViewModelFactory(@NonNull Application application, MiserendDatabase miserendDatabase, SearchParams searchParams) {
-        return new SearchResultViewModel.Factory(application, miserendDatabase, searchParams);
+    static SearchResultViewModel.Factory provideSearchResultViewModelFactory(@NonNull Application application, MiserendRepository miserendRepository, FavoritesRepository favoritesRepository, SearchParams searchParams) {
+        return new SearchResultViewModel.Factory(application, miserendRepository, favoritesRepository, searchParams);
     }
 
     @PerActivity
@@ -54,7 +55,7 @@ public abstract class SearchResultModule {
 
 
     @PerFragment
-    @ContributesAndroidInjector(modules = {SearchResultChurchListModule.class, FavoritesModule.class})
+    @ContributesAndroidInjector(modules = {SearchResultChurchListModule.class})
     abstract SearchResultChurchListFragment bindSearchResultChurchListFragment();
 
     @PerFragment

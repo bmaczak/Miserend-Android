@@ -31,8 +31,6 @@ public class SearchResultChurchListFragment extends ChurchListFragment {
     @Inject
     SearchResultViewModel searchResultViewModel;
     @Inject
-    FavoritesViewModel favoritesViewModel;
-    @Inject
     Router router;
     @Inject
     ChurchSearchResultAdapter adapter;
@@ -55,7 +53,7 @@ public class SearchResultChurchListFragment extends ChurchListFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        favoritesViewModel.getFavorites().observe(this, this::onFavoritesLoaded);
+        searchResultViewModel.getFavorites().observe(this, this::onFavoritesLoaded);
         searchResultViewModel.getChurchSearchResults().observe(this, this::onSearchResultsLoaded);
     }
 
@@ -74,7 +72,7 @@ public class SearchResultChurchListFragment extends ChurchListFragment {
 
     @Override
     public void onFavoriteClicked(Church church) {
-        favoritesViewModel.toggleFavorite(church.getId());
+        searchResultViewModel.toggleFavorite(church.getId());
     }
 
     @Override

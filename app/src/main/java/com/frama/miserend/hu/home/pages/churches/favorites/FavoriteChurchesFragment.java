@@ -46,12 +46,8 @@ public class FavoriteChurchesFragment extends ChurchListFragment {
         View v = inflater.inflate(R.layout.fragment_favorite_churches, container, false);
         ButterKnife.bind(this, v);
         recyclerView.setAdapter(favoriteChurchesAdapter);
-        favoritesViewModel.getFavorites().observe(this, this::onFavoritesChanged);
-        return v;
-    }
-
-    private void onFavoritesChanged(List<Integer> integers) {
         favoritesViewModel.getFavoriteChurches().observe(this, this::onFavoritesLoaded);
+        return v;
     }
 
     public void onFavoritesLoaded(List<ChurchWithMasses> churches) {

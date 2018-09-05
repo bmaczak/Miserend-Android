@@ -21,11 +21,11 @@ public interface ChurchDao {
     LiveData<List<Church>> getAll();
 
     @Query("SELECT * FROM templomok WHERE nev LIKE '%' || :searchTerm || '%' OR ismertnev LIKE '%' || :searchTerm || '%'")
-    Flowable<List<Church>> getByName(String searchTerm);
+    LiveData<List<Church>> getByName(String searchTerm);
 
     @Query("SELECT DISTINCT varos FROM templomok WHERE varos LIKE '%' || :searchTerm || '%'")
-    Flowable<List<String>> getCities(String searchTerm);
+    LiveData<List<String>> getCities(String searchTerm);
 
     @Query("SELECT DISTINCT varos FROM templomok")
-    Flowable<List<String>> getAllCities();
+    LiveData<List<String>> getAllCities();
 }

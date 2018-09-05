@@ -66,8 +66,6 @@ public class ChurchesMapFragment extends Fragment implements OnMapReadyCallback,
     LocationManager locationManager;
     @Inject
     Analytics analytics;
-    @Inject
-    FavoritesViewModel favoritesViewModel;
 
     private GoogleMap map;
     private ClusterManager<ChurchClusterItem> clusterManager;
@@ -93,7 +91,7 @@ public class ChurchesMapFragment extends Fragment implements OnMapReadyCallback,
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
         churchesMapViewModel.getChurcesLiveData().observe(this, this::onChurchesLoaded);
-        favoritesViewModel.getFavorites().observe(this, this::onFavoritesLoaded);
+        churchesMapViewModel.getFavorites().observe(this, this::onFavoritesLoaded);
         locationManager.registerListener(this);
     }
 
@@ -209,7 +207,7 @@ public class ChurchesMapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onFavoriteClicked(Church church) {
-        favoritesViewModel.toggleFavorite(church.getId());
+        churchesMapViewModel.toggleFavorite(church.getId());
     }
 
     @Override

@@ -7,7 +7,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import com.frama.miserend.hu.database.local.LocalDatabase;
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseManager;
-import com.frama.miserend.hu.di.modules.FavoritesModule;
 import com.frama.miserend.hu.di.scopes.PerActivity;
 import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.home.pages.churches.favorites.FavoriteChurchesFragment;
@@ -22,6 +21,8 @@ import com.frama.miserend.hu.home.pages.masses.view.MassesFragment;
 import com.frama.miserend.hu.home.view.HomeScreenActivity;
 import com.frama.miserend.hu.home.viewmodel.HomeViewModel;
 import com.frama.miserend.hu.preferences.Preferences;
+import com.frama.miserend.hu.repository.MiserendRepository;
+import com.frama.miserend.hu.repository.RecentSearchesRepository;
 import com.frama.miserend.hu.search.suggestions.viewmodel.SuggestionViewModel;
 
 import dagger.Module;
@@ -62,8 +63,8 @@ public abstract class HomeScreenModule {
 
     @PerActivity
     @Provides
-    static SuggestionViewModel.Factory provideSuggestionViewModelFactory(Application application, MiserendDatabase miserendDatabase, LocalDatabase localDatabase) {
-        return new SuggestionViewModel.Factory(application, miserendDatabase, localDatabase);
+    static SuggestionViewModel.Factory provideSuggestionViewModelFactory(Application application, MiserendRepository miserendRepository, RecentSearchesRepository recentSearchesRepository) {
+        return new SuggestionViewModel.Factory(application, miserendRepository, recentSearchesRepository);
     }
 
     @PerFragment
@@ -71,11 +72,11 @@ public abstract class HomeScreenModule {
     abstract ChurchesFragment bindChurchesFragment();
 
     @PerFragment
-    @ContributesAndroidInjector(modules = {NearChurchesFragmentModule.class, FavoritesModule.class})
+    @ContributesAndroidInjector(modules = {NearChurchesFragmentModule.class})
     abstract NearChurchesFragment bindNearChurchesFragment();
 
     @PerFragment
-    @ContributesAndroidInjector(modules = {FavoritesModule.class, FavoritesFragmentModule.class})
+    @ContributesAndroidInjector(modules = {FavoritesFragmentModule.class})
     abstract FavoriteChurchesFragment bindFavoriteChurchesFragment();
 
     @PerFragment
@@ -83,6 +84,6 @@ public abstract class HomeScreenModule {
     abstract MassesFragment bindMassesFragment();
 
     @PerFragment
-    @ContributesAndroidInjector(modules = {ChurchesMapFragmentModule.class, FavoritesModule.class})
+    @ContributesAndroidInjector(modules = {ChurchesMapFragmentModule.class})
     abstract ChurchesMapFragment bindChurchesMapFragment();
 }

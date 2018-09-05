@@ -2,15 +2,23 @@ package com.frama.miserend.hu.search.suggestions.viewmodel;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.frama.miserend.hu.database.local.LocalDatabase;
 import com.frama.miserend.hu.database.local.entities.RecentSearch;
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.livedata.ListMergerLiveData;
+import com.frama.miserend.hu.repository.MiserendRepository;
+import com.frama.miserend.hu.repository.RecentSearchesRepository;
 import com.frama.miserend.hu.search.suggestions.Suggestion;
 import com.frama.miserend.hu.search.suggestions.advanced.AdvancedSearchSuggestion;
 import com.frama.miserend.hu.search.suggestions.church.ChurchSuggestion;
@@ -31,50 +39,48 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SuggestionViewModel extends AndroidViewModel {
 
-    private MiserendDatabase miserendDatabase;
-    private LocalDatabase localDatabase;
+    private MiserendRepository miserendRepository;
+    private RecentSearchesRepository recentSearchesRepository;
 
+    private MutableLiveData<String> lastSearchTerm;
     private MutableLiveData<List<Suggestion>> suggestions;
 
-    public SuggestionViewModel(@NonNull Application application, MiserendDatabase miserendDatabase, LocalDatabase localDatabase) {
+    public SuggestionViewModel(@NonNull Application application, MiserendRepository miserendRepository, RecentSearchesRepository recentSearchesRepository) {
         super(application);
-        this.miserendDatabase = miserendDatabase;
-        this.localDatabase = localDatabase;
+        this.miserendRepository = miserendRepository;
+        this.recentSearchesRepository = recentSearchesRepository;
+        lastSearchTerm = new MutableLiveData<>();
         suggestions = new MutableLiveData<>();
     }
 
-    public MutableLiveData<List<Suggestion>> getSuggestions() {
-        return suggestions;
+    public LiveData<List<Suggestion>> getSuggestions() {
+        return Transformations.switchMap(lastSearchTerm, searchTerm -> {
+            if (searchTerm.length() > 2) {
+                return Transformations.map(new ListMergerLiveData<>(
+                                getChurchSuggestions(searchTerm),
+                                getCitySuggestions(searchTerm),
+                                getRecentSearchSuggestions(searchTerm)),
+                        results -> {
+                            results.add(new AdvancedSearchSuggestion());
+                            return results;
+                        });
+            } else {
+                return Transformations.map(getRecentSearchSuggestions(searchTerm),
+                        results -> {
+                            results.add(new AdvancedSearchSuggestion());
+                            return results;
+                        });
+            }
+        });
     }
 
     public void updateSuggestions(String searchTerm) {
-        if (searchTerm.length() > 2) {
-            Flowable.zip(getRecentSearchSuggestions(searchTerm), getChurchSuggestions(searchTerm), getCitySuggestions(searchTerm),
-                    (suggestions, suggestions2, suggestions3) -> {
-                        suggestions.addAll(suggestions2);
-                        suggestions.addAll(suggestions3);
-                        suggestions.add(0, new AdvancedSearchSuggestion());
-                        return suggestions;
-                    })
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(suggestionResult -> suggestions.setValue(suggestionResult));
-        } else {
-            getRecentSearchSuggestions(searchTerm)
-                    .map(suggestions -> {
-                        suggestions.add(0, new AdvancedSearchSuggestion());
-                        return suggestions;
-                    })
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(suggestionResult -> suggestions.setValue(suggestionResult));
-        }
-
+        lastSearchTerm.setValue(searchTerm);
     }
 
-    private Flowable<List<Suggestion>> getChurchSuggestions(String searchTerm) {
-        return miserendDatabase.churchDao().getByName(searchTerm)
-                .map(churches -> {
+    private LiveData<List<Suggestion>> getChurchSuggestions(String searchTerm) {
+        return Transformations.map(miserendRepository.getChurches(searchTerm),
+                churches -> {
                     List<Suggestion> names = new ArrayList<>();
                     for (Church church : churches) {
                         names.add(new ChurchSuggestion(church));
@@ -83,9 +89,9 @@ public class SuggestionViewModel extends AndroidViewModel {
                 });
     }
 
-    private Flowable<List<Suggestion>> getCitySuggestions(String searchTerm) {
-        return miserendDatabase.churchDao().getCities(searchTerm)
-                .map(cities -> {
+    private LiveData<List<Suggestion>> getCitySuggestions(String searchTerm) {
+        return Transformations.map(miserendRepository.getCities(searchTerm),
+                cities -> {
                     List<Suggestion> names = new ArrayList<>();
                     for (String city : cities) {
                         names.add(new CitySuggestion(city));
@@ -94,9 +100,9 @@ public class SuggestionViewModel extends AndroidViewModel {
                 });
     }
 
-    private Flowable<List<Suggestion>> getRecentSearchSuggestions(String searchTerm) {
-        return localDatabase.recentSearchesDao().getBySearchTerm(searchTerm)
-                .map(recents -> {
+    private LiveData<List<Suggestion>> getRecentSearchSuggestions(String searchTerm) {
+        return Transformations.map(recentSearchesRepository.getRecentSearches(searchTerm),
+                recents -> {
                     List<Suggestion> searchTerms = new ArrayList<>();
                     for (String recent : recents) {
                         searchTerms.add(new RecentSearchSuggestion(recent));
@@ -106,28 +112,26 @@ public class SuggestionViewModel extends AndroidViewModel {
     }
 
     public void addRecentSearch(String searchTerm) {
-        Observable.just(localDatabase)
-                .subscribeOn(Schedulers.io())
-                .subscribe(db -> db.recentSearchesDao().insert(new RecentSearch(searchTerm)));
+        new Thread(() -> recentSearchesRepository.add(searchTerm));
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
         @NonNull
         private final Application mApplication;
-        private final MiserendDatabase miserendDatabase;
-        private final LocalDatabase localDatabase;
+        private final MiserendRepository miserendRepository;
+        private final RecentSearchesRepository recentSearchesRepository;
 
-        public Factory(@NonNull Application mApplication, MiserendDatabase miserendDatabase, LocalDatabase localDatabase) {
+        public Factory(@NonNull Application mApplication, MiserendRepository miserendRepository, RecentSearchesRepository recentSearchesRepository) {
             this.mApplication = mApplication;
-            this.miserendDatabase = miserendDatabase;
-            this.localDatabase = localDatabase;
+            this.miserendRepository = miserendRepository;
+            this.recentSearchesRepository = recentSearchesRepository;
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new SuggestionViewModel(mApplication, miserendDatabase, localDatabase);
+            return (T) new SuggestionViewModel(mApplication, miserendRepository, recentSearchesRepository);
         }
     }
 }

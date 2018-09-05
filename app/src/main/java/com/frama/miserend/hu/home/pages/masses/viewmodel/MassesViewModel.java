@@ -13,6 +13,7 @@ import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.relations.MassWithChurch;
 import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.home.pages.masses.model.MassComparator;
+import com.frama.miserend.hu.repository.MiserendRepository;
 
 import org.threeten.bp.LocalDate;
 
@@ -29,37 +30,15 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MassesViewModel extends AndroidViewModel {
 
-    private MutableLiveData<List<MassWithChurch>> masses;
-    private MiserendDatabase database;
+    private MiserendRepository miserendRepository;
 
-    public MassesViewModel(@NonNull Application application, MiserendDatabase database) {
+    public MassesViewModel(@NonNull Application application, MiserendRepository miserendRepository) {
         super(application);
-        this.database = database;
-        this.masses = new MutableLiveData<>();
+        this.miserendRepository = miserendRepository;
     }
 
-
     public LiveData<List<MassWithChurch>> getRecommendedMasses(Location currentLocation) {
-        LocalDate today = LocalDate.now();
-        int dayOfWeek = today.getDayOfWeek().getValue();
-        database.massesDao().getMassesInRadius(currentLocation.getLatitude(), currentLocation.getLongitude(), dayOfWeek)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(massWithChuches -> {
-                    List<MassWithChurch> masses = new ArrayList<>();
-                    for (MassWithChurch massWithChurch : massWithChuches) {
-                        if (MassFilter.isMassOnDay(massWithChurch.getMass(), LocalDate.now())) {
-                            masses.add(massWithChurch);
-                        }
-                    }
-                    return masses;
-                })
-                .map(massWithChurches -> {
-                    Collections.sort(massWithChurches, new MassComparator(currentLocation));
-                    return massWithChurches;
-                })
-                .subscribe(massWithChurches -> masses.setValue(massWithChurches));
-        return masses;
+        return miserendRepository.getRecommendedMasses(currentLocation);
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
@@ -67,17 +46,17 @@ public class MassesViewModel extends AndroidViewModel {
         @NonNull
         private final Application mApplication;
 
-        private final MiserendDatabase database;
+        private final MiserendRepository miserendRepository;
 
-        public Factory(@NonNull Application application, MiserendDatabase database) {
-            mApplication = application;
-            this.database = database;
+        public Factory(@NonNull Application mApplication, MiserendRepository miserendRepository) {
+            this.mApplication = mApplication;
+            this.miserendRepository = miserendRepository;
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new MassesViewModel(mApplication, database);
+            return (T) new MassesViewModel(mApplication, miserendRepository);
         }
     }
 }

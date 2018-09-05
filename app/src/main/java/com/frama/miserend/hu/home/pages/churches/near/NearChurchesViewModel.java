@@ -11,6 +11,10 @@ import android.support.annotation.NonNull;
 
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
+import com.frama.miserend.hu.repository.FavoritesRepository;
+import com.frama.miserend.hu.repository.MiserendRepository;
+
+import java.util.List;
 
 /**
  * Created by Balazs on 2018. 02. 10..
@@ -19,18 +23,26 @@ import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 public class NearChurchesViewModel extends AndroidViewModel {
 
     private LiveData<PagedList<ChurchWithMasses>> churches;
-    private MiserendDatabase database;
+    private MiserendRepository miserendRepository;
+    private FavoritesRepository favoritesRepository;
 
-    public NearChurchesViewModel(@NonNull Application application, MiserendDatabase database) {
+    public NearChurchesViewModel(@NonNull Application application, MiserendRepository miserendRepository, FavoritesRepository favoritesRepository) {
         super(application);
-        this.database = database;
+        this.miserendRepository = miserendRepository;
+        this.favoritesRepository = favoritesRepository;
     }
 
-
     public LiveData<PagedList<ChurchWithMasses>> getNearestChurches(double latitude, double longitude) {
-        churches = new LivePagedListBuilder<>(
-                database.churchWithMassesDao().getNearChurches(latitude, longitude), 20).build();
+        churches = miserendRepository.getNearChurches(latitude, longitude);
         return churches;
+    }
+
+    public LiveData<List<Integer>> getFavorites() {
+        return favoritesRepository.getFavorites();
+    }
+
+    public void toggleFavorite(int churchId) {
+        favoritesRepository.toggleFavorite(churchId);
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
@@ -38,17 +50,19 @@ public class NearChurchesViewModel extends AndroidViewModel {
         @NonNull
         private final Application mApplication;
 
-        private final MiserendDatabase database;
+        private final MiserendRepository miserendRepository;
+        private final FavoritesRepository favoritesRepository;
 
-        public Factory(@NonNull Application application, MiserendDatabase database) {
-            mApplication = application;
-            this.database = database;
+        public Factory(@NonNull Application mApplication, MiserendRepository miserendRepository, FavoritesRepository favoritesRepository) {
+            this.mApplication = mApplication;
+            this.miserendRepository = miserendRepository;
+            this.favoritesRepository = favoritesRepository;
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new NearChurchesViewModel(mApplication, database);
+            return (T) new NearChurchesViewModel(mApplication, miserendRepository, favoritesRepository);
         }
     }
 }

@@ -10,6 +10,8 @@ import com.frama.miserend.hu.home.pages.churches.near.NearChurchesAdapter;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesViewModel;
 import com.frama.miserend.hu.location.LocationManager;
+import com.frama.miserend.hu.repository.FavoritesRepository;
+import com.frama.miserend.hu.repository.MiserendRepository;
 
 import dagger.Module;
 import dagger.Provides;
@@ -41,8 +43,8 @@ public class NearChurchesFragmentModule {
 
     @PerFragment
     @Provides
-    NearChurchesViewModel.Factory provideNearChurchesViewModelFactory(Application application, MiserendDatabase database) {
-        return new NearChurchesViewModel.Factory(application, database);
+    NearChurchesViewModel.Factory provideNearChurchesViewModelFactory(Application application, MiserendRepository miserendRepository, FavoritesRepository favoritesRepository) {
+        return new NearChurchesViewModel.Factory(application, miserendRepository, favoritesRepository);
     }
 
     @PerFragment

@@ -53,8 +53,6 @@ public class HomeScreenActivity extends FragmentHostActivity implements Database
     @Inject
     Router router;
     @Inject
-    LocalDatabase localDatabase;
-    @Inject
     LocationManager locationManager;
 
     @BindView(R.id.search_bar)
