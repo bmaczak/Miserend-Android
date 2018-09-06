@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseDownloaderTask;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseManager;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseState;
+import com.frama.miserend.hu.location.LocationRepository;
 import com.frama.miserend.hu.preferences.Preferences;
 
 import java.util.Calendar;
@@ -28,11 +29,13 @@ public class HomeViewModel extends AndroidViewModel {
 
     private MutableLiveData<DatabaseState> databaseState;
     private Preferences preferences;
+    private LocationRepository locationRepository;
 
-    public HomeViewModel(@NonNull Application application, DatabaseManager databaseManager, Preferences preferences) {
+    public HomeViewModel(@NonNull Application application, DatabaseManager databaseManager, Preferences preferences, LocationRepository locationRepository) {
         super(application);
         this.databaseManager = databaseManager;
         this.preferences = preferences;
+        this.locationRepository = locationRepository;
         databaseState = new MutableLiveData<>();
     }
 
@@ -70,23 +73,29 @@ public class HomeViewModel extends AndroidViewModel {
         });
     }
 
+    public void retryLocation() {
+        locationRepository.refreshLocation();
+    }
+
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
         @NonNull
         private final Application mApplication;
         private final DatabaseManager databaseManager;
         private final Preferences preferences;
+        private final LocationRepository locationRepository;
 
-        public Factory(@NonNull Application application, DatabaseManager databaseManager, Preferences preferences) {
+        public Factory(@NonNull Application application, DatabaseManager databaseManager, Preferences preferences, LocationRepository locationRepository) {
             this.mApplication = application;
             this.databaseManager = databaseManager;
             this.preferences = preferences;
+            this.locationRepository = locationRepository;
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new HomeViewModel(mApplication, databaseManager, preferences);
+            return (T) new HomeViewModel(mApplication, databaseManager, preferences, locationRepository);
         }
     }
 }

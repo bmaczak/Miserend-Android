@@ -1,8 +1,12 @@
 package com.frama.miserend.hu.di.modules;
 
+import android.content.Context;
+
 import com.frama.miserend.hu.database.local.LocalDatabase;
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
+import com.frama.miserend.hu.di.qualifiers.ApplicationContext;
 import com.frama.miserend.hu.di.scopes.PerFragment;
+import com.frama.miserend.hu.location.LocationRepository;
 import com.frama.miserend.hu.repository.FavoritesRepository;
 import com.frama.miserend.hu.repository.MiserendRepository;
 import com.frama.miserend.hu.repository.RecentSearchesRepository;
@@ -34,5 +38,11 @@ public class RepositoryModule {
     @Provides
     RecentSearchesRepository provideRecentSearchesRepository(LocalDatabase localDatabase) {
         return new RecentSearchesRepository(localDatabase.recentSearchesDao());
+    }
+
+    @Provides
+    @Singleton
+    LocationRepository provideLocationRepository(@ApplicationContext Context context) {
+        return new LocationRepository(context);
     }
 }

@@ -16,13 +16,12 @@ import com.frama.miserend.hu.base.FragmentHostActivity;
 import com.frama.miserend.hu.database.dialog.DatabaseDialogCallback;
 import com.frama.miserend.hu.database.dialog.DatabaseMissingDialogFragment;
 import com.frama.miserend.hu.database.dialog.DatabaseUpdateAvailableDialogFragment;
-import com.frama.miserend.hu.database.local.LocalDatabase;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseState;
 import com.frama.miserend.hu.home.pages.churches.view.ChurchesFragment;
 import com.frama.miserend.hu.home.pages.map.view.ChurchesMapFragment;
 import com.frama.miserend.hu.home.pages.masses.view.MassesFragment;
 import com.frama.miserend.hu.home.viewmodel.HomeViewModel;
-import com.frama.miserend.hu.location.LocationManager;
+import com.frama.miserend.hu.location.LocationPermissionHelper;
 import com.frama.miserend.hu.router.Router;
 import com.frama.miserend.hu.search.SearchParams;
 import com.frama.miserend.hu.search.searchbar.CustomSearchBar;
@@ -53,7 +52,7 @@ public class HomeScreenActivity extends FragmentHostActivity implements Database
     @Inject
     Router router;
     @Inject
-    LocationManager locationManager;
+    LocationPermissionHelper locationPermissionHelper;
 
     @BindView(R.id.search_bar)
     CustomSearchBar searchBar;
@@ -180,16 +179,16 @@ public class HomeScreenActivity extends FragmentHostActivity implements Database
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        locationManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        viewModel.retryLocation();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (LocationManager.LOCATION_SETTINGS_REQUEST_CODE == requestCode) {
-            locationManager.getLastKnownLocation();
-        } else if (LocationManager.LOCATION_PERMISSION_REQUEST_CODE == requestCode) {
-            locationManager.getLastKnownLocation();
+        if (LocationPermissionHelper.LOCATION_SETTINGS_REQUEST_CODE == requestCode) {
+            viewModel.retryLocation();
+        } else if (LocationPermissionHelper.LOCATION_PERMISSION_REQUEST_CODE == requestCode) {
+            viewModel.retryLocation();
         }
     }
 

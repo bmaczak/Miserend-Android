@@ -3,7 +3,7 @@ package com.frama.miserend.hu.di.modules;
 import android.app.Activity;
 
 import com.frama.miserend.hu.di.scopes.PerActivity;
-import com.frama.miserend.hu.location.LocationManager;
+import com.frama.miserend.hu.location.LocationPermissionHelper;
 
 import dagger.Module;
 import dagger.Provides;
@@ -16,7 +16,7 @@ public class LocationModule {
 
     @Provides
     @PerActivity
-    LocationManager provideLocationRetriever(Activity activity) {
-        return new LocationManager(activity);
+    LocationPermissionHelper provideLocationRetriever(Activity activity) {
+        return new LocationPermissionHelper(activity);
     }
 }

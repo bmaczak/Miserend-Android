@@ -8,6 +8,7 @@ import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.home.pages.map.view.ChurchesMapFragment;
 import com.frama.miserend.hu.home.pages.map.viewmodel.ChurchesMapViewModel;
+import com.frama.miserend.hu.location.LocationRepository;
 import com.frama.miserend.hu.repository.FavoritesRepository;
 import com.frama.miserend.hu.repository.MiserendRepository;
 
@@ -35,7 +36,7 @@ public class ChurchesMapFragmentModule {
 
     @PerFragment
     @Provides
-    ChurchesMapViewModel.Factory provideChurchesMapViewModelFactory(Application application, MiserendRepository miserendRepository, FavoritesRepository favoritesRepository) {
-        return new ChurchesMapViewModel.Factory(application, miserendRepository, favoritesRepository);
+    ChurchesMapViewModel.Factory provideChurchesMapViewModelFactory(Application application, MiserendRepository miserendRepository, FavoritesRepository favoritesRepository, LocationRepository locationRepository) {
+        return new ChurchesMapViewModel.Factory(application, miserendRepository, favoritesRepository, locationRepository);
     }
 }

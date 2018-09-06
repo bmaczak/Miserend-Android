@@ -1,7 +1,6 @@
 package com.frama.miserend.hu.home.pages.masses.view;
 
 import android.content.Context;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +13,8 @@ import com.frama.miserend.hu.base.BaseFragment;
 import com.frama.miserend.hu.database.miserend.relations.MassWithChurch;
 import com.frama.miserend.hu.firebase.Analytics;
 import com.frama.miserend.hu.home.pages.masses.viewmodel.MassesViewModel;
-import com.frama.miserend.hu.location.LocationManager;
+import com.frama.miserend.hu.location.LocationError;
+import com.frama.miserend.hu.location.LocationPermissionHelper;
 import com.frama.miserend.hu.router.Router;
 
 import java.util.List;
@@ -29,14 +29,14 @@ import butterknife.OnClick;
  * Created by Balazs on 2018. 02. 13..
  */
 
-public class MassesFragment extends BaseFragment implements LocationManager.LocationResultListener, MassesAdapter.MassViewHolder.MassListActionListener {
+public class MassesFragment extends BaseFragment implements MassesAdapter.MassViewHolder.MassListActionListener {
 
     @Inject
     MassesViewModel massesViewModel;
     @Inject
     MassesAdapter adapter;
     @Inject
-    LocationManager locationManager;
+    LocationPermissionHelper locationPermissionHelper;
     @Inject
     Router router;
     @Inject
@@ -58,15 +58,10 @@ public class MassesFragment extends BaseFragment implements LocationManager.Loca
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        locationManager.getLastKnownLocation();
-    }
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        locationManager.registerListener(this);
+        massesViewModel.getRecommendedMasses().observe(this, this::onMassesChanged);
+        massesViewModel.getLocationError().observe(this, this::onLocationError);
     }
 
     @Override
@@ -75,41 +70,29 @@ public class MassesFragment extends BaseFragment implements LocationManager.Loca
         analytics.setCurrentScreen(getActivity(), Analytics.ScreenNames.MASSES);
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        locationManager.unregisterListener(this);
-    }
-
-    @Override
-    public void onLocationRetrieved(Location location) {
-        massesViewModel.getRecommendedMasses(location).observe(this, this::onMassesChanged);
-        adapter.setCurrentLocation(location);
+    private void onMassesChanged(List<MassWithChurch> massWithChurches) {
+        //adapter.setCurrentLocation(location);
         recyclerView.setVisibility(View.VISIBLE);
         locationSettingsLayout.setVisibility(View.GONE);
         locationPermissionLayout.setVisibility(View.GONE);
         recyclerView.setAdapter(adapter);
-    }
-
-    private void onMassesChanged(List<MassWithChurch> massWithChurches) {
         adapter.update(massWithChurches);
     }
 
-    @Override
-    public void onLocationError(LocationManager.LocationError locationError) {
+    private void onLocationError(LocationError locationError) {
         recyclerView.setVisibility(View.GONE);
-        locationPermissionLayout.setVisibility(locationError == LocationManager.LocationError.PERMISSION ? View.VISIBLE : View.GONE);
-        locationSettingsLayout.setVisibility(locationError == LocationManager.LocationError.COULD_NOT_RETRIEVE ? View.VISIBLE : View.GONE);
+        locationPermissionLayout.setVisibility(locationError == LocationError.PERMISSION ? View.VISIBLE : View.GONE);
+        locationSettingsLayout.setVisibility(locationError == LocationError.COULD_NOT_RETRIEVE ? View.VISIBLE : View.GONE);
     }
 
     @OnClick(R.id.location_settings_button)
     public void onLocationSettingsClicked() {
-        locationManager.showLocationSettings();
+        locationPermissionHelper.showLocationSettings();
     }
 
     @OnClick(R.id.location_permission_button)
     public void onLocationPermissionButtonClicked() {
-        locationManager.requestPermission();
+        locationPermissionHelper.requestPermission();
     }
 
     @Override

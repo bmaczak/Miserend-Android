@@ -17,11 +17,11 @@ import com.frama.miserend.hu.database.miserend.entities.Church;
 import com.frama.miserend.hu.database.miserend.entities.Mass;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 import com.frama.miserend.hu.firebase.Analytics;
-import com.frama.miserend.hu.home.pages.churches.favorites.FavoritesViewModel;
 import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.home.pages.churches.view.ChurchViewHolder;
 import com.frama.miserend.hu.home.pages.map.viewmodel.ChurchesMapViewModel;
-import com.frama.miserend.hu.location.LocationManager;
+import com.frama.miserend.hu.location.LocationError;
+import com.frama.miserend.hu.location.LocationPermissionHelper;
 import com.frama.miserend.hu.massdetails.view.MassDetailsDialogFragment;
 import com.frama.miserend.hu.router.Router;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -51,7 +51,7 @@ import dagger.android.support.AndroidSupportInjection;
  * Created by Balazs on 2018. 02. 13..
  */
 
-public class ChurchesMapFragment extends Fragment implements OnMapReadyCallback, ClusterManager.Callbacks<ChurchClusterItem>, LocationManager.LocationResultListener, ChurchViewHolder.ChurchListActionListener {
+public class ChurchesMapFragment extends Fragment implements OnMapReadyCallback, ClusterManager.Callbacks<ChurchClusterItem>, ChurchViewHolder.ChurchListActionListener {
 
     private static int CURRENT_LOCATION_ZOOM = 14;
 
@@ -63,7 +63,7 @@ public class ChurchesMapFragment extends Fragment implements OnMapReadyCallback,
     @Inject
     Router router;
     @Inject
-    LocationManager locationManager;
+    LocationPermissionHelper locationPermissionHelper;
     @Inject
     Analytics analytics;
 
@@ -90,9 +90,7 @@ public class ChurchesMapFragment extends Fragment implements OnMapReadyCallback,
     public void onAttach(Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
-        churchesMapViewModel.getChurcesLiveData().observe(this, this::onChurchesLoaded);
         churchesMapViewModel.getFavorites().observe(this, this::onFavoritesLoaded);
-        locationManager.registerListener(this);
     }
 
     private void onFavoritesLoaded(List<Integer> integers) {
@@ -106,17 +104,8 @@ public class ChurchesMapFragment extends Fragment implements OnMapReadyCallback,
         analytics.setCurrentScreen(getActivity(), Analytics.ScreenNames.MAP);
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        locationManager.unregisterListener(this);
-    }
-
-
     private void onChurchesLoaded(List<Church> churches) {
-        if (map != null) {
-            addPins(churches);
-        }
+        addPins(churches);
     }
 
     @SuppressLint("MissingPermission")
@@ -124,11 +113,10 @@ public class ChurchesMapFragment extends Fragment implements OnMapReadyCallback,
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         setupClustering();
-        if (churchesMapViewModel.getChurcesLiveData().getValue() != null) {
-            addPins(churchesMapViewModel.getChurcesLiveData().getValue());
-        }
-        if (locationManager.hasPermission()) {
-            locationManager.getLastKnownLocation(false);
+        churchesMapViewModel.getChurcesLiveData().observe(this, this::onChurchesLoaded);
+        churchesMapViewModel.getLocation().observe(this, this::onLocationRetrieved);
+        churchesMapViewModel.getSelectedChurch().observe(this, this::onSelectedChurchChanged);
+        if (locationPermissionHelper.hasLocationPermission()) {
             map.setMyLocationEnabled(true);
         }
     }
@@ -166,8 +154,8 @@ public class ChurchesMapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public boolean onClusterItemClick(@NonNull ChurchClusterItem clusterItem) {
+        churchesMapViewModel.selectChurch(clusterItem.getChurch().getId());
         int offset = (getView().getHeight() - churchCardContainer.getTop()) / 2;
-        churchesMapViewModel.selectChurch(clusterItem.getChurch().getId()).observe(this, this::onSelectedChurchChanged);
         Point mappoint = map.getProjection().toScreenLocation(new LatLng(clusterItem.getLatitude(), clusterItem.getLongitude()));
         mappoint.set(mappoint.x, mappoint.y + offset);
         map.animateCamera(CameraUpdateFactory.newLatLng(map.getProjection().fromScreenLocation(mappoint)));
@@ -189,15 +177,10 @@ public class ChurchesMapFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
-    @Override
+
     public void onLocationRetrieved(Location location) {
         LatLng redmond = new LatLng(location.getLatitude(), location.getLongitude());
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(redmond, CURRENT_LOCATION_ZOOM));
-    }
-
-    @Override
-    public void onLocationError(LocationManager.LocationError error) {
-
     }
 
     @Override

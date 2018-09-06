@@ -20,6 +20,7 @@ import com.frama.miserend.hu.home.pages.masses.di.MassesFragmentModule;
 import com.frama.miserend.hu.home.pages.masses.view.MassesFragment;
 import com.frama.miserend.hu.home.view.HomeScreenActivity;
 import com.frama.miserend.hu.home.viewmodel.HomeViewModel;
+import com.frama.miserend.hu.location.LocationRepository;
 import com.frama.miserend.hu.preferences.Preferences;
 import com.frama.miserend.hu.repository.MiserendRepository;
 import com.frama.miserend.hu.repository.RecentSearchesRepository;
@@ -50,8 +51,8 @@ public abstract class HomeScreenModule {
 
     @PerActivity
     @Provides
-    static HomeViewModel.Factory provideHomeViewModelFactory(Application application, DatabaseManager databaseManager, Preferences preferences) {
-        return new HomeViewModel.Factory(application, databaseManager, preferences);
+    static HomeViewModel.Factory provideHomeViewModelFactory(Application application, DatabaseManager databaseManager, Preferences preferences, LocationRepository locationRepository) {
+        return new HomeViewModel.Factory(application, databaseManager, preferences, locationRepository);
     }
 
     @PerActivity
