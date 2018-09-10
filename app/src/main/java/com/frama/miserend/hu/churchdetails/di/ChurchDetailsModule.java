@@ -12,6 +12,7 @@ import com.frama.miserend.hu.di.scopes.PerActivity;
 import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.report.di.ReportDialogModule;
 import com.frama.miserend.hu.report.view.ReportDialogFragment;
+import com.frama.miserend.hu.repository.FavoritesRepository;
 import com.frama.miserend.hu.repository.MiserendRepository;
 import com.frama.miserend.hu.router.Router;
 
@@ -42,8 +43,8 @@ public abstract class ChurchDetailsModule {
 
     @PerActivity
     @Provides
-    static ChurchDetailsViewModel.Factory provideChurchDetailsViewModelFactory(Application application, @Named("churchId") int churchId, MiserendRepository miserendRepository) {
-        return new ChurchDetailsViewModel.Factory(application, churchId, miserendRepository);
+    static ChurchDetailsViewModel.Factory provideChurchDetailsViewModelFactory(Application application, @Named("churchId") int churchId, MiserendRepository miserendRepository, FavoritesRepository favoritesRepository) {
+        return new ChurchDetailsViewModel.Factory(application, churchId, miserendRepository, favoritesRepository);
     }
 
     @PerActivity

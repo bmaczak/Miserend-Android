@@ -8,6 +8,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
+import com.frama.miserend.hu.repository.FavoritesRepository;
 import com.frama.miserend.hu.repository.MiserendRepository;
 
 /**
@@ -17,16 +18,26 @@ import com.frama.miserend.hu.repository.MiserendRepository;
 public class ChurchDetailsViewModel extends AndroidViewModel {
 
     private final MiserendRepository miserendRepository;
+    private final FavoritesRepository favoritesRepository;
     private final int churchId;
 
-    public ChurchDetailsViewModel(@NonNull Application application, int churchId, MiserendRepository miserendRepository) {
+    public ChurchDetailsViewModel(@NonNull Application application, int churchId, MiserendRepository miserendRepository, FavoritesRepository favoritesRepository) {
         super(application);
         this.churchId = churchId;
         this.miserendRepository = miserendRepository;
+        this.favoritesRepository = favoritesRepository;
     }
 
     public LiveData<ChurchWithMasses> getChurchWithMasses() {
         return miserendRepository.getChurch(churchId);
+    }
+
+    public void toggleFavorite() {
+        favoritesRepository.toggleFavorite(churchId);
+    }
+
+    public LiveData<Boolean> isFavorite() {
+        return favoritesRepository.isFavorite(churchId);
     }
 
     public int getChurchId() {
@@ -38,19 +49,21 @@ public class ChurchDetailsViewModel extends AndroidViewModel {
         @NonNull
         private final Application application;
         private final MiserendRepository miserendRepository;
+        private final FavoritesRepository favoritesRepository;
         private final int churchId;
 
 
-        public Factory(@NonNull Application application, int churchId, MiserendRepository miserendRepository) {
+        public Factory(@NonNull Application application, int churchId, MiserendRepository miserendRepository, FavoritesRepository favoritesRepository) {
             this.application = application;
             this.miserendRepository = miserendRepository;
+            this.favoritesRepository = favoritesRepository;
             this.churchId = churchId;
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new ChurchDetailsViewModel(application, churchId, miserendRepository);
+            return (T) new ChurchDetailsViewModel(application, churchId, miserendRepository, favoritesRepository);
         }
     }
 }

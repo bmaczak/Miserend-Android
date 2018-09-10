@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -55,6 +56,10 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.church_name)
     TextView churchName;
+    @BindView(R.id.favorite_icon)
+    ImageView favoriteIcon;
+    @BindView(R.id.favorite_label)
+    TextView favoriteLabel;
     @BindView(R.id.church_common_name)
     TextView churchCommonName;
     @BindView(R.id.static_map)
@@ -95,6 +100,7 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
         setupActionBar();
         setupGallery();
         churchDetailsViewModel.getChurchWithMasses().observe(this, this::onChurchDetailsLoaded);
+        churchDetailsViewModel.isFavorite().observe(this, this::onFavoriteChanged);
     }
 
     @Override
@@ -104,18 +110,8 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.church_details_menu, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.report_error:
-                ReportDialogFragment.newInstance(churchDetailsViewModel.getChurchId()).show(getSupportFragmentManager(), "report");
-                return true;
             case android.R.id.home:
                 finish();
                 return true;
@@ -149,6 +145,11 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
         ViewUtils.setHtmlTextOrHide(churchGettingThere, church.getGettingThere());
         displayMasses();
         imagesAdapter.setImages(churchWithMasses.getImages());
+    }
+
+    private void onFavoriteChanged(Boolean favorite) {
+        favoriteIcon.setImageResource(favorite ? R.drawable.ic_favorite_big : R.drawable.ic_favorite_border_big);
+        favoriteLabel.setText(favorite ? R.string.remove_from_favorites : R.string.add_to_favorites);
     }
 
     private void displayMasses() {
@@ -194,6 +195,16 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
 
     private void showMassDetailsDialog(Mass mass) {
         MassDetailsDialogFragment.newInstance(mass).show(getSupportFragmentManager(), "mass_details");
+    }
+
+    @OnClick(R.id.btn_favorite)
+    public void toggleFavorite() {
+        churchDetailsViewModel.toggleFavorite();
+    }
+
+    @OnClick(R.id.btn_report)
+    public void report() {
+        ReportDialogFragment.newInstance(churchDetailsViewModel.getChurchId()).show(getSupportFragmentManager(), "report");
     }
 
     @OnClick(R.id.btn_navigate)

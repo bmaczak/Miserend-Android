@@ -15,6 +15,8 @@
     <string name="church_location">Megközelítés</string>
     <string name="church_gallery">Képek</string>
     <string name="report_error">Hibajelentés</string>
+    <string name="add_to_favorites">Kedvencekhez</string>
+    <string name="remove_from_favorites">Eltávolítás</string>
 
     <string name="advanced_search">Részletes kereső</string>
 

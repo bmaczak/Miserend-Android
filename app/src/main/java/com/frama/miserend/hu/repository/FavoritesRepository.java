@@ -1,6 +1,7 @@
 package com.frama.miserend.hu.repository;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Transformations;
 
 import com.frama.miserend.hu.database.local.dao.FavoritesDao;
 import com.frama.miserend.hu.database.local.entities.Favorite;
@@ -27,6 +28,10 @@ public class FavoritesRepository {
                 addFavorite(churchId);
             }
         }).start();
+    }
+
+    public LiveData<Boolean> isFavorite(int churchId) {
+        return Transformations.map(getFavorites(), favorites -> favorites.contains(churchId));
     }
 
     public void addFavorite(int churchId) {
