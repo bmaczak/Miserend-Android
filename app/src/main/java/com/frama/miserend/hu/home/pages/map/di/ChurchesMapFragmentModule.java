@@ -4,7 +4,6 @@ import android.app.Application;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.v4.app.Fragment;
 
-import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.home.pages.map.view.ChurchesMapFragment;
 import com.frama.miserend.hu.home.pages.map.viewmodel.ChurchesMapViewModel;

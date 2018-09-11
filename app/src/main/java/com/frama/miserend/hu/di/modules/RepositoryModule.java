@@ -5,7 +5,6 @@ import android.content.Context;
 import com.frama.miserend.hu.database.local.LocalDatabase;
 import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.di.qualifiers.ApplicationContext;
-import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.location.LocationRepository;
 import com.frama.miserend.hu.repository.FavoritesRepository;
 import com.frama.miserend.hu.repository.MiserendRepository;

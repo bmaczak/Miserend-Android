@@ -1,11 +1,8 @@
 package com.frama.miserend.hu.home.pages.churches.view;
 
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +10,6 @@ import android.view.ViewGroup;
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.base.BaseFragment;
 import com.frama.miserend.hu.firebase.Analytics;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import javax.inject.Inject;
 

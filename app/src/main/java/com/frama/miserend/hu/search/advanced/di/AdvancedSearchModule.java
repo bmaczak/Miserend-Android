@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.Application;
 import android.arch.lifecycle.ViewModelProviders;
 
-import com.frama.miserend.hu.database.local.LocalDatabase;
-import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.di.scopes.PerActivity;
 import com.frama.miserend.hu.repository.MiserendRepository;
 import com.frama.miserend.hu.search.advanced.AdvancedSearchActivity;

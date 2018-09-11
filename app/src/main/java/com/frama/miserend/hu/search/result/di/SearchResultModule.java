@@ -5,7 +5,6 @@ import android.app.Application;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.NonNull;
 
-import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.di.scopes.PerActivity;
 import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.repository.FavoritesRepository;

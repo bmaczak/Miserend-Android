@@ -7,8 +7,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,6 +17,7 @@ import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.base.FragmentHostActivity;
 import com.frama.miserend.hu.churchdetails.viewmodel.ChurchDetailsViewModel;
 import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.database.miserend.entities.Image;
 import com.frama.miserend.hu.database.miserend.entities.Mass;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 import com.frama.miserend.hu.firebase.Analytics;
@@ -48,7 +47,7 @@ import butterknife.OnClick;
  * Created by Balazs on 2018. 02. 18..
  */
 
-public class ChurchDetailsActivity extends FragmentHostActivity implements OnMassClickedListener {
+public class ChurchDetailsActivity extends FragmentHostActivity implements OnMassClickedListener, ChurchDetailsGalleryPagerAdapter.ImageClickedListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -88,7 +87,7 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
     @Inject
     Analytics analytics;
 
-    private GalleryPagerAdapter imagesAdapter;
+    private ChurchDetailsGalleryPagerAdapter imagesAdapter;
 
     private ChurchWithMasses churchWithMasses;
 
@@ -128,7 +127,7 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
     }
 
     private void setupGallery() {
-        imagesAdapter = new GalleryPagerAdapter();
+        imagesAdapter = new ChurchDetailsGalleryPagerAdapter(this);
         imagesPager.setAdapter(imagesAdapter);
         imagesPagerIndicator.setViewPager(imagesPager);
         imagesPagerIndicator.setDynamicCount(true);
@@ -215,5 +214,14 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
     @OnClick(R.id.static_map)
     public void showOnMap() {
         router.showOnMap(churchWithMasses.getChurch());
+    }
+
+    @Override
+    public void onImageClicked(int position) {
+        ArrayList<String> imageUrls = new ArrayList<>();
+        for (Image image : churchWithMasses.getImages()) {
+            imageUrls.add(image.getImageUrl());
+        }
+        router.openGallery(imageUrls);
     }
 }

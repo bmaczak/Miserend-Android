@@ -20,7 +20,6 @@ import com.frama.miserend.hu.firebase.Analytics;
 import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.home.pages.churches.view.ChurchViewHolder;
 import com.frama.miserend.hu.home.pages.map.viewmodel.ChurchesMapViewModel;
-import com.frama.miserend.hu.location.LocationError;
 import com.frama.miserend.hu.location.LocationPermissionHelper;
 import com.frama.miserend.hu.massdetails.view.MassDetailsDialogFragment;
 import com.frama.miserend.hu.router.Router;

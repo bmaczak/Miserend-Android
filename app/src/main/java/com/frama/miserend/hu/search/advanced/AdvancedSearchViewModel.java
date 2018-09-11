@@ -3,13 +3,10 @@ package com.frama.miserend.hu.search.advanced;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import com.frama.miserend.hu.database.local.LocalDatabase;
-import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.repository.MiserendRepository;
 import com.frama.miserend.hu.search.SearchParams;
 
@@ -18,9 +15,6 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
 
 import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Balazs on 2018. 02. 12..

@@ -44,6 +44,11 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+            <View
+                android:id="@+id/gallery_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
         </android.support.design.widget.CollapsingToolbarLayout>
 
 

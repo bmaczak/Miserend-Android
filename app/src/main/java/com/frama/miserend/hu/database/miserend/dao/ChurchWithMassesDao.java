@@ -10,8 +10,6 @@ import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
-
 /**
  * Created by Balazs on 2018. 02. 10..
  */

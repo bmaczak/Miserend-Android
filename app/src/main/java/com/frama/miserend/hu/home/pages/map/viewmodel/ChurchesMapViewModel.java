@@ -10,7 +10,6 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.location.Location;
 import android.support.annotation.NonNull;
 
-import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.entities.Church;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 import com.frama.miserend.hu.location.LocationRepository;

@@ -16,12 +16,14 @@ import java.util.List;
  * Created by Balazs on 2018. 02. 27..
  */
 
-public class GalleryPagerAdapter extends PagerAdapter {
+public class ChurchDetailsGalleryPagerAdapter extends PagerAdapter {
 
     private List<Image> images;
+    private ImageClickedListener imageClickedListener;
 
-    public GalleryPagerAdapter() {
+    public ChurchDetailsGalleryPagerAdapter(ImageClickedListener imageClickedListener) {
         super();
+        this.imageClickedListener = imageClickedListener;
         this.images = new ArrayList<>();
     }
 
@@ -30,6 +32,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
         SimpleDraweeView draweeView = (SimpleDraweeView) LayoutInflater.from(collection.getContext()).inflate(R.layout.item_image, collection, false);
         draweeView.setImageURI(images.get(position).getImageUrl());
         collection.addView(draweeView);
+        draweeView.setOnClickListener(view -> imageClickedListener.onImageClicked(position));
         return draweeView;
     }
 
@@ -51,5 +54,9 @@ public class GalleryPagerAdapter extends PagerAdapter {
     public void setImages(List<Image> images) {
         this.images = images;
         notifyDataSetChanged();
+    }
+
+    public interface ImageClickedListener {
+        void onImageClicked(int position);
     }
 }

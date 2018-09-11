@@ -35,6 +35,8 @@
             android:name=".search.result.view.SearchResultActivity"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".gallery.GalleryActivity" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD7gu93yYTqPpJ2G5K79AhBs1UoyGNIs_o" />

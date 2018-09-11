@@ -1,7 +1,6 @@
 package com.frama.miserend.hu.location;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
