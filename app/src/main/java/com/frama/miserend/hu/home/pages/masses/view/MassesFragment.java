@@ -48,6 +48,8 @@ public class MassesFragment extends BaseFragment implements MassesAdapter.MassVi
     View locationPermissionLayout;
     @BindView(R.id.location_settings_layout)
     View locationSettingsLayout;
+    @BindView(R.id.no_masses_layout)
+    View noMassesLayout;
 
     @Nullable
     @Override
@@ -72,11 +74,17 @@ public class MassesFragment extends BaseFragment implements MassesAdapter.MassVi
 
     private void onMassesChanged(List<MassWithChurch> massWithChurches) {
         //adapter.setCurrentLocation(location);
-        recyclerView.setVisibility(View.VISIBLE);
-        locationSettingsLayout.setVisibility(View.GONE);
-        locationPermissionLayout.setVisibility(View.GONE);
-        recyclerView.setAdapter(adapter);
-        adapter.update(massWithChurches);
+        if (massWithChurches.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            noMassesLayout.setVisibility(View.VISIBLE);
+        } else {
+            noMassesLayout.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            locationSettingsLayout.setVisibility(View.GONE);
+            locationPermissionLayout.setVisibility(View.GONE);
+            recyclerView.setAdapter(adapter);
+            adapter.update(massWithChurches);
+        }
     }
 
     private void onLocationError(LocationError locationError) {

@@ -25,6 +25,8 @@
     <string name="action_navigate">Útvonal</string>
     <string name="no_mass_for_church">A templomhoz nem tartozik mise</string>
 
+    <string name="no_masses_near">Nem találhatók misék a közelben</string>
+
     <string name="dialog_db_missing_title">Adatabázis nem taláható</string>
     <string name="dialog_db_missing_message">Az alkalmazás használatához szükség van az adatbázis letöltésére. Letölti most?</string>
     <string name="dialog_db_missing_btn_ok">Letöltés</string>
