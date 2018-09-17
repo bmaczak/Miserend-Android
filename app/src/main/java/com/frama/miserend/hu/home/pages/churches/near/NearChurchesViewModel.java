@@ -8,6 +8,7 @@ import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.paging.PagedList;
+import android.location.Location;
 import android.support.annotation.NonNull;
 
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
@@ -25,7 +26,7 @@ import java.util.List;
 public class NearChurchesViewModel extends AndroidViewModel {
 
     private LiveData<PagedList<ChurchWithMasses>> churches;
-    private MutableLiveData<LocationError> locationError;
+    private MutableLiveData<Location> locationLiveData;
 
     private MiserendRepository miserendRepository;
     private FavoritesRepository favoritesRepository;
@@ -36,12 +37,20 @@ public class NearChurchesViewModel extends AndroidViewModel {
         this.miserendRepository = miserendRepository;
         this.favoritesRepository = favoritesRepository;
         this.locationRepository = locationRepository;
+        locationLiveData = new MutableLiveData<>();
         churches = Transformations.switchMap(locationRepository.getLocation(),
-                location -> miserendRepository.getNearChurches(location.getLatitude(), location.getLongitude()));
+                location -> {
+                    locationLiveData.setValue(location);
+                    return miserendRepository.getNearChurches(location.getLatitude(), location.getLongitude());
+                });
     }
 
     public LiveData<PagedList<ChurchWithMasses>> getNearestChurches() {
         return churches;
+    }
+
+    public LiveData<Location> getLocation() {
+        return locationLiveData;
     }
 
     public MutableLiveData<LocationError> getLocationError() {

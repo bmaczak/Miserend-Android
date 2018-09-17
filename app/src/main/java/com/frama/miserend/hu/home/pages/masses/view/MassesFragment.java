@@ -1,6 +1,7 @@
 package com.frama.miserend.hu.home.pages.masses.view;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -64,6 +65,7 @@ public class MassesFragment extends BaseFragment implements MassesAdapter.MassVi
         super.onAttach(context);
         massesViewModel.getRecommendedMasses().observe(this, this::onMassesChanged);
         massesViewModel.getLocationError().observe(this, this::onLocationError);
+        massesViewModel.getLocation().observe(this, this::onLocationRetrieved);
     }
 
     @Override
@@ -73,7 +75,6 @@ public class MassesFragment extends BaseFragment implements MassesAdapter.MassVi
     }
 
     private void onMassesChanged(List<MassWithChurch> massWithChurches) {
-        //adapter.setCurrentLocation(location);
         if (massWithChurches.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             noMassesLayout.setVisibility(View.VISIBLE);
@@ -85,6 +86,10 @@ public class MassesFragment extends BaseFragment implements MassesAdapter.MassVi
             recyclerView.setAdapter(adapter);
             adapter.update(massWithChurches);
         }
+    }
+
+    private void onLocationRetrieved(Location location) {
+        adapter.setCurrentLocation(location);
     }
 
     private void onLocationError(LocationError locationError) {

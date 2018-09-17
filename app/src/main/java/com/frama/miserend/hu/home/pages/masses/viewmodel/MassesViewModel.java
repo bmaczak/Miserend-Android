@@ -3,9 +3,12 @@ package com.frama.miserend.hu.home.pages.masses.viewmodel;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
+import android.location.Location;
 import android.support.annotation.NonNull;
 
 import com.frama.miserend.hu.database.miserend.relations.MassWithChurch;
@@ -23,19 +26,28 @@ public class MassesViewModel extends AndroidViewModel {
 
     private MiserendRepository miserendRepository;
     private LocationRepository locationRepository;
+    private MutableLiveData<Location> locationLiveData;
 
     public MassesViewModel(@NonNull Application application, MiserendRepository miserendRepository, LocationRepository locationRepository) {
         super(application);
         this.miserendRepository = miserendRepository;
         this.locationRepository = locationRepository;
+        this.locationLiveData = new MutableLiveData<>();
     }
 
     public LiveData<List<MassWithChurch>> getRecommendedMasses() {
-        return Transformations.switchMap(locationRepository.getLocation(), location -> miserendRepository.getRecommendedMasses(location));
+        return Transformations.switchMap(locationRepository.getLocation(), location -> {
+            locationLiveData.setValue(location);
+            return miserendRepository.getRecommendedMasses(location);
+        });
     }
 
     public LiveData<LocationError> getLocationError() {
         return locationRepository.getLocationError();
+    }
+
+    public LiveData<Location> getLocation() {
+        return locationLiveData;
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {

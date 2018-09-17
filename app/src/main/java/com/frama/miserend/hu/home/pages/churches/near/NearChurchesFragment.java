@@ -1,6 +1,7 @@
 package com.frama.miserend.hu.home.pages.churches.near;
 
 import android.arch.paging.PagedList;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -66,15 +67,19 @@ public class NearChurchesFragment extends ChurchListFragment {
         nearChurchesViewModel.getFavorites().observe(this, this::onFavoritesChanged);
         nearChurchesViewModel.getNearestChurches().observe(this, this::onChurchesLoaded);
         nearChurchesViewModel.getLocationError().observe(this, this::onLocationError);
+        nearChurchesViewModel.getLocation().observe(this, this::onLocationRetrieved);
     }
 
     private void onChurchesLoaded(PagedList<ChurchWithMasses> churchWithMasses) {
         recyclerView.setVisibility(View.VISIBLE);
         locationSettingsLayout.setVisibility(View.GONE);
         locationPermissionLayout.setVisibility(View.GONE);
-        //adapter.setCurrentLocation(location);
         recyclerView.setAdapter(adapter);
         adapter.submitList(churchWithMasses);
+    }
+
+    private void onLocationRetrieved(Location location) {
+        adapter.setCurrentLocation(location);
     }
 
     public void onLocationError(LocationError locationError) {
