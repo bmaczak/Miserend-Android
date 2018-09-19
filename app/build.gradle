@@ -7,8 +7,8 @@ android {
         applicationId "com.frama.miserend.hu"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 17
-        versionName "2.3"
+        versionCode 18
+        versionName "2.3.1"
         setProperty("archivesBaseName", "miserend-" + versionName)
     }
     signingConfigs {
