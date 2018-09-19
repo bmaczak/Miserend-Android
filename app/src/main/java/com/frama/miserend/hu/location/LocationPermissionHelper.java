@@ -31,8 +31,7 @@ public class LocationPermissionHelper {
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_READ_LOCATION);
+                showPermissionRequestPopup();
             } else {
                 Intent intent = new Intent();
                 intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -41,6 +40,11 @@ public class LocationPermissionHelper {
                 activity.startActivityForResult(intent, LOCATION_PERMISSION_REQUEST_CODE);
             }
         }
+    }
+
+    public void showPermissionRequestPopup() {
+        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                MY_PERMISSIONS_REQUEST_READ_LOCATION);
     }
 
     public void showLocationSettings() {

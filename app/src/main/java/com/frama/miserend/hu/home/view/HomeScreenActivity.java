@@ -109,6 +109,9 @@ public class HomeScreenActivity extends FragmentHostActivity implements Database
                 router.showSearchResults(new SearchParams(searchTerm));
             }
         });
+        if (!locationPermissionHelper.hasLocationPermission()) {
+            locationPermissionHelper.showPermissionRequestPopup();
+        }
     }
 
     private void onSuggestionsChanged(List<Suggestion> suggestions) {
