@@ -20,7 +20,7 @@
 
     <string name="advanced_search">Részletes kereső</string>
 
-    <string name="static_map_url">https://maps.googleapis.com/maps/api/staticmap?center=%1$f,%2$f&amp;zoom=16&amp;size=%3$dx%4$d&amp;scale=4</string>
+    <string name="static_map_url">https://maps.googleapis.com/maps/api/staticmap?center=%1$f,%2$f&amp;zoom=16&amp;size=%3$dx%4$d&amp;scale=2&amp;key=AIzaSyD7gu93yYTqPpJ2G5K79AhBs1UoyGNIs_o</string>
 
     <string name="action_navigate">Útvonal</string>
     <string name="no_mass_for_church">A templomhoz nem tartozik mise</string>
