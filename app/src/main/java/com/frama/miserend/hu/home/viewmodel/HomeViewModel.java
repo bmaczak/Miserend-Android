@@ -64,6 +64,7 @@ public class HomeViewModel extends AndroidViewModel {
             @Override
             public void onDbDownloadFinished(boolean success) {
                 if (success) {
+                    preferences.setSavedDatabaseVersion(DatabaseManager.DATABASE_VERSION);
                     preferences.setDatabaseLastUpdated(Calendar.getInstance().getTimeInMillis());
                     HomeViewModel.this.databaseState.setValue(DatabaseState.UP_TO_DATE);
                 } else {

@@ -18,10 +18,10 @@ import io.reactivex.Single;
  */
 public class DatabaseManager {
 
-    public static String DATABASE_FILE_NAME = "miserend.sqlite3";
+    public static final String DATABASE_FILE_NAME = "miserend.sqlite3";
+    public static final int DATABASE_VERSION = 4;
 
     private static String TAG = "DatabaseManager";
-    private static int DATABASE_VERSION = 4;
     private static final String DATABASE_URL = "http://miserend.hu/fajlok/sqlite/miserend_v" + DATABASE_VERSION + ".sqlite3";
     private static final int DB_UPDATE_CHECK_PERIOD_IN_MILLIS = 1000 * 60 * 60 * 24 * 7;
 
@@ -51,6 +51,8 @@ public class DatabaseManager {
     public Single<DatabaseState> getDatabaseState() {
         if (!isDbExist()) {
             return Single.just(DatabaseState.NOT_FOUND);
+        } else if (DatabaseManager.DATABASE_VERSION != preferences.getSavedDatabseVersion()) {
+            return Single.just(DatabaseState.VERSION_MISMATCH);
         } else if (Calendar.getInstance().getTimeInMillis() > preferences.getDatabaseLastUpdated() + DB_UPDATE_CHECK_PERIOD_IN_MILLIS) {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
             String updated = format.format(new Date(preferences.getDatabaseLastUpdated()));

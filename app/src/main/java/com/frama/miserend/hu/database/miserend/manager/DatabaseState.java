@@ -5,5 +5,5 @@ package com.frama.miserend.hu.database.miserend.manager;
  */
 
 public enum DatabaseState {
-    NOT_FOUND, UPDATE_AVAILABLE, VERSION_INCOMPATIBLE, UP_TO_DATE, DOWNLOADING
+    NOT_FOUND, VERSION_MISMATCH, UPDATE_AVAILABLE, VERSION_INCOMPATIBLE, UP_TO_DATE, DOWNLOADING
 }
