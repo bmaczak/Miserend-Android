@@ -130,6 +130,7 @@ public class ChurchesMapFragment extends Fragment implements OnMapReadyCallback,
         generator.setIconStyle(iconStyle);
         clusterManager.setIconGenerator(generator);
         map.setOnCameraIdleListener(clusterManager);
+        map.setOnMapClickListener(latLng -> churchCardContainer.setVisibility(View.INVISIBLE));
     }
 
     private void addPins(List<Church> churches) {
