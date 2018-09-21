@@ -3,18 +3,13 @@ package com.frama.miserend.hu.churchdetails.viewmodel;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import com.frama.miserend.hu.database.local.LocalDatabase;
-import com.frama.miserend.hu.database.local.entities.Favorite;
-import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
-
-import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
+import com.frama.miserend.hu.repository.FavoritesRepository;
+import com.frama.miserend.hu.repository.MiserendRepository;
 
 /**
  * Created by Balazs on 2018. 02. 12..
@@ -22,48 +17,27 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ChurchDetailsViewModel extends AndroidViewModel {
 
-    private final LocalDatabase localDatabase;
-    private final MiserendDatabase miserendDatabase;
+    private final MiserendRepository miserendRepository;
+    private final FavoritesRepository favoritesRepository;
     private final int churchId;
 
-    private LiveData<Boolean> isFavorite;
-
-    public ChurchDetailsViewModel(@NonNull Application application, int churchId, LocalDatabase localDatabase, MiserendDatabase miserendDatabase) {
+    public ChurchDetailsViewModel(@NonNull Application application, int churchId, MiserendRepository miserendRepository, FavoritesRepository favoritesRepository) {
         super(application);
         this.churchId = churchId;
-        this.miserendDatabase = miserendDatabase;
-        this.localDatabase = localDatabase;
+        this.miserendRepository = miserendRepository;
+        this.favoritesRepository = favoritesRepository;
     }
 
     public LiveData<ChurchWithMasses> getChurchWithMasses() {
-        return miserendDatabase.churchWithMassesDao().getChurchById(churchId);
-    }
-
-    public LiveData<Boolean> isFavorite(int churchId) {
-        if (isFavorite == null) {
-            isFavorite = Transformations.map(localDatabase.favoritesDao().getCountById(churchId), count -> count > 0);
-        }
-        return isFavorite;
+        return miserendRepository.getChurch(churchId);
     }
 
     public void toggleFavorite() {
-        if (isFavorite.getValue()) {
-            removeFavorite();
-        } else {
-            addFavorite();
-        }
+        favoritesRepository.toggleFavorite(churchId);
     }
 
-    public void addFavorite() {
-        Observable.just(localDatabase)
-                .subscribeOn(Schedulers.io())
-                .subscribe(db -> db.favoritesDao().insert(new Favorite(churchId)));
-    }
-
-    public void removeFavorite() {
-        Observable.just(localDatabase)
-                .subscribeOn(Schedulers.io())
-                .subscribe(db -> db.favoritesDao().delete(new Favorite(churchId)));
+    public LiveData<Boolean> isFavorite() {
+        return favoritesRepository.isFavorite(churchId);
     }
 
     public int getChurchId() {
@@ -74,22 +48,22 @@ public class ChurchDetailsViewModel extends AndroidViewModel {
 
         @NonNull
         private final Application application;
-        private final LocalDatabase localDatabase;
-        private final MiserendDatabase miserendDatabase;
+        private final MiserendRepository miserendRepository;
+        private final FavoritesRepository favoritesRepository;
         private final int churchId;
 
 
-        public Factory(@NonNull Application application, int churchId, LocalDatabase localDatabase, MiserendDatabase miserendDatabase) {
+        public Factory(@NonNull Application application, int churchId, MiserendRepository miserendRepository, FavoritesRepository favoritesRepository) {
             this.application = application;
-            this.localDatabase = localDatabase;
-            this.miserendDatabase = miserendDatabase;
+            this.miserendRepository = miserendRepository;
+            this.favoritesRepository = favoritesRepository;
             this.churchId = churchId;
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new ChurchDetailsViewModel(application, churchId, localDatabase, miserendDatabase);
+            return (T) new ChurchDetailsViewModel(application, churchId, miserendRepository, favoritesRepository);
         }
     }
 }

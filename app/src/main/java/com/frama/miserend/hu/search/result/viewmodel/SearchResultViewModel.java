@@ -8,18 +8,13 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 import com.frama.miserend.hu.database.miserend.relations.MassWithChurch;
-import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
+import com.frama.miserend.hu.repository.FavoritesRepository;
+import com.frama.miserend.hu.repository.MiserendRepository;
 import com.frama.miserend.hu.search.SearchParams;
-import com.frama.miserend.hu.utils.Validation;
 
 import java.util.List;
-
-import io.reactivex.Flowable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Balazs on 2018. 02. 12..
@@ -27,14 +22,17 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SearchResultViewModel extends AndroidViewModel {
 
-    private final MiserendDatabase miserendDatabase;
+    private final MiserendRepository miserendRepository;
+    private final FavoritesRepository favoritesRepository;
+
     private MutableLiveData<List<ChurchWithMasses>> churches;
     private MutableLiveData<List<MassWithChurch>> masses;
     private SearchParams searchParams;
 
-    public SearchResultViewModel(@NonNull Application application, MiserendDatabase miserendDatabase, SearchParams searchParams) {
+    public SearchResultViewModel(@NonNull Application application, MiserendRepository miserendRepository, FavoritesRepository favoritesRepository, SearchParams searchParams) {
         super(application);
-        this.miserendDatabase = miserendDatabase;
+        this.miserendRepository = miserendRepository;
+        this.favoritesRepository = favoritesRepository;
         this.searchParams = searchParams;
         churches = new MutableLiveData<>();
         masses = new MutableLiveData<>();
@@ -42,60 +40,45 @@ public class SearchResultViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<ChurchWithMasses>> getChurchSearchResults() {
-        selectChurchListFlowable(searchParams)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(churchWithMasses -> churches.setValue(churchWithMasses));
-        return churches;
-    }
-
-    private Flowable<List<ChurchWithMasses>> selectChurchListFlowable(SearchParams searchParams) {
-        if (Validation.notEmpty(searchParams.getSearchTerm())) {
-            return miserendDatabase.churchWithMassesDao()
-                    .getByName(searchParams.getSearchTerm());
-        } else {
-            return miserendDatabase.churchWithMassesDao()
-                    .getBySearch(searchParams.getChurchName(), searchParams.getCity());
-        }
+        return miserendRepository.getChurches(searchParams);
     }
 
     public LiveData<List<MassWithChurch>> getMassSearchResults() {
-        miserendDatabase.massesDao()
-                .getMassesBySearch(searchParams.getChurchName(), searchParams.getCity(), searchParams.getDate().getDayOfWeek().getValue())
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(masses -> {
-                    masses = MassFilter.filterMassWithChurchForDay(masses, searchParams.getDate());
-                    if (!searchParams.isAllDay()) {
-                        masses = MassFilter.filterMassWithChurchForTime(masses, searchParams.getFromTime(), searchParams.getToTime());
-                    }
-                    this.masses.setValue(masses);
-                });
-        return masses;
+        return miserendRepository.getMasses(searchParams);
     }
 
     public boolean shouldShowMasses() {
         return searchParams.isFilterForMasses();
     }
 
+    public LiveData<List<Integer>> getFavorites() {
+        return favoritesRepository.getFavorites();
+    }
+
+    public void toggleFavorite(int churchId) {
+        favoritesRepository.toggleFavorite(churchId);
+    }
+
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
         @NonNull
         private final Application application;
-        private final MiserendDatabase miserendDatabase;
+        private final MiserendRepository miserendRepository;
+        private final FavoritesRepository favoritesRepository;
         private SearchParams searchParams;
 
 
-        public Factory(@NonNull Application application, MiserendDatabase miserendDatabase, SearchParams searchParams) {
+        public Factory(@NonNull Application application, MiserendRepository miserendRepository, FavoritesRepository favoritesRepository, SearchParams searchParams) {
             this.application = application;
-            this.miserendDatabase = miserendDatabase;
+            this.miserendRepository = miserendRepository;
+            this.favoritesRepository = favoritesRepository;
             this.searchParams = searchParams;
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new SearchResultViewModel(application, miserendDatabase, searchParams);
+            return (T) new SearchResultViewModel(application, miserendRepository, favoritesRepository, searchParams);
         }
     }
 }

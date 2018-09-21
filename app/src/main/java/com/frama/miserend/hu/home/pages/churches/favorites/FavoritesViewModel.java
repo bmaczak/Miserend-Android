@@ -3,19 +3,16 @@ package com.frama.miserend.hu.home.pages.churches.favorites;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import com.frama.miserend.hu.database.local.LocalDatabase;
-import com.frama.miserend.hu.database.local.entities.Favorite;
-import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
+import com.frama.miserend.hu.repository.FavoritesRepository;
+import com.frama.miserend.hu.repository.MiserendRepository;
 
 import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Balazs on 2018. 02. 12..
@@ -23,69 +20,40 @@ import io.reactivex.schedulers.Schedulers;
 
 public class FavoritesViewModel extends AndroidViewModel {
 
-    private final LocalDatabase localDatabase;
-    private final MiserendDatabase miserendDatabase;
+    private FavoritesRepository favoritesRepository;
+    private MiserendRepository miserendRepository;
 
-    private LiveData<List<Integer>> favorites;
-
-    public FavoritesViewModel(@NonNull Application application, LocalDatabase localDatabase, MiserendDatabase miserendDatabase) {
+    public FavoritesViewModel(@NonNull Application application, FavoritesRepository favoritesRepository, MiserendRepository miserendRepository) {
         super(application);
-        this.miserendDatabase = miserendDatabase;
-        this.localDatabase = localDatabase;
-    }
-
-    public LiveData<List<Integer>> getFavorites() {
-        if (favorites == null) {
-            favorites = localDatabase.favoritesDao().getAll();
-        }
-        return favorites;
+        this.favoritesRepository = favoritesRepository;
+        this.miserendRepository = miserendRepository;
     }
 
     public LiveData<List<ChurchWithMasses>> getFavoriteChurches() {
-        return miserendDatabase.churchWithMassesDao().getChurchesById(favorites.getValue());
+        return Transformations.switchMap(favoritesRepository.getFavorites(), favorites -> miserendRepository.getChurches(favorites));
     }
 
     public void toggleFavorite(int churchId) {
-        if (favorites.getValue() != null) {
-            if (favorites.getValue().contains(churchId)) {
-                removeFavorite(churchId);
-            } else {
-                addFavorite(churchId);
-            }
-        }
+        favoritesRepository.toggleFavorite(churchId);
     }
-
-    public void addFavorite(int churchId) {
-        Observable.just(localDatabase)
-                .subscribeOn(Schedulers.io())
-                .subscribe(db -> db.favoritesDao().insert(new Favorite(churchId)));
-    }
-
-    public void removeFavorite(int churchId) {
-        Observable.just(localDatabase)
-                .subscribeOn(Schedulers.io())
-                .subscribe(db -> db.favoritesDao().delete(new Favorite(churchId)));
-    }
-
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
         @NonNull
         private final Application application;
-        private final LocalDatabase localDatabase;
-        private final MiserendDatabase miserendDatabase;
+        private final FavoritesRepository favoritesRepository;
+        private final MiserendRepository miserendRepository;
 
-
-        public Factory(@NonNull Application application, LocalDatabase localDatabase, MiserendDatabase miserendDatabase) {
+        public Factory(@NonNull Application application, FavoritesRepository favoritesRepository, MiserendRepository miserendRepository) {
             this.application = application;
-            this.localDatabase = localDatabase;
-            this.miserendDatabase = miserendDatabase;
+            this.favoritesRepository = favoritesRepository;
+            this.miserendRepository = miserendRepository;
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new FavoritesViewModel(application, localDatabase, miserendDatabase);
+            return (T) new FavoritesViewModel(application, favoritesRepository, miserendRepository);
         }
     }
 }

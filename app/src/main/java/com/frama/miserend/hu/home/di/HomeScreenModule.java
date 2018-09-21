@@ -4,23 +4,24 @@ import android.app.Activity;
 import android.app.Application;
 import android.arch.lifecycle.ViewModelProviders;
 
-import com.frama.miserend.hu.database.local.LocalDatabase;
-import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.manager.DatabaseManager;
-import com.frama.miserend.hu.di.modules.FavoritesModule;
 import com.frama.miserend.hu.di.scopes.PerActivity;
 import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.home.pages.churches.favorites.FavoriteChurchesFragment;
 import com.frama.miserend.hu.home.pages.churches.favorites.di.FavoritesFragmentModule;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
 import com.frama.miserend.hu.home.pages.churches.near.di.NearChurchesFragmentModule;
+import com.frama.miserend.hu.home.pages.churches.view.ChurchesFragment;
 import com.frama.miserend.hu.home.pages.map.di.ChurchesMapFragmentModule;
 import com.frama.miserend.hu.home.pages.map.view.ChurchesMapFragment;
 import com.frama.miserend.hu.home.pages.masses.di.MassesFragmentModule;
 import com.frama.miserend.hu.home.pages.masses.view.MassesFragment;
 import com.frama.miserend.hu.home.view.HomeScreenActivity;
 import com.frama.miserend.hu.home.viewmodel.HomeViewModel;
+import com.frama.miserend.hu.location.LocationRepository;
 import com.frama.miserend.hu.preferences.Preferences;
+import com.frama.miserend.hu.repository.MiserendRepository;
+import com.frama.miserend.hu.repository.RecentSearchesRepository;
 import com.frama.miserend.hu.search.suggestions.viewmodel.SuggestionViewModel;
 
 import dagger.Module;
@@ -48,8 +49,8 @@ public abstract class HomeScreenModule {
 
     @PerActivity
     @Provides
-    static HomeViewModel.Factory provideHomeViewModelFactory(Application application, DatabaseManager databaseManager, Preferences preferences) {
-        return new HomeViewModel.Factory(application, databaseManager, preferences);
+    static HomeViewModel.Factory provideHomeViewModelFactory(Application application, DatabaseManager databaseManager, Preferences preferences, LocationRepository locationRepository) {
+        return new HomeViewModel.Factory(application, databaseManager, preferences, locationRepository);
     }
 
     @PerActivity
@@ -61,16 +62,20 @@ public abstract class HomeScreenModule {
 
     @PerActivity
     @Provides
-    static SuggestionViewModel.Factory provideSuggestionViewModelFactory(Application application, MiserendDatabase miserendDatabase, LocalDatabase localDatabase) {
-        return new SuggestionViewModel.Factory(application, miserendDatabase, localDatabase);
+    static SuggestionViewModel.Factory provideSuggestionViewModelFactory(Application application, MiserendRepository miserendRepository, RecentSearchesRepository recentSearchesRepository) {
+        return new SuggestionViewModel.Factory(application, miserendRepository, recentSearchesRepository);
     }
 
     @PerFragment
-    @ContributesAndroidInjector(modules = {NearChurchesFragmentModule.class, FavoritesModule.class})
+    @ContributesAndroidInjector()
+    abstract ChurchesFragment bindChurchesFragment();
+
+    @PerFragment
+    @ContributesAndroidInjector(modules = {NearChurchesFragmentModule.class})
     abstract NearChurchesFragment bindNearChurchesFragment();
 
     @PerFragment
-    @ContributesAndroidInjector(modules = {FavoritesModule.class, FavoritesFragmentModule.class})
+    @ContributesAndroidInjector(modules = {FavoritesFragmentModule.class})
     abstract FavoriteChurchesFragment bindFavoriteChurchesFragment();
 
     @PerFragment

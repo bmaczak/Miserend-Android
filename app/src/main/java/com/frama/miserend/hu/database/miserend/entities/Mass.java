@@ -79,7 +79,11 @@ public class Mass implements Serializable {
     }
 
     public String getTime() {
-        return time;
+        if (id == 208748) {
+            return "00:00:00";
+        } else {
+            return time;
+        }
     }
 
     public void setTime(String time) {

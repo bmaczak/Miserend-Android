@@ -2,6 +2,7 @@ package com.frama.miserend.hu.utils;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -32,10 +33,19 @@ public class ViewUtils {
         }
     }
 
+    public static void setHtmlTextOrHide(TextView textView, String text) {
+        if (text != null && text.length() > 0) {
+            textView.setText(Html.fromHtml(text));
+        } else {
+            textView.setVisibility(View.GONE);
+        }
+    }
+
     public static View createMassFlexboxItem(LayoutInflater layoutInflater, FlexboxLayout parent, Mass mass) {
         View view = layoutInflater.inflate(R.layout.item_mass_flexbox_element, parent, false);
         ((TextView) view.findViewById(R.id.mass_time)).setText(DateUtils.cutSecondsFromTime(mass.getTime()));
         view.findViewById(R.id.mass_info_icon).setVisibility(mass.hasInfo() ? View.VISIBLE : View.GONE);
         return view;
     }
+
 }

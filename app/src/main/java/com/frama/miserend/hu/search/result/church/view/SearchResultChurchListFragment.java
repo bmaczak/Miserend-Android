@@ -10,9 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.database.miserend.entities.Mass;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
-import com.frama.miserend.hu.home.pages.churches.favorites.FavoritesViewModel;
 import com.frama.miserend.hu.home.pages.churches.view.ChurchListFragment;
+import com.frama.miserend.hu.massdetails.view.MassDetailsDialogFragment;
 import com.frama.miserend.hu.router.Router;
 import com.frama.miserend.hu.search.result.viewmodel.SearchResultViewModel;
 
@@ -28,8 +29,6 @@ public class SearchResultChurchListFragment extends ChurchListFragment {
 
     @Inject
     SearchResultViewModel searchResultViewModel;
-    @Inject
-    FavoritesViewModel favoritesViewModel;
     @Inject
     Router router;
     @Inject
@@ -53,7 +52,7 @@ public class SearchResultChurchListFragment extends ChurchListFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        favoritesViewModel.getFavorites().observe(this, this::onFavoritesLoaded);
+        searchResultViewModel.getFavorites().observe(this, this::onFavoritesLoaded);
         searchResultViewModel.getChurchSearchResults().observe(this, this::onSearchResultsLoaded);
     }
 
@@ -72,6 +71,11 @@ public class SearchResultChurchListFragment extends ChurchListFragment {
 
     @Override
     public void onFavoriteClicked(Church church) {
-        favoritesViewModel.toggleFavorite(church.getId());
+        searchResultViewModel.toggleFavorite(church.getId());
+    }
+
+    @Override
+    public void onMassClicked(Mass mass) {
+        MassDetailsDialogFragment.newInstance(mass).show(getChildFragmentManager(), "mass_details");
     }
 }

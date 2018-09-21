@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.frama.miserend.hu.base.BaseFragment;
 import com.frama.miserend.hu.database.miserend.relations.MassWithChurch;
 import com.frama.miserend.hu.home.pages.masses.view.MassesAdapter;
+import com.frama.miserend.hu.router.Router;
 import com.frama.miserend.hu.search.result.viewmodel.SearchResultViewModel;
 
 import java.util.List;
@@ -27,6 +28,8 @@ public class SearchResultMassListFragment extends BaseFragment implements Masses
     SearchResultViewModel searchResultViewModel;
     @Inject
     MassesAdapter adapter;
+    @Inject
+    Router router;
 
     private RecyclerView recyclerView;
 
@@ -46,6 +49,11 @@ public class SearchResultMassListFragment extends BaseFragment implements Masses
 
     @Override
     public void onMassListItemClicked(MassWithChurch massWithChurch) {
+        router.startGoogleNavigation(massWithChurch.getChurch());
+    }
 
+    @Override
+    public void onChurchImageClicked(MassWithChurch massWithChurch) {
+        router.showChurchDetails(massWithChurch.getChurch());
     }
 }

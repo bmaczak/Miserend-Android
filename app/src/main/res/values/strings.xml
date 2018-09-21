@@ -15,18 +15,23 @@
     <string name="church_location">Megközelítés</string>
     <string name="church_gallery">Képek</string>
     <string name="report_error">Hibajelentés</string>
+    <string name="add_to_favorites">Kedvencekhez</string>
+    <string name="remove_from_favorites">Eltávolítás</string>
 
     <string name="advanced_search">Részletes kereső</string>
 
-    <string name="static_map_url">https://maps.googleapis.com/maps/api/staticmap?center=%1$f,%2$f&amp;zoom=16&amp;size=%3$dx%4$d&amp;scale=4</string>
+    <string name="static_map_url">https://maps.googleapis.com/maps/api/staticmap?center=%1$f,%2$f&amp;zoom=16&amp;size=%3$dx%4$d&amp;scale=2&amp;key=AIzaSyD7gu93yYTqPpJ2G5K79AhBs1UoyGNIs_o</string>
 
     <string name="action_navigate">Útvonal</string>
     <string name="no_mass_for_church">A templomhoz nem tartozik mise</string>
+
+    <string name="no_masses_near">Nem találhatók misék a közelben</string>
 
     <string name="dialog_db_missing_title">Adatabázis nem taláható</string>
     <string name="dialog_db_missing_message">Az alkalmazás használatához szükség van az adatbázis letöltésére. Letölti most?</string>
     <string name="dialog_db_missing_btn_ok">Letöltés</string>
     <string name="dialog_db_missing_btn_cancel">Kilépés</string>
+    <string name="dialog_db_downloading">Adatbázis letöltése</string>
 
     <string name="dialog_db_update_title">Frissítés elérhető</string>
     <string name="dialog_db_update_message">Elérhető frisebb adatbázis. Letölti most?</string>

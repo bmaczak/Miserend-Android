@@ -3,25 +3,20 @@ package com.frama.miserend.hu.home.pages.masses.viewmodel;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.location.Location;
 import android.support.annotation.NonNull;
 
-import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.database.miserend.relations.MassWithChurch;
-import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
-import com.frama.miserend.hu.home.pages.masses.model.MassComparator;
+import com.frama.miserend.hu.location.LocationError;
+import com.frama.miserend.hu.location.LocationRepository;
+import com.frama.miserend.hu.repository.MiserendRepository;
 
-import org.threeten.bp.LocalDate;
-
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Balazs on 2018. 02. 10..
@@ -29,37 +24,30 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MassesViewModel extends AndroidViewModel {
 
-    private MutableLiveData<List<MassWithChurch>> masses;
-    private MiserendDatabase database;
+    private MiserendRepository miserendRepository;
+    private LocationRepository locationRepository;
+    private MutableLiveData<Location> locationLiveData;
 
-    public MassesViewModel(@NonNull Application application, MiserendDatabase database) {
+    public MassesViewModel(@NonNull Application application, MiserendRepository miserendRepository, LocationRepository locationRepository) {
         super(application);
-        this.database = database;
-        this.masses = new MutableLiveData<>();
+        this.miserendRepository = miserendRepository;
+        this.locationRepository = locationRepository;
+        this.locationLiveData = new MutableLiveData<>();
     }
 
+    public LiveData<List<MassWithChurch>> getRecommendedMasses() {
+        return Transformations.switchMap(locationRepository.getLocation(), location -> {
+            locationLiveData.setValue(location);
+            return miserendRepository.getRecommendedMasses(location);
+        });
+    }
 
-    public LiveData<List<MassWithChurch>> getRecommendedMasses(Location currentLocation) {
-        LocalDate today = LocalDate.now();
-        int dayOfWeek = today.getDayOfWeek().getValue();
-        database.massesDao().getMassesInRadius(currentLocation.getLatitude(), currentLocation.getLongitude(), dayOfWeek)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(massWithChuches -> {
-                    List<MassWithChurch> masses = new ArrayList<>();
-                    for (MassWithChurch massWithChurch : massWithChuches) {
-                        if (MassFilter.isMassOnDay(massWithChurch.getMass(), LocalDate.now())) {
-                            masses.add(massWithChurch);
-                        }
-                    }
-                    return masses;
-                })
-                .map(massWithChurches -> {
-                    Collections.sort(massWithChurches, new MassComparator(currentLocation));
-                    return massWithChurches;
-                })
-                .subscribe(massWithChurches -> masses.setValue(massWithChurches));
-        return masses;
+    public LiveData<LocationError> getLocationError() {
+        return locationRepository.getLocationError();
+    }
+
+    public LiveData<Location> getLocation() {
+        return locationLiveData;
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
@@ -67,17 +55,19 @@ public class MassesViewModel extends AndroidViewModel {
         @NonNull
         private final Application mApplication;
 
-        private final MiserendDatabase database;
+        private final MiserendRepository miserendRepository;
+        private final LocationRepository locationRepository;
 
-        public Factory(@NonNull Application application, MiserendDatabase database) {
-            mApplication = application;
-            this.database = database;
+        public Factory(@NonNull Application mApplication, MiserendRepository miserendRepository, LocationRepository locationRepository) {
+            this.mApplication = mApplication;
+            this.miserendRepository = miserendRepository;
+            this.locationRepository = locationRepository;
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new MassesViewModel(mApplication, database);
+            return (T) new MassesViewModel(mApplication, miserendRepository, locationRepository);
         }
     }
 }

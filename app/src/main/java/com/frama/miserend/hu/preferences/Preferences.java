@@ -14,6 +14,8 @@ public class Preferences {
 
     private static final String DATABASE_LAST_UPDATED = "DATABASE_LAST_UPDATED";
 
+    private static final String SAVED_DATABASE_VERSION = "SAVED_DATABASE_VERSION";
+
 
     private SharedPreferences sharedPreferences;
 
@@ -30,6 +32,14 @@ public class Preferences {
         return getLong(DATABASE_LAST_UPDATED, 0);
     }
 
+    public void setSavedDatabaseVersion(int version) {
+        putInt(SAVED_DATABASE_VERSION, version);
+    }
+
+    public int getSavedDatabseVersion() {
+        return getInt(SAVED_DATABASE_VERSION, 4);
+    }
+
     @SuppressLint("ApplySharedPref")
     private void putLong(String key, long value) {
         sharedPreferences.edit().putLong(key, value).commit();
@@ -37,5 +47,14 @@ public class Preferences {
 
     private long getLong(String key, long defaultValue) {
         return sharedPreferences.getLong(key, defaultValue);
+    }
+
+    @SuppressLint("ApplySharedPref")
+    private void putInt(String key, int value) {
+        sharedPreferences.edit().putInt(key, value).commit();
+    }
+
+    private int getInt(String key, int defaultValue) {
+        return sharedPreferences.getInt(key, defaultValue);
     }
 }

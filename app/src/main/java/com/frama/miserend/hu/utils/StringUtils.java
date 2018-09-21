@@ -22,7 +22,7 @@ public class StringUtils {
     }
 
     public static String capitalizeFirstLetter(String string) {
-        return string.substring(0, 1).toUpperCase() + string.substring(1);
+        return string.length() > 0 ? string.substring(0, 1).toUpperCase() + string.substring(1) : string;
     }
 
     public static String getDistanceText(float distance) {

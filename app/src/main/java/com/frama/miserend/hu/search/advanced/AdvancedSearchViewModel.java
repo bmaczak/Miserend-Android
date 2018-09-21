@@ -3,13 +3,11 @@ package com.frama.miserend.hu.search.advanced;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import com.frama.miserend.hu.database.local.LocalDatabase;
-import com.frama.miserend.hu.database.miserend.MiserendDatabase;
+import com.frama.miserend.hu.repository.MiserendRepository;
 import com.frama.miserend.hu.search.SearchParams;
 
 import org.threeten.bp.DayOfWeek;
@@ -18,19 +16,13 @@ import org.threeten.bp.LocalTime;
 
 import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-
 /**
  * Created by Balazs on 2018. 02. 12..
  */
 
 public class AdvancedSearchViewModel extends AndroidViewModel {
 
-    private final MiserendDatabase miserendDatabase;
-    private final LocalDatabase localDatabase;
-
-    private MutableLiveData<List<String>> cities;
+    private final MiserendRepository miserendRepository;
 
     private LocalDate date;
     private LocalTime fromTime;
@@ -38,11 +30,9 @@ public class AdvancedSearchViewModel extends AndroidViewModel {
     private boolean filterForMasses;
     private boolean allDay;
 
-    public AdvancedSearchViewModel(@NonNull Application application, MiserendDatabase miserendDatabase, LocalDatabase localDatabase) {
+    public AdvancedSearchViewModel(@NonNull Application application, MiserendRepository miserendRepository) {
         super(application);
-        this.miserendDatabase = miserendDatabase;
-        this.localDatabase = localDatabase;
-        this.cities = new MutableLiveData<>();
+        this.miserendRepository = miserendRepository;
         init();
     }
 
@@ -53,11 +43,7 @@ public class AdvancedSearchViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<String>> getCities() {
-        miserendDatabase.churchDao().getAllCities()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(strings -> cities.setValue(strings));
-        return cities;
+        return miserendRepository.getCities();
     }
 
     public SearchParams createSearchParams(String churchName, String city) {
@@ -112,20 +98,18 @@ public class AdvancedSearchViewModel extends AndroidViewModel {
 
         @NonNull
         private final Application application;
-        private final MiserendDatabase miserendDatabase;
-        private final LocalDatabase localDatabase;
+        private final MiserendRepository miserendRepository;
 
 
-        public Factory(@NonNull Application application, MiserendDatabase miserendDatabase, LocalDatabase localDatabase) {
+        public Factory(@NonNull Application application, MiserendRepository miserendRepository) {
             this.application = application;
-            this.miserendDatabase = miserendDatabase;
-            this.localDatabase = localDatabase;
+            this.miserendRepository = miserendRepository;
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new AdvancedSearchViewModel(application, miserendDatabase, localDatabase);
+            return (T) new AdvancedSearchViewModel(application, miserendRepository);
         }
     }
 }

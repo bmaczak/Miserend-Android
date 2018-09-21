@@ -12,6 +12,6 @@ import java.util.Locale;
 
 public class StaticMapHelper {
     public static String getSaticMapUrl(Context context, double latitude, double longitude, int width, int height) {
-        return String.format(Locale.US, context.getString(R.string.static_map_url), latitude, longitude, width, height);
+        return String.format(Locale.US, context.getString(R.string.static_map_url), latitude, longitude, width / 2, height / 2);
     }
 }

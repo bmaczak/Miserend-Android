@@ -1,6 +1,6 @@
 package com.frama.miserend.hu.home.pages.churches.near;
 
-import android.content.Context;
+import android.arch.paging.PagedList;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,9 +11,12 @@ import android.view.ViewGroup;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.entities.Church;
-import com.frama.miserend.hu.home.pages.churches.favorites.FavoritesViewModel;
+import com.frama.miserend.hu.database.miserend.entities.Mass;
+import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 import com.frama.miserend.hu.home.pages.churches.view.ChurchListFragment;
-import com.frama.miserend.hu.location.LocationManager;
+import com.frama.miserend.hu.location.LocationError;
+import com.frama.miserend.hu.location.LocationPermissionHelper;
+import com.frama.miserend.hu.massdetails.view.MassDetailsDialogFragment;
 import com.frama.miserend.hu.router.Router;
 
 import java.util.List;
@@ -28,7 +31,7 @@ import butterknife.OnClick;
  * Created by Balazs on 2018. 02. 10..
  */
 
-public class NearChurchesFragment extends ChurchListFragment implements LocationManager.LocationResultListener {
+public class NearChurchesFragment extends ChurchListFragment {
 
     @BindView(R.id.recycle_view)
     RecyclerView recyclerView;
@@ -40,9 +43,7 @@ public class NearChurchesFragment extends ChurchListFragment implements Location
     @Inject
     NearChurchesViewModel nearChurchesViewModel;
     @Inject
-    FavoritesViewModel favoritesViewModel;
-    @Inject
-    LocationManager locationManager;
+    LocationPermissionHelper locationPermissionHelper;
     @Inject
     NearChurchesAdapter adapter;
     @Inject
@@ -53,7 +54,6 @@ public class NearChurchesFragment extends ChurchListFragment implements Location
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_near_churches, container, false);
         ButterKnife.bind(this, v);
-        favoritesViewModel.getFavorites().observe(this, this::onFavoritesChanged);
         return v;
     }
 
@@ -64,36 +64,28 @@ public class NearChurchesFragment extends ChurchListFragment implements Location
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        locationManager.getLastKnownLocation();
+        nearChurchesViewModel.getFavorites().observe(this, this::onFavoritesChanged);
+        nearChurchesViewModel.getNearestChurches().observe(this, this::onChurchesLoaded);
+        nearChurchesViewModel.getLocationError().observe(this, this::onLocationError);
+        nearChurchesViewModel.getLocation().observe(this, this::onLocationRetrieved);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        locationManager.registerListener(this);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        locationManager.unregisterListener(this);
-    }
-
-    @Override
-    public void onLocationRetrieved(Location location) {
-        nearChurchesViewModel.getNearestChurches(location.getLatitude(), location.getLongitude()).observe(this, adapter::setList);
+    private void onChurchesLoaded(PagedList<ChurchWithMasses> churchWithMasses) {
         recyclerView.setVisibility(View.VISIBLE);
         locationSettingsLayout.setVisibility(View.GONE);
         locationPermissionLayout.setVisibility(View.GONE);
-        adapter.setCurrentLocation(location);
         recyclerView.setAdapter(adapter);
+        adapter.submitList(churchWithMasses);
     }
 
-    @Override
-    public void onLocationError(LocationManager.LocationError locationError) {
+    private void onLocationRetrieved(Location location) {
+        adapter.setCurrentLocation(location);
+    }
+
+    public void onLocationError(LocationError locationError) {
         recyclerView.setVisibility(View.GONE);
-        locationPermissionLayout.setVisibility(locationError == LocationManager.LocationError.PERMISSION ? View.VISIBLE : View.GONE);
-        locationSettingsLayout.setVisibility(locationError == LocationManager.LocationError.COULD_NOT_RETRIEVE ? View.VISIBLE : View.GONE);
+        locationPermissionLayout.setVisibility(locationError == LocationError.PERMISSION ? View.VISIBLE : View.GONE);
+        locationSettingsLayout.setVisibility(locationError == LocationError.COULD_NOT_RETRIEVE ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -103,16 +95,21 @@ public class NearChurchesFragment extends ChurchListFragment implements Location
 
     @Override
     public void onFavoriteClicked(Church church) {
-        favoritesViewModel.toggleFavorite(church.getId());
+        nearChurchesViewModel.toggleFavorite(church.getId());
     }
 
     @OnClick(R.id.location_settings_button)
     public void onLocationSettingsClicked() {
-        locationManager.showLocationSettings();
+        locationPermissionHelper.showLocationSettings();
     }
 
     @OnClick(R.id.location_permission_button)
     public void onLocationPermissionButtonClicked() {
-        locationManager.requestPermission();
+        locationPermissionHelper.requestPermission();
+    }
+
+    @Override
+    public void onMassClicked(Mass mass) {
+        MassDetailsDialogFragment.newInstance(mass).show(getChildFragmentManager(), "mass_details");
     }
 }

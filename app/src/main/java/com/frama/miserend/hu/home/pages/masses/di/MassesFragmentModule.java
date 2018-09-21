@@ -4,12 +4,12 @@ import android.app.Application;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.v4.app.Fragment;
 
-import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.home.pages.masses.view.MassesAdapter;
 import com.frama.miserend.hu.home.pages.masses.view.MassesFragment;
 import com.frama.miserend.hu.home.pages.masses.viewmodel.MassesViewModel;
-import com.frama.miserend.hu.location.LocationManager;
+import com.frama.miserend.hu.location.LocationRepository;
+import com.frama.miserend.hu.repository.MiserendRepository;
 
 import dagger.Module;
 import dagger.Provides;
@@ -41,14 +41,7 @@ public class MassesFragmentModule {
 
     @PerFragment
     @Provides
-    MassesViewModel.Factory provideMassesViewModelFactory(Application application, MiserendDatabase database) {
-        return new MassesViewModel.Factory(application, database);
+    MassesViewModel.Factory provideMassesViewModelFactory(Application application, MiserendRepository miserendRepository, LocationRepository locationRepository) {
+        return new MassesViewModel.Factory(application, miserendRepository, locationRepository);
     }
-
-    @PerFragment
-    @Provides
-    LocationManager.LocationResultListener provideLocationResultListener(MassesFragment fragment) {
-        return fragment;
-    }
-
 }

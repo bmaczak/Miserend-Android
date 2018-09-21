@@ -6,6 +6,7 @@ import com.frama.miserend.hu.application.MiserendApplication;
 import com.frama.miserend.hu.application.di.ApiModule;
 import com.frama.miserend.hu.application.di.ApplicationModule;
 import com.frama.miserend.hu.di.modules.DatabaseModule;
+import com.frama.miserend.hu.di.modules.RepositoryModule;
 import com.frama.miserend.hu.di.modules.builder.ActivityBuilder;
 
 import javax.inject.Singleton;
@@ -19,7 +20,7 @@ import dagger.android.AndroidInjectionModule;
  */
 
 @Singleton
-@Component(modules = {AndroidInjectionModule.class, ApplicationModule.class, DatabaseModule.class, ApiModule.class, ActivityBuilder.class})
+@Component(modules = {AndroidInjectionModule.class, ApplicationModule.class, DatabaseModule.class, RepositoryModule.class, ApiModule.class, ActivityBuilder.class})
 public interface AppComponent {
 
     void inject(MiserendApplication application);

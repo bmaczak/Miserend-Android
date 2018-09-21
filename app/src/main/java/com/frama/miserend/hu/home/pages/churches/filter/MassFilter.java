@@ -62,8 +62,10 @@ public class MassFilter {
         int dayInDatabaseFormat = (day.getMonthValue()) * 100 + day.getDayOfMonth();
         if (mass.getFromDate() < mass.getToDate()) {
             return mass.getFromDate() <= dayInDatabaseFormat && dayInDatabaseFormat <= mass.getToDate();
-        } else {
+        } else if (mass.getFromDate() > mass.getToDate()){
             return mass.getFromDate() <= dayInDatabaseFormat || dayInDatabaseFormat <= mass.getToDate();
+        } else {
+            return mass.getFromDate() == dayInDatabaseFormat && dayInDatabaseFormat == mass.getToDate();
         }
     }
 

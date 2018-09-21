@@ -13,6 +13,34 @@
         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
     <LinearLayout
+        android:id="@+id/no_masses_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/list_gb"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="48dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_sentiment_very_dissatisfied" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/no_masses_near"
+            android:textColor="@color/black_40"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/location_settings_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

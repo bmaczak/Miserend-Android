@@ -114,8 +114,14 @@ public class MassesAdapter extends RecyclerView.Adapter<MassesAdapter.MassViewHo
             actionListener.onMassListItemClicked(mass);
         }
 
+        @OnClick(R.id.church_thumb)
+        public void onChurchImageClicked() {
+            actionListener.onChurchImageClicked(mass);
+        }
+
         public interface MassListActionListener {
             void onMassListItemClicked(MassWithChurch massWithChurch);
+            void onChurchImageClicked(MassWithChurch massWithChurch);
         }
     }
 }

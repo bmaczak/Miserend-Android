@@ -7,10 +7,12 @@ import android.net.Uri;
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.churchdetails.view.ChurchDetailsActivity;
 import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.gallery.GalleryActivity;
 import com.frama.miserend.hu.search.SearchParams;
 import com.frama.miserend.hu.search.advanced.AdvancedSearchActivity;
 import com.frama.miserend.hu.search.result.view.SearchResultActivity;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 /**
@@ -58,6 +60,12 @@ public class Router {
     public void showOnMap(Church church) {
         String uri = String.format(Locale.ENGLISH, "geo:0,0?q=") + android.net.Uri.encode(String.format(Locale.ENGLISH, "%s@%f,%f", church.getName(), church.getLat(), church.getLon()), "UTF-8");
         final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        activity.startActivity(intent);
+    }
+
+    public void openGallery(ArrayList<String> imageUrls) {
+        Intent intent = new Intent(activity, GalleryActivity.class);
+        intent.putExtra(GalleryActivity.EXTRA_IMAGE_URLS, imageUrls);
         activity.startActivity(intent);
     }
 }

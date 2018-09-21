@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.location.Location;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,7 +13,13 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.entities.Church;
 import com.frama.miserend.hu.database.miserend.entities.Mass;
+import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.utils.ChurchUtils;
+import com.frama.miserend.hu.utils.StringUtils;
+import com.frama.miserend.hu.utils.ViewUtils;
+import com.google.android.flexbox.FlexboxLayout;
+
+import org.threeten.bp.LocalDate;
 
 import java.util.List;
 
@@ -30,8 +37,8 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
     TextView churchName;
     @BindView(R.id.church_common_name)
     TextView churchCommonName;
-    @BindView(R.id.masses_text)
-    TextView massesText;
+    @BindView(R.id.masses_flexbox)
+    FlexboxLayout massesFlexbox;
     @BindView(R.id.church_distance)
     TextView distanceText;
     @BindView(R.id.church_thumb)
@@ -55,10 +62,12 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
 
     public void bindTo(Church church, List<Mass> masses, Location currentLocation, boolean isFavorite) {
         this.church = church;
-        churchName.setText(church.getName());
-        churchCommonName.setText(church.getCommonName());
+        churchName.setText(StringUtils.capitalizeFirstLetter(church.getName()));
+        churchCommonName.setText(StringUtils.capitalizeFirstLetter(church.getCommonName()));
         churchThumbnail.setImageURI(church.getImageUrl());
-        massesText.setText(getMassesText(masses));
+        List<Mass> todaysMasses = MassFilter.filterForDay(masses, LocalDate.now());
+        massesFlexbox.removeAllViews();
+        addMassesToFlexboxLayout(massesFlexbox, todaysMasses);
         if (currentLocation != null) {
             distanceText.setVisibility(View.VISIBLE);
             distanceText.setText(getDistanceText(ChurchUtils.distanceTo(currentLocation, church)));
@@ -66,6 +75,15 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
             distanceText.setVisibility(View.GONE);
         }
         favoriteImage.setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
+    }
+
+    private void addMassesToFlexboxLayout(FlexboxLayout flexboxLayout, List<Mass> masses) {
+        LayoutInflater layoutInflater = LayoutInflater.from(flexboxLayout.getContext());
+        for (Mass mass : masses) {
+            View view = ViewUtils.createMassFlexboxItem(layoutInflater, flexboxLayout, mass);
+            view.setOnClickListener(view1 -> churchListActionListener.onMassClicked(mass));
+            flexboxLayout.addView(view);
+        }
     }
 
     public void clear() {
@@ -109,5 +127,7 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
         void onChurchClicked(Church church);
 
         void onFavoriteClicked(Church church);
+
+        void onMassClicked(Mass mass);
     }
 }

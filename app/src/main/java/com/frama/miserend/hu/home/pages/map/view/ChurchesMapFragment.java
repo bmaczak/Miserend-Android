@@ -2,14 +2,26 @@ package com.frama.miserend.hu.home.pages.map.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Point;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.database.miserend.entities.Mass;
+import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
+import com.frama.miserend.hu.firebase.Analytics;
+import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
+import com.frama.miserend.hu.home.pages.churches.view.ChurchViewHolder;
 import com.frama.miserend.hu.home.pages.map.viewmodel.ChurchesMapViewModel;
-import com.frama.miserend.hu.location.LocationManager;
+import com.frama.miserend.hu.location.LocationPermissionHelper;
+import com.frama.miserend.hu.massdetails.view.MassDetailsDialogFragment;
 import com.frama.miserend.hu.router.Router;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,63 +29,82 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 
 import net.sharewire.googlemapsclustering.Cluster;
 import net.sharewire.googlemapsclustering.ClusterManager;
 import net.sharewire.googlemapsclustering.DefaultIconGenerator;
 import net.sharewire.googlemapsclustering.IconStyle;
 
+import org.threeten.bp.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 
 /**
  * Created by Balazs on 2018. 02. 13..
  */
 
-public class ChurchesMapFragment extends SupportMapFragment implements OnMapReadyCallback, ClusterManager.Callbacks<ChurchClusterItem>, GoogleMap.OnInfoWindowClickListener, LocationManager.LocationResultListener {
+public class ChurchesMapFragment extends Fragment implements OnMapReadyCallback, ClusterManager.Callbacks<ChurchClusterItem>, ChurchViewHolder.ChurchListActionListener {
 
     private static int CURRENT_LOCATION_ZOOM = 14;
+
+    @BindView(R.id.church_card_container)
+    View churchCardContainer;
 
     @Inject
     ChurchesMapViewModel churchesMapViewModel;
     @Inject
     Router router;
     @Inject
-    LocationManager locationManager;
+    LocationPermissionHelper locationPermissionHelper;
+    @Inject
+    Analytics analytics;
 
     private GoogleMap map;
     private ClusterManager<ChurchClusterItem> clusterManager;
+    private ChurchViewHolder churchViewHolder;
+    private List<Integer> favoriteChuchIds = new ArrayList<>();
+    private ChurchWithMasses selectedChurch;
 
+    @Nullable
     @Override
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        getMapAsync(this);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_map, container, false);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
+        ButterKnife.bind(this, view);
+        churchViewHolder = new ChurchViewHolder(churchCardContainer, this);
+        return view;
     }
 
     @Override
     public void onAttach(Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
-        churchesMapViewModel.getChurcesLiveData().observe(this, this::onChurchesLoaded);
-        locationManager.registerListener(this);
+        churchesMapViewModel.getFavorites().observe(this, this::onFavoritesLoaded);
+    }
+
+    private void onFavoritesLoaded(List<Integer> integers) {
+        favoriteChuchIds = integers;
+        updateCard();
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        locationManager.unregisterListener(this);
+    public void onResume() {
+        super.onResume();
+        analytics.setCurrentScreen(getActivity(), Analytics.ScreenNames.MAP);
     }
 
-
     private void onChurchesLoaded(List<Church> churches) {
-        if (map != null) {
-            addPins(churches);
-        }
+        addPins(churches);
     }
 
     @SuppressLint("MissingPermission")
@@ -81,12 +112,10 @@ public class ChurchesMapFragment extends SupportMapFragment implements OnMapRead
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         setupClustering();
-        map.setOnInfoWindowClickListener(this);
-        if (churchesMapViewModel.getChurcesLiveData().getValue() != null) {
-            addPins(churchesMapViewModel.getChurcesLiveData().getValue());
-        }
-        if (locationManager.hasPermission()) {
-            locationManager.getLastKnownLocation(false);
+        churchesMapViewModel.getChurcesLiveData().observe(this, this::onChurchesLoaded);
+        churchesMapViewModel.getLocation().observe(this, this::onLocationRetrieved);
+        churchesMapViewModel.getSelectedChurch().observe(this, this::onSelectedChurchChanged);
+        if (locationPermissionHelper.hasLocationPermission()) {
             map.setMyLocationEnabled(true);
         }
     }
@@ -101,6 +130,7 @@ public class ChurchesMapFragment extends SupportMapFragment implements OnMapRead
         generator.setIconStyle(iconStyle);
         clusterManager.setIconGenerator(generator);
         map.setOnCameraIdleListener(clusterManager);
+        map.setOnMapClickListener(latLng -> churchCardContainer.setVisibility(View.INVISIBLE));
     }
 
     private void addPins(List<Church> churches) {
@@ -124,23 +154,47 @@ public class ChurchesMapFragment extends SupportMapFragment implements OnMapRead
 
     @Override
     public boolean onClusterItemClick(@NonNull ChurchClusterItem clusterItem) {
-        return false;
+        churchesMapViewModel.selectChurch(clusterItem.getChurch().getId());
+        int offset = (getView().getHeight() - churchCardContainer.getTop()) / 2;
+        Point mappoint = map.getProjection().toScreenLocation(new LatLng(clusterItem.getLatitude(), clusterItem.getLongitude()));
+        mappoint.set(mappoint.x, mappoint.y + offset);
+        map.animateCamera(CameraUpdateFactory.newLatLng(map.getProjection().fromScreenLocation(mappoint)));
+        return true;
     }
 
-    @Override
-    public void onInfoWindowClick(Marker marker) {
-        Cluster<ChurchClusterItem> cluster = (Cluster) marker.getTag();
-        router.showChurchDetails(cluster.getItems().get(0).getChurch());
+    private void onSelectedChurchChanged(ChurchWithMasses churchWithMasses) {
+        selectedChurch = churchWithMasses;
+        updateCard();
     }
 
-    @Override
+    private void updateCard() {
+        if (selectedChurch != null) {
+            churchCardContainer.setVisibility(View.VISIBLE);
+            List<Mass> todaysMasses = MassFilter.filterForDay(selectedChurch.getMasses(), LocalDate.now());
+            churchViewHolder.bindTo(selectedChurch.getChurch(), todaysMasses, favoriteChuchIds.contains(selectedChurch.getChurch().getId()));
+        } else {
+            churchCardContainer.setVisibility(View.INVISIBLE);
+        }
+    }
+
+
     public void onLocationRetrieved(Location location) {
         LatLng redmond = new LatLng(location.getLatitude(), location.getLongitude());
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(redmond, CURRENT_LOCATION_ZOOM));
     }
 
     @Override
-    public void onLocationError(LocationManager.LocationError error) {
+    public void onChurchClicked(Church church) {
+        router.showChurchDetails(church);
+    }
 
+    @Override
+    public void onFavoriteClicked(Church church) {
+        churchesMapViewModel.toggleFavorite(church.getId());
+    }
+
+    @Override
+    public void onMassClicked(Mass mass) {
+        MassDetailsDialogFragment.newInstance(mass).show(getChildFragmentManager(), "mass_details");
     }
 }

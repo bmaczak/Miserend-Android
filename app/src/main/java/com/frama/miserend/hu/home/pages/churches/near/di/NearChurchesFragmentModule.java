@@ -4,12 +4,13 @@ import android.app.Application;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.v4.app.Fragment;
 
-import com.frama.miserend.hu.database.miserend.MiserendDatabase;
 import com.frama.miserend.hu.di.scopes.PerFragment;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesAdapter;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesFragment;
 import com.frama.miserend.hu.home.pages.churches.near.NearChurchesViewModel;
-import com.frama.miserend.hu.location.LocationManager;
+import com.frama.miserend.hu.location.LocationRepository;
+import com.frama.miserend.hu.repository.FavoritesRepository;
+import com.frama.miserend.hu.repository.MiserendRepository;
 
 import dagger.Module;
 import dagger.Provides;
@@ -41,14 +42,8 @@ public class NearChurchesFragmentModule {
 
     @PerFragment
     @Provides
-    NearChurchesViewModel.Factory provideNearChurchesViewModelFactory(Application application, MiserendDatabase database) {
-        return new NearChurchesViewModel.Factory(application, database);
-    }
-
-    @PerFragment
-    @Provides
-    LocationManager.LocationResultListener provideLocationResultListener(NearChurchesFragment fragment) {
-        return fragment;
+    NearChurchesViewModel.Factory provideNearChurchesViewModelFactory(Application application, MiserendRepository miserendRepository, FavoritesRepository favoritesRepository, LocationRepository locationRepository) {
+        return new NearChurchesViewModel.Factory(application, miserendRepository, favoritesRepository, locationRepository);
     }
 
 }

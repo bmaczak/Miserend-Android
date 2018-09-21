@@ -4,7 +4,9 @@ import android.app.Application;
 import android.content.Context;
 
 import com.frama.miserend.hu.di.qualifiers.ApplicationContext;
+import com.frama.miserend.hu.firebase.Analytics;
 import com.frama.miserend.hu.preferences.Preferences;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import javax.inject.Singleton;
 
@@ -28,5 +30,17 @@ public class ApplicationModule {
     @Singleton
     Preferences providePreferences(@ApplicationContext Context context) {
         return new Preferences(context);
+    }
+
+    @Provides
+    @Singleton
+    FirebaseAnalytics provideFirebaseAnalytics(@ApplicationContext Context context) {
+        return FirebaseAnalytics.getInstance(context);
+    }
+
+    @Provides
+    @Singleton
+    Analytics provideAnalytics(FirebaseAnalytics firebaseAnalytics) {
+        return new Analytics(firebaseAnalytics);
     }
 }

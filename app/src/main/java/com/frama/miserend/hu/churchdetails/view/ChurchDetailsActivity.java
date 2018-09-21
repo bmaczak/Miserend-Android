@@ -7,10 +7,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -18,8 +17,10 @@ import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.base.FragmentHostActivity;
 import com.frama.miserend.hu.churchdetails.viewmodel.ChurchDetailsViewModel;
 import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.database.miserend.entities.Image;
 import com.frama.miserend.hu.database.miserend.entities.Mass;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
+import com.frama.miserend.hu.firebase.Analytics;
 import com.frama.miserend.hu.home.pages.churches.filter.MassFilter;
 import com.frama.miserend.hu.map.StaticMapHelper;
 import com.frama.miserend.hu.massdetails.view.MassDetailsDialogFragment;
@@ -46,7 +47,7 @@ import butterknife.OnClick;
  * Created by Balazs on 2018. 02. 18..
  */
 
-public class ChurchDetailsActivity extends FragmentHostActivity implements OnMassClickedListener {
+public class ChurchDetailsActivity extends FragmentHostActivity implements OnMassClickedListener, ChurchDetailsGalleryPagerAdapter.ImageClickedListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -54,6 +55,10 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.church_name)
     TextView churchName;
+    @BindView(R.id.favorite_icon)
+    ImageView favoriteIcon;
+    @BindView(R.id.favorite_label)
+    TextView favoriteLabel;
     @BindView(R.id.church_common_name)
     TextView churchCommonName;
     @BindView(R.id.static_map)
@@ -79,8 +84,10 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
     ChurchDetailsViewModel churchDetailsViewModel;
     @Inject
     Router router;
+    @Inject
+    Analytics analytics;
 
-    private GalleryPagerAdapter imagesAdapter;
+    private ChurchDetailsGalleryPagerAdapter imagesAdapter;
 
     private ChurchWithMasses churchWithMasses;
 
@@ -92,21 +99,18 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
         setupActionBar();
         setupGallery();
         churchDetailsViewModel.getChurchWithMasses().observe(this, this::onChurchDetailsLoaded);
+        churchDetailsViewModel.isFavorite().observe(this, this::onFavoriteChanged);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.church_details_menu, menu);
-        return true;
+    protected void onResume() {
+        super.onResume();
+        analytics.setCurrentScreen(this, Analytics.ScreenNames.CHURCH_DETAILS);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.report_error:
-                ReportDialogFragment.newInstance(churchDetailsViewModel.getChurchId()).show(getSupportFragmentManager(), "report");
-                return true;
             case android.R.id.home:
                 finish();
                 return true;
@@ -123,7 +127,7 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
     }
 
     private void setupGallery() {
-        imagesAdapter = new GalleryPagerAdapter();
+        imagesAdapter = new ChurchDetailsGalleryPagerAdapter(this);
         imagesPager.setAdapter(imagesAdapter);
         imagesPagerIndicator.setViewPager(imagesPager);
         imagesPagerIndicator.setDynamicCount(true);
@@ -136,10 +140,15 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
         ViewUtils.setTextOrHide(churchName, church.getName());
         ViewUtils.setTextOrHide(churchCommonName, church.getCommonName());
         staticMap.setImageURI(StaticMapHelper.getSaticMapUrl(this, churchWithMasses.getChurch().getLat(), churchWithMasses.getChurch().getLon(), staticMap.getWidth(), staticMap.getHeight()));
-        ViewUtils.setTextOrHide(churchAddress, church.getAddress());
-        ViewUtils.setTextOrHide(churchGettingThere, church.getGettingThere());
+        ViewUtils.setHtmlTextOrHide(churchAddress, church.getAddress());
+        ViewUtils.setHtmlTextOrHide(churchGettingThere, church.getGettingThere());
         displayMasses();
         imagesAdapter.setImages(churchWithMasses.getImages());
+    }
+
+    private void onFavoriteChanged(Boolean favorite) {
+        favoriteIcon.setImageResource(favorite ? R.drawable.ic_favorite_big : R.drawable.ic_favorite_border_big);
+        favoriteLabel.setText(favorite ? R.string.remove_from_favorites : R.string.add_to_favorites);
     }
 
     private void displayMasses() {
@@ -187,6 +196,16 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
         MassDetailsDialogFragment.newInstance(mass).show(getSupportFragmentManager(), "mass_details");
     }
 
+    @OnClick(R.id.btn_favorite)
+    public void toggleFavorite() {
+        churchDetailsViewModel.toggleFavorite();
+    }
+
+    @OnClick(R.id.btn_report)
+    public void report() {
+        ReportDialogFragment.newInstance(churchDetailsViewModel.getChurchId()).show(getSupportFragmentManager(), "report");
+    }
+
     @OnClick(R.id.btn_navigate)
     public void navigate() {
         router.startGoogleNavigation(churchWithMasses.getChurch());
@@ -195,5 +214,14 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
     @OnClick(R.id.static_map)
     public void showOnMap() {
         router.showOnMap(churchWithMasses.getChurch());
+    }
+
+    @Override
+    public void onImageClicked(int position) {
+        ArrayList<String> imageUrls = new ArrayList<>();
+        for (Image image : churchWithMasses.getImages()) {
+            imageUrls.add(image.getImageUrl());
+        }
+        router.openGallery(imageUrls);
     }
 }

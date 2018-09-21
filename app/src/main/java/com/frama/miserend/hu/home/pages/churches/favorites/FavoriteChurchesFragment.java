@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 
 import com.frama.miserend.hu.R;
 import com.frama.miserend.hu.database.miserend.entities.Church;
+import com.frama.miserend.hu.database.miserend.entities.Mass;
 import com.frama.miserend.hu.database.miserend.relations.ChurchWithMasses;
 import com.frama.miserend.hu.home.pages.churches.view.ChurchListFragment;
+import com.frama.miserend.hu.massdetails.view.MassDetailsDialogFragment;
 import com.frama.miserend.hu.router.Router;
 
 import java.util.List;
@@ -44,12 +46,8 @@ public class FavoriteChurchesFragment extends ChurchListFragment {
         View v = inflater.inflate(R.layout.fragment_favorite_churches, container, false);
         ButterKnife.bind(this, v);
         recyclerView.setAdapter(favoriteChurchesAdapter);
-        favoritesViewModel.getFavorites().observe(this, this::onFavoritesChanged);
-        return v;
-    }
-
-    private void onFavoritesChanged(List<Integer> integers) {
         favoritesViewModel.getFavoriteChurches().observe(this, this::onFavoritesLoaded);
+        return v;
     }
 
     public void onFavoritesLoaded(List<ChurchWithMasses> churches) {
@@ -71,5 +69,10 @@ public class FavoriteChurchesFragment extends ChurchListFragment {
     @Override
     public void onFavoriteClicked(Church church) {
         favoritesViewModel.toggleFavorite(church.getId());
+    }
+
+    @Override
+    public void onMassClicked(Mass mass) {
+        MassDetailsDialogFragment.newInstance(mass).show(getChildFragmentManager(), "mass_details");
     }
 }

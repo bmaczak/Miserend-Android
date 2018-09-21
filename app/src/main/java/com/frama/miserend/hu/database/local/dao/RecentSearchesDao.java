@@ -1,5 +1,6 @@
 package com.frama.miserend.hu.database.local.dao;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -9,8 +10,6 @@ import com.frama.miserend.hu.database.local.entities.RecentSearch;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
-
 /**
  * Created by Balazs on 2018. 02. 10..
  */
@@ -19,10 +18,10 @@ import io.reactivex.Flowable;
 public interface RecentSearchesDao {
 
     @Query("SELECT searchterm FROM recent_searches")
-    Flowable<List<String>> getAll();
+    LiveData<List<String>> getAll();
 
     @Query("SELECT searchterm FROM recent_searches WHERE searchterm LIKE '%' || :searchTerm || '%'  ORDER BY timestamp DESC LIMIT 5")
-    Flowable<List<String>> getBySearchTerm(String searchTerm);
+    LiveData<List<String>> getBySearchTerm(String searchTerm);
 
     @Insert
     void insert(RecentSearch recentSearch);
