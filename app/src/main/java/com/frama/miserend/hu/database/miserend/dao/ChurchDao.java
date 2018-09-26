@@ -8,6 +8,8 @@ import com.frama.miserend.hu.database.miserend.entities.Church;
 
 import java.util.List;
 
+import io.reactivex.Single;
+
 /**
  * Created by Balazs on 2018. 02. 10..
  */
@@ -26,4 +28,7 @@ public interface ChurchDao {
 
     @Query("SELECT DISTINCT varos FROM templomok")
     LiveData<List<String>> getAllCities();
+
+    @Query("SELECT COUNT(*) FROM templomok")
+    Single<Integer> getChurchesCount();
 }

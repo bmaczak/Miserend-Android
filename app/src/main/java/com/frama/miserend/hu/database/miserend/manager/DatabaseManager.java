@@ -3,6 +3,7 @@ package com.frama.miserend.hu.database.miserend.manager;
 import android.content.Context;
 
 import com.frama.miserend.hu.api.MiserendApi;
+import com.frama.miserend.hu.database.miserend.dao.ChurchDao;
 import com.frama.miserend.hu.preferences.Preferences;
 
 import java.io.File;
@@ -28,11 +29,13 @@ public class DatabaseManager {
     private Context context;
     private MiserendApi api;
     private Preferences preferences;
+    private ChurchDao churchDao;
 
-    public DatabaseManager(Context context, MiserendApi api, Preferences preferences) {
+    public DatabaseManager(Context context, MiserendApi api, Preferences preferences, ChurchDao churchDao) {
         this.context = context;
         this.api = api;
         this.preferences = preferences;
+        this.churchDao = churchDao;
     }
 
 
@@ -44,16 +47,33 @@ public class DatabaseManager {
         return context.getDatabasePath(DATABASE_FILE_NAME);
     }
 
-    public int getRequiredDataBaseVersion() {
-        return DATABASE_VERSION;
+    public Single<DatabaseState> getDatabaseState() {
+        return Single.just(DatabaseState.UP_TO_DATE)
+                .map(state -> !isDbExist() ? DatabaseState.NOT_FOUND : state)
+                .flatMap(state -> {
+                    if (state == DatabaseState.UP_TO_DATE) {
+                        return churchDao.getChurchesCount().map(count -> count > 0 ? state : DatabaseState.DATABASE_CORRUPT);
+                    } else {
+                        return Single.just(state);
+                    }
+                })
+                .map(state -> {
+                    if (state == DatabaseState.UP_TO_DATE && DatabaseManager.DATABASE_VERSION != preferences.getSavedDatabseVersion()) {
+                        return DatabaseState.VERSION_INCOMPATIBLE;
+                    } else {
+                        return state;
+                    }
+                }).flatMap(state -> {
+                    if (state == DatabaseState.UP_TO_DATE) {
+                        return checkUpdate();
+                    } else {
+                        return Single.just(state);
+                    }
+                });
     }
 
-    public Single<DatabaseState> getDatabaseState() {
-        if (!isDbExist()) {
-            return Single.just(DatabaseState.NOT_FOUND);
-        } else if (DatabaseManager.DATABASE_VERSION != preferences.getSavedDatabseVersion()) {
-            return Single.just(DatabaseState.VERSION_MISMATCH);
-        } else if (Calendar.getInstance().getTimeInMillis() > preferences.getDatabaseLastUpdated() + DB_UPDATE_CHECK_PERIOD_IN_MILLIS) {
+    private Single<DatabaseState> checkUpdate() {
+        if (Calendar.getInstance().getTimeInMillis() > preferences.getDatabaseLastUpdated() + DB_UPDATE_CHECK_PERIOD_IN_MILLIS) {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
             String updated = format.format(new Date(preferences.getDatabaseLastUpdated()));
             return api.updateAvailable(updated)

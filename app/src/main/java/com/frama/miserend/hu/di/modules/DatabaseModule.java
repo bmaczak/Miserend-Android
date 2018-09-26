@@ -24,8 +24,8 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    DatabaseManager provideDatabaseManager(@ApplicationContext Context context, MiserendApi api, Preferences preferences) {
-        return new DatabaseManager(context, api, preferences);
+    DatabaseManager provideDatabaseManager(@ApplicationContext Context context, MiserendApi api, Preferences preferences, MiserendDatabase miserendDatabase) {
+        return new DatabaseManager(context, api, preferences, miserendDatabase.churchDao());
     }
 
     @Provides

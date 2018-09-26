@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 
 import com.frama.miserend.hu.R;
@@ -14,10 +15,18 @@ import com.frama.miserend.hu.R;
 
 public class DatabaseMissingDialogFragment extends DialogFragment {
 
+    private static final String EXTRA_TITLE = "title";
+    private static final String EXTRA_MESSAGE = "message";
+
+
     private DatabaseDialogCallback callback;
 
-    public static DatabaseMissingDialogFragment newInstance() {
+    public static DatabaseMissingDialogFragment newInstance(@StringRes int title,@StringRes int message) {
         DatabaseMissingDialogFragment frag = new DatabaseMissingDialogFragment();
+        Bundle args = new Bundle();
+        args.putInt(EXTRA_TITLE, title);
+        args.putInt(EXTRA_MESSAGE, message);
+        frag.setArguments(args);
         return frag;
     }
 
@@ -35,8 +44,8 @@ public class DatabaseMissingDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.dialog_db_missing_title)
-                .setMessage(R.string.dialog_db_missing_message)
+                .setTitle(getArguments().getInt(EXTRA_TITLE))
+                .setMessage(getArguments().getInt(EXTRA_MESSAGE))
                 .setPositiveButton(R.string.dialog_db_missing_btn_ok,
                         (dialog, whichButton) -> callback.onDownloadClicked()
                 )
