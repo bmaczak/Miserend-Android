@@ -128,6 +128,10 @@ public class HomeScreenActivity extends FragmentHostActivity implements Database
                 hideDownloadingDialog();
                 showDatabaseUpdateDialog();
                 break;
+            case DATABASE_CORRUPT:
+                hideDownloadingDialog();
+                showDatabaseCorruptDialog();
+                break;
             case NOT_FOUND:
                 hideDownloadingDialog();
                 showDatabaseMissingDialog();
@@ -146,7 +150,12 @@ public class HomeScreenActivity extends FragmentHostActivity implements Database
     }
 
     private void showDatabaseMissingDialog() {
-        DialogFragment newFragment = DatabaseMissingDialogFragment.newInstance();
+        DialogFragment newFragment = DatabaseMissingDialogFragment.newInstance(R.string.dialog_db_missing_title, R.string.dialog_db_missing_message);
+        newFragment.show(getSupportFragmentManager(), "dialog");
+    }
+
+    private void showDatabaseCorruptDialog() {
+        DialogFragment newFragment = DatabaseMissingDialogFragment.newInstance(R.string.dialog_db_corrupt_title, R.string.dialog_db_corrupt_message);
         newFragment.show(getSupportFragmentManager(), "dialog");
     }
 

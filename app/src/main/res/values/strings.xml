@@ -29,6 +29,8 @@
 
     <string name="dialog_db_missing_title">Adatabázis nem taláható</string>
     <string name="dialog_db_missing_message">Az alkalmazás használatához szükség van az adatbázis letöltésére. Letölti most?</string>
+    <string name="dialog_db_corrupt_title">Sérült adatbázis</string>
+    <string name="dialog_db_corrupt_message">Az alkalmazás használatához szükség van az adatbázis letöltésére. Letölti most?</string>
     <string name="dialog_db_missing_btn_ok">Letöltés</string>
     <string name="dialog_db_missing_btn_cancel">Kilépés</string>
     <string name="dialog_db_downloading">Adatbázis letöltése</string>

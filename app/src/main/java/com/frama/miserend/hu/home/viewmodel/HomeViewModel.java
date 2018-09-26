@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
+import android.database.sqlite.SQLiteDatabaseCorruptException;
 import android.support.annotation.NonNull;
 
 import com.frama.miserend.hu.database.miserend.manager.DatabaseDownloaderTask;
@@ -17,6 +18,7 @@ import com.frama.miserend.hu.preferences.Preferences;
 import java.util.Calendar;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -31,6 +33,8 @@ public class HomeViewModel extends AndroidViewModel {
     private Preferences preferences;
     private LocationRepository locationRepository;
 
+    private final CompositeDisposable disposables = new CompositeDisposable();
+
     public HomeViewModel(@NonNull Application application, DatabaseManager databaseManager, Preferences preferences, LocationRepository locationRepository) {
         super(application);
         this.databaseManager = databaseManager;
@@ -40,17 +44,19 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public LiveData<DatabaseState> getDatabaseState() {
-        databaseManager.getDatabaseState()
+        disposables.add(databaseManager.getDatabaseState()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(databaseState -> this.databaseState.setValue(databaseState),
                         throwable -> {
-                            if (databaseManager.isDbExist()) {
+                            if (throwable instanceof SQLiteDatabaseCorruptException) {
+                                this.databaseState.setValue(DatabaseState.DATABASE_CORRUPT);
+                            } else if (databaseManager.isDbExist()) {
                                 this.databaseState.setValue(DatabaseState.UP_TO_DATE);
                             } else {
                                 this.databaseState.setValue(DatabaseState.NOT_FOUND);
                             }
-                        });
+                        }));
         return databaseState;
     }
 
@@ -76,6 +82,11 @@ public class HomeViewModel extends AndroidViewModel {
 
     public void retryLocation() {
         locationRepository.refreshLocation();
+    }
+
+    @Override
+    protected void onCleared() {
+        disposables.clear();
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
