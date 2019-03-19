@@ -7,7 +7,7 @@ import java.io.BufferedInputStream
 import java.io.FileOutputStream
 import java.net.URL
 
-class DatabaseDownloaderTask(internal var context: Context, private var listener: OnDbDownloadedListener?) : AsyncTask<String, Int, Boolean>() {
+class DatabaseDownloaderTask(private var context: Context, private var listener: OnDbDownloadedListener) : AsyncTask<String, Int, Boolean>() {
 
     interface OnDbDownloadedListener {
         fun onDbDownloadStarted()
@@ -17,9 +17,7 @@ class DatabaseDownloaderTask(internal var context: Context, private var listener
 
     override fun onPreExecute() {
         super.onPreExecute()
-        if (listener != null) {
-            listener!!.onDbDownloadStarted()
-        }
+        listener.onDbDownloadStarted()
     }
 
     override fun doInBackground(vararg params: String): Boolean? {
@@ -28,10 +26,8 @@ class DatabaseDownloaderTask(internal var context: Context, private var listener
     }
 
     override fun onPostExecute(result: Boolean?) {
-        if (listener != null) {
-            listener!!.onDbDownloadFinished(result!!)
-        }
         super.onPostExecute(result)
+        listener.onDbDownloadFinished(result!!)
     }
 
     private fun downloadFromUrl(DownloadUrl: String): Boolean {

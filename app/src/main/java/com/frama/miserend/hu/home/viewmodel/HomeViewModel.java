@@ -51,7 +51,7 @@ public class HomeViewModel extends AndroidViewModel {
                         throwable -> {
                             if (throwable instanceof SQLiteDatabaseCorruptException) {
                                 this.databaseState.setValue(DatabaseState.DATABASE_CORRUPT);
-                            } else if (databaseManager.isDbExist()) {
+                            } else if (databaseManager.getDbExists()) {
                                 this.databaseState.setValue(DatabaseState.UP_TO_DATE);
                             } else {
                                 this.databaseState.setValue(DatabaseState.NOT_FOUND);
