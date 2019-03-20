@@ -15,14 +15,14 @@ import io.reactivex.Single
 @Dao
 interface ChurchDao {
 
-    @get:Query("SELECT * FROM templomok WHERE lat != 0 AND lng != 0")
-    val all: LiveData<List<Church>>
+    @Query("SELECT * FROM templomok WHERE lat != 0 AND lng != 0")
+    fun getAll(): LiveData<List<Church>>
 
-    @get:Query("SELECT DISTINCT varos FROM templomok")
-    val allCities: LiveData<List<String>>
+    @Query("SELECT DISTINCT varos FROM templomok")
+    fun getAllCities(): LiveData<List<String>>
 
-    @get:Query("SELECT COUNT(*) FROM templomok")
-    val churchesCount: Single<Int>
+    @Query("SELECT COUNT(*) FROM templomok")
+    fun getChurchesCount(): Single<Int>
 
     @Query("SELECT * FROM templomok WHERE nev LIKE '%' || :searchTerm || '%' OR ismertnev LIKE '%' || :searchTerm || '%'")
     fun getByName(searchTerm: String): LiveData<List<Church>>

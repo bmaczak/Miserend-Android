@@ -12,6 +12,7 @@ android {
         versionCode 21
         versionName "2.3.4"
         setProperty("archivesBaseName", "miserend-" + versionName)
+        multiDexEnabled true
     }
     signingConfigs {
         release

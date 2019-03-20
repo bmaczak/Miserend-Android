@@ -101,7 +101,7 @@ public class SuggestionViewModel extends AndroidViewModel {
     }
 
     public void addRecentSearch(String searchTerm) {
-        new Thread(() -> recentSearchesRepository.add(searchTerm));
+        new Thread(() -> recentSearchesRepository.add(searchTerm)).start();
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {

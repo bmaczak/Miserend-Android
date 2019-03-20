@@ -25,7 +25,7 @@ class DatabaseManager(private val context: Context, private val api: MiserendApi
 
     val databaseState: Single<DatabaseState>
         get() = Single.just(if (!dbExists) DatabaseState.NOT_FOUND else DatabaseState.UP_TO_DATE)
-                .flatMap { state -> if (state == DatabaseState.UP_TO_DATE) churchDao.churchesCount.map { count -> if (count > 0) state else DatabaseState.DATABASE_CORRUPT } else Single.just(state) }
+                .flatMap { state -> if (state == DatabaseState.UP_TO_DATE) churchDao.getChurchesCount().map { count -> if (count > 0) state else DatabaseState.DATABASE_CORRUPT } else Single.just(state) }
                 .map { state -> if (state == DatabaseState.UP_TO_DATE && DatabaseManager.DATABASE_VERSION != preferences.savedDatabseVersion) DatabaseState.VERSION_INCOMPATIBLE else state }
                 .flatMap { state -> if (state == DatabaseState.UP_TO_DATE) checkUpdate() else Single.just(state) }
 

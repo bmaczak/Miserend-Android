@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import com.frama.miserend.hu.database.local.dao.RecentSearchesDao;
 import com.frama.miserend.hu.database.local.entities.RecentSearch;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class RecentSearchesRepository {
@@ -24,7 +25,7 @@ public class RecentSearchesRepository {
     }
 
     public void add(String searchTerm) {
-        recentSearchesDao.insert(new RecentSearch(searchTerm));
+        recentSearchesDao.insert(new RecentSearch(searchTerm, Calendar.getInstance().getTimeInMillis()));
     }
 
 }
