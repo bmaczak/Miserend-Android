@@ -22,7 +22,11 @@ public class MassFilterTest {
 
     @Before
     public void setup() {
-        mass = new Mass();
+        mass = new Mass(0, 0,
+                0, null, null,
+                null, null, 0,
+                0, 1231, null
+        );
         date = LocalDate.now();
     }
 
