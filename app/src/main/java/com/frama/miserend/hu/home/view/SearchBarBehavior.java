@@ -18,7 +18,7 @@ public class SearchBarBehavior extends CoordinatorLayout.Behavior<View> {
 
     public SearchBarBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.toolbarHeight = ViewUtils.getToolbarHeight(context);
+        this.toolbarHeight = ViewUtils.INSTANCE.getToolbarHeight(context);
     }
 
     @Override

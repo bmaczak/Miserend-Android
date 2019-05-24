@@ -65,7 +65,7 @@ public class MiserendRepository {
     }
 
     public LiveData<List<ChurchWithMasses>> getChurches(SearchParams searchParams) {
-        if (Validation.notEmpty(searchParams.getSearchTerm())) {
+        if (Validation.INSTANCE.notEmpty(searchParams.getSearchTerm())) {
             return churchWithMassesDao.getByName(searchParams.getSearchTerm());
         } else {
             return churchWithMassesDao.getBySearch(searchParams.getChurchName(), searchParams.getCity());

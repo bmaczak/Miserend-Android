@@ -62,15 +62,15 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
 
     public void bindTo(Church church, List<Mass> masses, Location currentLocation, boolean isFavorite) {
         this.church = church;
-        churchName.setText(StringUtils.capitalizeFirstLetter(church.getName()));
-        churchCommonName.setText(StringUtils.capitalizeFirstLetter(church.getCommonName()));
+        churchName.setText(StringUtils.INSTANCE.capitalizeFirstLetter(church.getName()));
+        churchCommonName.setText(StringUtils.INSTANCE.capitalizeFirstLetter(church.getCommonName()));
         churchThumbnail.setImageURI(church.getImageUrl());
         List<Mass> todaysMasses = MassFilter.filterForDay(masses, LocalDate.now());
         massesFlexbox.removeAllViews();
         addMassesToFlexboxLayout(massesFlexbox, todaysMasses);
         if (currentLocation != null) {
             distanceText.setVisibility(View.VISIBLE);
-            distanceText.setText(getDistanceText(ChurchUtils.distanceTo(currentLocation, church)));
+            distanceText.setText(getDistanceText(ChurchUtils.INSTANCE.distanceTo(currentLocation, church)));
         } else {
             distanceText.setVisibility(View.GONE);
         }
@@ -80,7 +80,7 @@ public class ChurchViewHolder extends RecyclerView.ViewHolder {
     private void addMassesToFlexboxLayout(FlexboxLayout flexboxLayout, List<Mass> masses) {
         LayoutInflater layoutInflater = LayoutInflater.from(flexboxLayout.getContext());
         for (Mass mass : masses) {
-            View view = ViewUtils.createMassFlexboxItem(layoutInflater, flexboxLayout, mass);
+            View view = ViewUtils.INSTANCE.createMassFlexboxItem(layoutInflater, flexboxLayout, mass);
             view.setOnClickListener(view1 -> churchListActionListener.onMassClicked(mass));
             flexboxLayout.addView(view);
         }

@@ -137,11 +137,11 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
     private void onChurchDetailsLoaded(ChurchWithMasses churchWithMasses) {
         this.churchWithMasses = churchWithMasses;
         Church church = churchWithMasses.getChurch();
-        ViewUtils.setTextOrHide(churchName, church.getName());
-        ViewUtils.setTextOrHide(churchCommonName, church.getCommonName());
+        ViewUtils.INSTANCE.setTextOrHide(churchName, church.getName());
+        ViewUtils.INSTANCE.setTextOrHide(churchCommonName, church.getCommonName());
         staticMap.setImageURI(StaticMapHelper.getSaticMapUrl(this, churchWithMasses.getChurch().getLat(), churchWithMasses.getChurch().getLon(), staticMap.getWidth(), staticMap.getHeight()));
-        ViewUtils.setHtmlTextOrHide(churchAddress, church.getAddress());
-        ViewUtils.setHtmlTextOrHide(churchGettingThere, church.getGettingThere());
+        ViewUtils.INSTANCE.setHtmlTextOrHide(churchAddress, church.getAddress());
+        ViewUtils.INSTANCE.setHtmlTextOrHide(churchGettingThere, church.getGettingThere());
         displayMasses();
         imagesAdapter.setImages(churchWithMasses.getImages());
     }
@@ -181,7 +181,7 @@ public class ChurchDetailsActivity extends FragmentHostActivity implements OnMas
     private void addMassesToFlexboxLayout(FlexboxLayout flexboxLayout, List<Mass> masses) {
         LayoutInflater layoutInflater = getLayoutInflater();
         for (Mass mass : masses) {
-            View view = ViewUtils.createMassFlexboxItem(layoutInflater, flexboxLayout, mass);
+            View view = ViewUtils.INSTANCE.createMassFlexboxItem(layoutInflater, flexboxLayout, mass);
             view.setOnClickListener(view1 -> showMassDetailsDialog(mass));
             flexboxLayout.addView(view);
         }

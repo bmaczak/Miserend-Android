@@ -57,13 +57,13 @@ public class MassDetailsDialogFragment extends DialogFragment {
     //TODO Refactor
     private String getDetails() {
         String text = "";
-        if (Validation.notEmpty(mass.getComment())) {
+        if (Validation.INSTANCE.notEmpty(mass.getComment())) {
             text += mass.getComment() + "\n";
         }
-        if (Validation.notEmpty(mass.getLanguage()) && !mass.getLanguage().equals("h") && !mass.getLanguage().equals("hu")) {
+        if (Validation.INSTANCE.notEmpty(mass.getLanguage()) && !mass.getLanguage().equals("h") && !mass.getLanguage().equals("hu")) {
             text += "Nyelv: " + mass.getLanguage() + "\n";
         }
-        if (Validation.isEmpty(mass.getPeriod()) || mass.getPeriod().equals("0")) {
+        if (Validation.INSTANCE.isEmpty(mass.getPeriod()) || mass.getPeriod().equals("0")) {
             text += "Minden héten\n";
         } else if (mass.getPeriod().equals("ps")) {
             text += "Csak páros heteken\n";
@@ -71,12 +71,12 @@ public class MassDetailsDialogFragment extends DialogFragment {
             text += "Csak páratlan heteken\n";
         } else if (mass.getPeriod().equals("-1")) {
             text += "Csak utolsó heteken\n";
-        } else if (StringUtils.isInteger(mass.getPeriod())) {
+        } else if (StringUtils.INSTANCE.isInteger(mass.getPeriod())) {
             text += "Csak a hónap " + Integer.valueOf(mass.getPeriod()) + ". hetén\n";
         }
-        text += StringUtils.capitalizeFirstLetter(mass.getSeason()) + "\n";
+        text += StringUtils.INSTANCE.capitalizeFirstLetter(mass.getSeason()) + "\n";
 
-        if (Validation.notEmpty(mass.getTags())) {
+        if (Validation.INSTANCE.notEmpty(mass.getTags())) {
             String[] tags = mass.getTags().split(",");
             for (String tag : tags) {
                 text += MassTag.getTagDescription(getContext(), tag) + "\n";

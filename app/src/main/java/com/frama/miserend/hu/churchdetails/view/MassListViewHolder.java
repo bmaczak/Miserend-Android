@@ -41,11 +41,11 @@ public class MassListViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(DayOfMasses dayOfMasses, OnMassClickedListener onMassClickedListener) {
         dateText.setText(dayOfMasses.getDay().format(dateFormatter));
-        dayText.setText(DateUtils.getNameOfDay(dayText.getResources(), dayOfMasses.getDay()));
+        dayText.setText(DateUtils.INSTANCE.getNameOfDay(dayOfMasses.getDay(), dayText.getResources()));
 
         flexboxLayout.removeAllViews();
         for (Mass mass : dayOfMasses.getMasses()) {
-            View view = ViewUtils.createMassFlexboxItem(layoutInflater, flexboxLayout, mass);
+            View view = ViewUtils.INSTANCE.createMassFlexboxItem(layoutInflater, flexboxLayout, mass);
             view.setOnClickListener(view1 -> onMassClickedListener.onMassClicked(mass));
             flexboxLayout.addView(view);
         }

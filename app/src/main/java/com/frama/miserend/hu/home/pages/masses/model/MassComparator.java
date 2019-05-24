@@ -21,7 +21,7 @@ public class MassComparator implements Comparator<MassWithChurch> {
 
     @Override
     public int compare(MassWithChurch massWithChurch, MassWithChurch t1) {
-        return (int) (ChurchUtils.distanceTo(currentLocation, massWithChurch.getChurch())
-                - ChurchUtils.distanceTo(currentLocation, t1.getChurch()));
+        return (int) (ChurchUtils.INSTANCE.distanceTo(currentLocation, massWithChurch.getChurch())
+                - ChurchUtils.INSTANCE.distanceTo(currentLocation, t1.getChurch()));
     }
 }
