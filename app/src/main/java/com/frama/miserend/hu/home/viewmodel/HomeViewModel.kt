@@ -26,13 +26,9 @@ import io.reactivex.schedulers.Schedulers
 
 class HomeViewModel(application: Application, private val databaseManager: DatabaseManager, private val preferences: Preferences, private val locationRepository: LocationRepository) : AndroidViewModel(application) {
 
-    private val databaseState: MutableLiveData<DatabaseState>
+    private val databaseState: MutableLiveData<DatabaseState> = MutableLiveData()
 
     private val disposables = CompositeDisposable()
-
-    init {
-        databaseState = MutableLiveData()
-    }
 
     fun getDatabaseState(): LiveData<DatabaseState> {
         disposables.add(databaseManager.databaseState
@@ -40,12 +36,10 @@ class HomeViewModel(application: Application, private val databaseManager: Datab
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ databaseState -> this.databaseState.setValue(databaseState) },
                         { throwable ->
-                            if (throwable is SQLiteDatabaseCorruptException) {
-                                this.databaseState.setValue(DatabaseState.DATABASE_CORRUPT)
-                            } else if (databaseManager.dbExists) {
-                                this.databaseState.setValue(DatabaseState.UP_TO_DATE)
-                            } else {
-                                this.databaseState.setValue(DatabaseState.NOT_FOUND)
+                            when {
+                                throwable is SQLiteDatabaseCorruptException -> this.databaseState.setValue(DatabaseState.DATABASE_CORRUPT)
+                                databaseManager.dbExists -> this.databaseState.setValue(DatabaseState.UP_TO_DATE)
+                                else -> this.databaseState.setValue(DatabaseState.NOT_FOUND)
                             }
                         }))
         return databaseState

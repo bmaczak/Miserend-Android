@@ -1,14 +1,15 @@
 package com.frama.miserend.hu.home.view
 
 import android.app.ProgressDialog
+import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
-import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.view.MenuItem
 import android.view.View
-
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.frama.miserend.hu.R
 import com.frama.miserend.hu.base.FragmentHostActivity
 import com.frama.miserend.hu.database.dialog.DatabaseDialogCallback
@@ -29,11 +30,7 @@ import com.frama.miserend.hu.search.suggestions.church.ChurchSuggestion
 import com.frama.miserend.hu.search.suggestions.city.CitySuggestion
 import com.frama.miserend.hu.search.suggestions.recent.RecentSearchSuggestion
 import com.frama.miserend.hu.search.suggestions.viewmodel.SuggestionViewModel
-
 import javax.inject.Inject
-
-import butterknife.BindView
-import butterknife.ButterKnife
 
 /**
  * Created by Balazs on 2018. 02. 10..
@@ -42,74 +39,75 @@ import butterknife.ButterKnife
 class HomeScreenActivity : FragmentHostActivity(), DatabaseDialogCallback {
 
     @Inject
-    internal var viewModel: HomeViewModel? = null
+    lateinit var viewModel: HomeViewModel
     @Inject
-    internal var suggestionViewModel: SuggestionViewModel? = null
+    lateinit var suggestionViewModel: SuggestionViewModel
     @Inject
-    internal var router: Router? = null
+    lateinit var router: Router
     @Inject
-    internal var locationPermissionHelper: LocationPermissionHelper? = null
+    lateinit var locationPermissionHelper: LocationPermissionHelper
 
     @BindView(R.id.search_bar)
-    internal var searchBar: CustomSearchBar? = null
+    lateinit var searchBar: CustomSearchBar
     @BindView(R.id.bottom_navigation)
-    internal var bottomNavigationView: BottomNavigationView? = null
+    lateinit var bottomNavigationView: BottomNavigationView
     @BindView(R.id.search_fader)
-    internal var searchFader: View? = null
+    lateinit var searchFader: View
 
-    internal var databaseDownloadingDialog: ProgressDialog? = null
+    private var databaseDownloadingDialog: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         ButterKnife.bind(this)
-        viewModel!!.databaseState.observe(this, Observer<DatabaseState> { this.onDatabaseStateChanged(it) })
-        bottomNavigationView!!.setOnNavigationItemSelectedListener(OnNavigationItemSelectedListener { this.onNavigationItemSelected(it) })
-        suggestionViewModel!!.suggestions.observe(this, Observer<List<Suggestion>> { this.onSuggestionsChanged(it) })
-        searchFader!!.setOnClickListener { view -> searchBar!!.close() }
-        searchBar!!.setSearchBarCallback(object : CustomSearchBar.SearchBarCallback {
+        viewModel.getDatabaseState().observe(this, Observer<DatabaseState> { this.onDatabaseStateChanged(it) })
+        bottomNavigationView.setOnNavigationItemSelectedListener { this.onNavigationItemSelected(it) }
+        suggestionViewModel.suggestions?.observe(this, Observer<List<Suggestion<Any>>> { this.onSuggestionsChanged(it) })
+        searchFader.setOnClickListener { searchBar.close() }
+        searchBar.setSearchBarCallback(object : CustomSearchBar.SearchBarCallback {
             override fun onSearchTermChanged(searchTerm: String) {
-                suggestionViewModel!!.updateSuggestions(searchTerm)
+                suggestionViewModel.updateSuggestions(searchTerm)
             }
 
             override fun onSearchStateChanged(enabled: Boolean) {
-                searchFader!!.visibility = if (enabled) View.VISIBLE else View.GONE
+                searchFader.visibility = if (enabled) View.VISIBLE else View.GONE
                 if (enabled) {
-                    suggestionViewModel!!.updateSuggestions("")
+                    suggestionViewModel.updateSuggestions("")
                 }
             }
 
             override fun onSuggestionSelected(suggestion: Suggestion<*>) {
-                if (suggestion is ChurchSuggestion) {
-                    router!!.showChurchDetails(suggestion.data)
-                } else if (suggestion is AdvancedSearchSuggestion) {
-                    router!!.showAdvancedSearch()
-                } else if (suggestion is CitySuggestion) {
-                    val searchParams = SearchParams()
-                    searchParams.city = suggestion.data
-                    router!!.showSearchResults(searchParams)
-                } else if (suggestion is RecentSearchSuggestion) {
-                    val searchParams = SearchParams(suggestion.data)
-                    router!!.showSearchResults(searchParams)
+                when (suggestion) {
+                    is ChurchSuggestion -> router.showChurchDetails(suggestion.data)
+                    is AdvancedSearchSuggestion -> router.showAdvancedSearch()
+                    is CitySuggestion -> {
+                        val searchParams = SearchParams()
+                        searchParams.city = suggestion.data
+                        router.showSearchResults(searchParams)
+                    }
+                    is RecentSearchSuggestion -> {
+                        val searchParams = SearchParams(suggestion.data)
+                        router.showSearchResults(searchParams)
+                    }
                 }
             }
 
             override fun onSearchConfirmed(searchTerm: String) {
-                suggestionViewModel!!.addRecentSearch(searchTerm)
-                searchBar!!.close()
-                router!!.showSearchResults(SearchParams(searchTerm))
+                suggestionViewModel.addRecentSearch(searchTerm)
+                searchBar.close()
+                router.showSearchResults(SearchParams(searchTerm))
             }
         })
-        if (!locationPermissionHelper!!.hasLocationPermission()) {
-            locationPermissionHelper!!.showPermissionRequestPopup()
+        if (!locationPermissionHelper.hasLocationPermission()) {
+            locationPermissionHelper.showPermissionRequestPopup()
         }
     }
 
-    private fun onSuggestionsChanged(suggestions: List<Suggestion<*>>) {
-        searchBar!!.updateLastSuggestions(suggestions)
+    private fun onSuggestionsChanged(suggestions: List<Suggestion<*>>?) {
+        searchBar.updateLastSuggestions(suggestions)
     }
 
-    private fun onDatabaseStateChanged(databaseState: DatabaseState) {
+    private fun onDatabaseStateChanged(databaseState: DatabaseState?) {
         when (databaseState) {
             DatabaseState.UP_TO_DATE -> {
                 hideDownloadingDialog()
@@ -156,7 +154,7 @@ class HomeScreenActivity : FragmentHostActivity(), DatabaseDialogCallback {
     }
 
     fun downloadDatabase() {
-        viewModel!!.downloadDatabase()
+        viewModel.downloadDatabase()
     }
 
     private fun showFragment(fragment: Fragment) {
@@ -183,15 +181,15 @@ class HomeScreenActivity : FragmentHostActivity(), DatabaseDialogCallback {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        viewModel!!.retryLocation()
+        viewModel.retryLocation()
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
         if (LocationPermissionHelper.LOCATION_SETTINGS_REQUEST_CODE == requestCode) {
-            viewModel!!.retryLocation()
+            viewModel.retryLocation()
         } else if (LocationPermissionHelper.LOCATION_PERMISSION_REQUEST_CODE == requestCode) {
-            viewModel!!.retryLocation()
+            viewModel.retryLocation()
         }
     }
 
