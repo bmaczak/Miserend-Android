@@ -50,7 +50,7 @@ class DatabaseManager(private val context: Context, private val api: MiserendApi
         const val DATABASE_FILE_NAME = "miserend.sqlite3"
         const val DATABASE_VERSION = 4
 
-        private const val DATABASE_URL = "http://miserend.hu/fajlok/sqlite/miserend_v$DATABASE_VERSION.sqlite3"
+        private const val DATABASE_URL = "https://miserend.hu/fajlok/sqlite/miserend_v$DATABASE_VERSION.sqlite3"
         private const val DB_UPDATE_CHECK_PERIOD_IN_MILLIS = 1000 * 60 * 60 * 24 * 7
     }
 }
